@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const DataAccess = require("../model/DataAccess.js");
+const DataAccess = require("../models/DataAccess.js");
 
 router.get("/", function(req, res) {
     const callback = (record) => {

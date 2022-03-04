@@ -1,0 +1,8 @@
+#sideMenu {
+    $widthRatio: 20%;
+    $minWidth: 200px;
+
+    background-color: red;
+    width: $widthRatio;
+    min-width: $minWidth;
+}

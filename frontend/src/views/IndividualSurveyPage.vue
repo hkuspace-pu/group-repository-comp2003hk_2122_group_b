@@ -126,7 +126,10 @@ export default {
 		//survey_id: String,
 		survey_created_time: String,
 	},
-	
+	inject: ['message'],
+	created() {
+	    console.log("message: " + this.message); // injected value
+	},
 	data() {
 	    return {
 			treesurveydata:this.treesurveydata,
@@ -220,9 +223,7 @@ export default {
 			myStyle:{
 				backgroundColor:"rgb(225, 228, 184)" 
 			},
-				
-			
-    }
+        }
 	},
 	
 	

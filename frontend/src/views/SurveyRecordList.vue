@@ -1,5 +1,5 @@
 
-<template>
+<template >
    
    <div id="surveyrecordlist" >
 	<input type='button' @click='prompt_BulkExportToExcel_Path(bulkselectsurveycase)' value='Excel Bulk Output'><span>Survey ID Selected: {{ bulkselectsurveycase.join() }} </span>
@@ -15,36 +15,40 @@
             <td><input type='number' v-model='Survey_Case_No_To' placeholder="Enter between 1 - 24"></td>
 			<td><input type='button' @click='Filter_By_Survey_Case_No()' value='Filter by Case No'></td>
 		</tr>
-		
+	</table>	
 		<br><br>
+		<sorted-table :values="values">
+		<thead>
 		<tr>
-        </tr>
-		<tr>
-			<th>Select</th>
-			<th>Survey ID</th>
-			<th>Creator Name</th>
-			<th>Created Time</th>
-			<th>Created Venue</th>
-			<th>Species Name</th>
-			<th>Survey Status</th>
-			<th>Administrator Comment</th>
+			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Selected">Select</sort-link></th>
+			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Survey_Case_No">Survey ID</sort-link></th>
+			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Creator_Name">Creator Name</sort-link></th>
+			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Created_Time">Created Time</sort-link></th>
+			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Created_Venue">Created Venue</sort-link></th>
+			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Species_Name">Species Name</sort-link></th>
+			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Survey_Status">Survey Status</sort-link></th>
+			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Administrator_Comment">Administrator Comment</sort-link></th>
 			<th colspan = 3>Action</th>
 		</tr><!-- Details/Delete -->
-		<tr v-for='(surveycase,index) in surveycases'>
-			<td><input type="checkbox" :id="surveycase.Survey_Case_No" :value="surveycase.Survey_Case_No" v-model="bulkselectsurveycase"></td>
-			<td>{{ surveycase.Survey_Case_No }}</td>
-			<td>{{ surveycase.Creator_Name }}</td>
-			<td>{{ surveycase.Created_Time }}</td>
-			<td>{{ surveycase.Created_Venue }}</td>
-            <td>{{ surveycase.Species_Name }}</td>
-			<td>{{ surveycase.Survey_Status }}</td>
-			<td>{{ surveycase.Administrator_Comment }}</td>
-			<td><input type='button' value='Delete' @click='deleteRecord(index,surveycase.Survey_Case_No);'></td>
-			<td><input type='button' value='View' @click='showDetail("View",surveycase.Survey_Case_No);'></td>
-			<td><input type='button' value='Edit' @click='showDetail("Edit",surveycase.Survey_Case_No);'></td>
-		</tr>
-	</table>
-		
+		</thead>
+		<template #body="sort">
+		<tbody >
+		<tr v-for="value in sort.values" :key="value.Survey_Case_No">
+			        <td><input type="checkbox" :id="value.Survey_Case_No" :value="value.Survey_Case_No" v-model="bulkselectsurveycase" @change="check($event)"   :checked="value.Selected"></td>
+		            <td>{{ value.Survey_Case_No }}</td>
+		            <td>{{ value.Creator_Name }}</td>
+		            <td>{{ value.Created_Time }}</td>
+					<td>{{ value.Created_Venue }}</td>
+					<td>{{ value.Species_Name }}</td>
+					<td>{{ value.Survey_Status }}</td>
+					<td>{{ value.Administrator_Comment }}</td>
+					<td><input type='button' value='Delete' @click='deleteRecord(index,value.Survey_Case_No);'></td>
+					<td><input type='button' value='View' @click='showDetail("View",value.Survey_Case_No);'></td>
+					<td><input type='button' value='Edit' @click='showDetail("Edit",value.Survey_Case_No);'></td>	
+		          </tr>
+		</tbody>
+	   </template>
+	    </sorted-table>	
 	</div>
 	
 </template>
@@ -58,14 +62,20 @@ import VueSimpleAlert from 'vue-simple-alert';
 import { Vue, Component } from 'vue-property-decorator';
 import { SweetAlertOptions, SweetAlertResult } from 'sweetalert2';
 import { version, description } from 'vue-simple-alert/package.json';
+import SortedTablePlugin from "vue-sorted-table";
+import { SortedTable, SortLink } from "vue-sorted-table";
+
 
 export default  { 
-	
+	    name: "App",
 		props:['data'],
-				
-        data () {
+		provide: {
+			message: 'hello!'
+		},
+        data: function () {
             return {
-				surveycases:this.surveycases,
+				//surveycases:this.surveycases,
+				surveycases:[],
 				Survey_Case_No: 0,
 				Creator_Name: '',
 				Created_Time:'',
@@ -76,7 +86,9 @@ export default  {
                 Survey_Case_No_To: 0,
                 Survey_Case_No_From: 0,
 				mode:'',
-				bulkselectsurveycase:[]
+				bulkselectsurveycase:[],
+				values: [],
+					  
 			}                                            
 		},
         mounted() {
@@ -105,8 +117,15 @@ export default  {
 		methods: {
 			allRecords: function(){
 				axios.get('ajaxfile_get_surveyrecords.php').then((response) => {
-					this.surveycases = response.data;
-					console.log(response.data); 
+					//this.surveycases = response.data;
+					this.values = [];
+					for (const eachsurvey of response.data) {
+					  eachsurvey["Selected"] = false;
+					  eachsurvey["Survey_Case_No"] = Number(eachsurvey["Survey_Case_No"]) ;
+					}
+					this.bulkselectsurveycase =[];
+					this.values=    response.data;
+					console.log(this.values); 
 				}).catch((error) => {
 					console.log('error on all Records:' + error);
 				});	
@@ -124,7 +143,14 @@ export default  {
                             Survey_Case_No_To: this.Survey_Case_No_To
 						}
 					}).then((response) => {
-						this.surveycases = response.data;
+						//this.surveycases = response.data;
+						this.values = [];
+						this.bulkselectsurveycase = [];
+						for (const eachsurvey of response.data) {
+						  eachsurvey["Selected"] = false;
+						  eachsurvey["Survey_Case_No"] = Number(eachsurvey["Survey_Case_No"]) ;
+						}
+						this.values=    response.data;
 					}).catch((error) => {
 						console.log(error);
 					});
@@ -135,7 +161,8 @@ export default  {
 				axios.post('ajaxfile_delete_surveyrecords.php', {
 					 Survey_Case_No: Survey_Case_No
 				}).then((response) => {
-					this.surveycases.splice(index, 1);
+					//this.surveycases.splice(index, 1);
+					this.values.splice(index, 1);
 					alert(response.data);
 				}).catch((error) => {
 					console.log('error:' + error);
@@ -195,13 +222,23 @@ export default  {
 				})
 				.catch((e) => console.log("canceled" + e));
 			},
+			
+			check(e) {  
+			      //console.log(e.target.id);  
+				  for (const eachsurvey of this.values) {
+				    if (eachsurvey["Survey_Case_No"] === Number(e.target.id)) {
+						eachsurvey["Selected"] = e.target.checked;
+						console.log(e.target.id + " " + eachsurvey["Selected"]);  
+						break;
+					}
+				  }
+				  
+			},
 								
         },
 
 		created: function(){
         },
-                                
-                               
 
 }
                                            

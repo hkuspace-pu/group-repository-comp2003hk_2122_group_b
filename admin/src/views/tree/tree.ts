@@ -1,11 +1,9 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-    name: "sideMenu",
+    name: 'tree',
     data() {
         return {
         }
-    },
-    methods: {
     }
 })

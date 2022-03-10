@@ -1,7 +1,6 @@
 USE COMP2003HK_GROUP_B
-GO
 
-INSERT INTO gp.Trees VALUES
+INSERT INTO trees VALUES
     ('African Tulip Tree', 
     '',
     'Spathodea campanulata P. Beauv.',

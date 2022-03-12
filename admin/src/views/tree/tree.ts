@@ -7,7 +7,9 @@ export default defineComponent({
     name: 'tree',
     data() {
         return {
-            treeData: {}
+            viewMode: "table",
+            treeData: [] as any,
+            selectedTree: {}
         }
     },
     created() {
@@ -16,6 +18,18 @@ export default defineComponent({
         .then(response => {
             let data = response.data as [];
             this.treeData = data.map(row => new Tree(row));
+            console.log('starLog data', this.treeData);
+            
         });
+    },
+    methods: {
+        onTreeItemClick(index: number) {
+            this.viewMode = "edit";
+            this.selectedTree = this.treeData[index];
+        },
+        onEditBackClick() {
+            this.selectedTree = {};
+            this.viewMode = "table";
+        }
     }
 })

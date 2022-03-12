@@ -27,10 +27,10 @@ export default class Tree {
         this.familyCode = json["familyCode"];
 
         this.ecologic = json["ecologic"];
-        this.cap95 = json["cap95"];
-        this.cap586 = json["cap586"];
-        this.hkRare = json["hkRare"];
-        this.cnRare = json["cnRare"];
+        this.cap95 = json["cap95"] === 1;
+        this.cap586 = json["cap586"] === 1;
+        this.hkRare = json["hkRare"] === 1;
+        this.cnRare = json["cnRare"] === 1;
 
         this.floweringStart = json["floweringStart"];
         this.floweringEnd = json["floweringEnd"];

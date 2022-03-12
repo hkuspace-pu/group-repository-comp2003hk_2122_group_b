@@ -1,8 +1,28 @@
 #tree {
     width: 100%;
     padding: 20px;
+    text-align: left;
 
     .title {
         white-space: nowrap;
+    }
+
+    #header {
+        display: flex;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        width: 100%;
+        text-align: center;
+    } 
+
+    #checkboxGroup {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .input-group-text {
+        min-width: 120px;
     }
 }

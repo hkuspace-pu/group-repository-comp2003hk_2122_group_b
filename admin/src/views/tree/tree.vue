@@ -209,8 +209,10 @@
             >We'll never share your email with anyone else.</small
           > -->
       </div>
-
-      <button class="btn btn-primary" @click="onSubmitClick">Submit</button>
+      <div id="editButtonGroup">
+        <button class="btn btn-primary" @click="onSubmitClick">Submit</button>
+        <button class="btn btn-danger" @click="onDeleteClick">Delete</button>
+      </div>
     </div>
   </div>
 </template>

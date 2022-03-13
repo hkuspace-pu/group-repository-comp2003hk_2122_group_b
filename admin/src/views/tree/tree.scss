@@ -18,9 +18,14 @@
         text-align: center;
     } 
 
-    #checkboxGroup {
+    #checkboxGroup,
+    #editButtonGroup {
         display: flex;
         justify-content: space-between;
+    }
+
+    #editButtonGroup {
+        margin-top: 20px;
     }
 
     .input-group-text {

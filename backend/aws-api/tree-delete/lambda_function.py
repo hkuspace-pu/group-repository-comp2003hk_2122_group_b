@@ -21,7 +21,14 @@ database_name = rds_config.db_database
 
 # Connection
 try:
-    connection = pymysql.connect(host=endpoint,user=username, passwd=password, db=database_name, port=3306, connect_timeout=5)
+    connection = pymysql.connect(
+        host=endpoint,
+        user=username, 
+        passwd=password, 
+        db=database_name, 
+        port=3306, 
+        connect_timeout=5
+    )
 except pymysql.Error as e:
     print("ERROR: Unexpected error: Could not connect to MySQL")
     print(e)
@@ -29,40 +36,34 @@ except pymysql.Error as e:
 
 print("SUCCESS: Connection to RDS MySQL instance succeeded")
 def lambda_handler(event, context):
+    
+    print("=== starLog ===")
+    print(event)
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM trees")
-
-    rows = cursor.fetchall()
-    results = []
-    for row in rows:
-        results.append({
-            "treeId": row[0],
-            "treeName": row[1],
-            "alias": row[2],
-            "scientificName": row[3],
-            "familyCode": row[4],
-            "ecologic": row[5],
-            "cap95": row[6],
-            "cap586": row[7],
-            "hkRare": row[8],
-            "cnRare": row[9],
-            "floweringStart": row[10],
-            "floweringEnd": row[11],
-            "fruitStart": row[12],
-            "fruitEnd": row[13],
-            "treeDesc": row[14]
-        })
+    body = json.loads(event['body'])
+    
+    sql = "DELETE FROM trees WHERE tree_id = %s" % body['treeID']
+    
+    statusCode = 502
+    message = "Delete tree record failure"
+    try:
+        cursor.execute(sql)
+        connection.commit()
+        statusCode = 200
+        message = "Delete tree record succeeded"
+    except:
+        connection.rollback()
 
     # print(rows)
     return {
-        'statusCode': 200,
+        'statusCode': statusCode,
         'headers': {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Headers': 'Content-Type',
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'OPTIONS,GET'
         },
-        'body': json.dumps(results)
+        'body': message
     }
 
 # lambda_handler('', '')

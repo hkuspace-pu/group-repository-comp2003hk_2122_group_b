@@ -1,7 +1,26 @@
 <template>
   <div id="tree" class="bg-dark bg-gradient text-white">
     <div id="tableView" v-show="viewMode === 'table'">
-      <h1>Tree Page</h1>
+      <div class="header">
+        <h1>Tree Page</h1>
+        <button class="btn text-white" @click="onAddClick">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-plus-circle"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+            />
+            <path
+              d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+            />
+          </svg>
+        </button>
+      </div>
       <table
         class="
           table table-striped table-bordered table-hover table-sm table-dark
@@ -34,172 +53,164 @@
       </table>
     </div>
 
-    <div id="editMode" v-show="viewMode === 'edit'">
-      <div id="header">
+    <div id="editMode" v-show="viewMode === 'edit' || viewMode === 'create'">
+      <div class="header">
         <button
           type="button"
-          class="btn btn-primary btn-sm"
+          class="btn-close btn-close-white"
           @click="onEditBackClick"
-        >
-          Back
-        </button>
-        <h2>Editing tree #{{ selectedTree.treeId }}</h2>
+        ></button>
+        <h2 v-show="viewMode === 'edit'">
+          Editing tree #{{ selectedTree.treeId }}
+        </h2>
+        <h2 v-show="viewMode === 'create'">Create A Tree</h2>
       </div>
 
-      <form>
-        <div class="form-group">
-          <label for="inputTee">Tree Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="inputTree"
-            placeholder="Enter Tree Name"
-            :value="selectedTree.treeName"
-          />
-          <!-- <small id="emailHelp" class="form-text text-muted"
+      <div class="form-group">
+        <label>Tree Name</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter Tree Name"
+          v-model="selectedTree.treeName"
+        />
+        <!-- <small id="emailHelp" class="form-text text-muted"
             >We'll never share your email with anyone else.</small
           > -->
-        </div>
-        <div class="form-group">
-          <label for="inputAlias">Alias</label>
-          <input
-            type="text"
-            class="form-control"
-            id="inputAlias"
-            placeholder="Enter Alias Name"
-            :value="selectedTree.alias"
-          />
-          <!-- <small id="emailHelp" class="form-text text-muted"
+      </div>
+      <div class="form-group">
+        <label>Alias</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter Alias Name"
+          v-model="selectedTree.alias"
+        />
+        <!-- <small id="emailHelp" class="form-text text-muted"
             >We'll never share your email with anyone else.</small
           > -->
-        </div>
-        <div class="form-group">
-          <label for="inputScientificName">Scientific Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="inputScientificName"
-            placeholder="Enter Scientific Name"
-            :value="selectedTree.scientificName"
-          />
-          <!-- <small id="emailHelp" class="form-text text-muted"
+      </div>
+      <div class="form-group">
+        <label>Scientific Name</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter Scientific Name"
+          v-model="selectedTree.scientificName"
+        />
+        <!-- <small id="emailHelp" class="form-text text-muted"
             >We'll never share your email with anyone else.</small
           > -->
-        </div>
-        <div class="form-group">
-          <label for="inputFamilyCode">Family Code</label>
-          <input
-            type="text"
-            class="form-control"
-            id="inputFamilyCode"
-            placeholder="Enter Family Code"
-            :value="selectedTree.familyCode"
-          />
-          <!-- <small id="emailHelp" class="form-text text-muted"
+      </div>
+      <div class="form-group">
+        <label>Family Code</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter Family Code"
+          v-model="selectedTree.familyCode"
+        />
+        <!-- <small id="emailHelp" class="form-text text-muted"
             >We'll never share your email with anyone else.</small
           > -->
-        </div>
-        <div class="form-group">
-          <label for="inputEcologic">Ecologic</label>
-          <input
-            type="text"
-            class="form-control"
-            id="inputEcologic"
-            placeholder="Enter Ecologic"
-            :value="selectedTree.ecologic"
-          />
-          <!-- <small id="emailHelp" class="form-text text-muted"
+      </div>
+      <div class="form-group">
+        <label>Ecologic</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter Ecologic"
+          v-model="selectedTree.ecologic"
+        />
+        <!-- <small id="emailHelp" class="form-text text-muted"
             >We'll never share your email with anyone else.</small
           > -->
+      </div>
+      <label>Conservation</label>
+      <div id="checkboxGroup">
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            v-model="selectedTree.cap95"
+          />
+          <label>Cap 95</label>
         </div>
-        <label>Conservation</label>
-        <div id="checkboxGroup">
-          <div class="form-check">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              id="exampleCheck1"
-              v-model="selectedTree.cap95"
-            />
-            <label class="form-check-label" for="exampleCheck1">Cap 95</label>
-          </div>
-          <div class="form-check">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              id="exampleCheck1"
-              v-model="selectedTree.cap586"
-            />
-            <label class="form-check-label" for="exampleCheck1">Cap 586</label>
-          </div>
-          <div class="form-check">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              id="exampleCheck1"
-              v-model="selectedTree.hkRare"
-            />
-            <label class="form-check-label" for="exampleCheck1">HK Rare</label>
-          </div>
-          <div class="form-check">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              id="exampleCheck1"
-              v-model="selectedTree.cnRare"
-            />
-            <label class="form-check-label" for="exampleCheck1">CN Rare</label>
-          </div>
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            v-model="selectedTree.cap586"
+          />
+          <label>Cap 586</label>
         </div>
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            v-model="selectedTree.hkRare"
+          />
+          <label>HK Rare</label>
+        </div>
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            v-model="selectedTree.cnRare"
+          />
+          <label>CN Rare</label>
+        </div>
+      </div>
 
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="">Flowering</span>
-          </div>
-          <input
-            type="text"
-            class="form-control"
-            :value="selectedTree.floweringStart"
-          />
-          <input
-            type="text"
-            class="form-control"
-            :value="selectedTree.floweringEnd"
-          />
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="">Flowering</span>
         </div>
+        <input
+          type="number"
+          class="form-control"
+          v-model="selectedTree.floweringStart"
+        />
+        <input
+          type="number"
+          class="form-control"
+          v-model="selectedTree.floweringEnd"
+        />
+      </div>
 
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="">Fruit</span>
-          </div>
-          <input
-            type="text"
-            class="form-control"
-            :value="selectedTree.fruitStart"
-          />
-          <input
-            type="text"
-            class="form-control"
-            :value="selectedTree.fruitEnd"
-          />
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="">Fruit</span>
         </div>
+        <input
+          type="number"
+          class="form-control"
+          v-model="selectedTree.fruitStart"
+        />
+        <input
+          type="number"
+          class="form-control"
+          v-model="selectedTree.fruitEnd"
+        />
+      </div>
+      <small class="form-text text-muted"
+        >The number represent the mouth, input -1 represent NOT AVAILABLE</small
+      >
 
-        <div class="form-group">
-          <label for="inputDesc">Description</label>
-          <input
-            type="text"
-            class="form-control"
-            id="inputDesc"
-            placeholder="Enter Description"
-            :value="selectedTree.treeDesc"
-          />
-          <!-- <small id="emailHelp" class="form-text text-muted"
+      <div class="form-group">
+        <label>Description</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter Description"
+          v-model="selectedTree.treeDesc"
+        />
+        <!-- <small id="emailHelp" class="form-text text-muted"
             >We'll never share your email with anyone else.</small
           > -->
-        </div>
-        
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+      </div>
+
+      <button class="btn btn-primary" @click="onSubmitClick">Submit</button>
     </div>
   </div>
 </template>

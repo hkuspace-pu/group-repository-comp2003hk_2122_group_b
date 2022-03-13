@@ -1,22 +1,22 @@
 export default class Tree {
     treeId: number;
-    treeName: string;
-    alias: string;
-    scientificName: string;
-    familyCode: string;
-    ecologic: string;
+    treeName: string = "";
+    alias: string = "";
+    scientificName: string = "";
+    familyCode: string = "";
+    ecologic: string = "";
 
-    cap95: boolean;
-    cap586: boolean;
-    hkRare: boolean;
-    cnRare: boolean;
+    cap95: boolean = false;
+    cap586: boolean = false;
+    hkRare: boolean = false;
+    cnRare: boolean = false;
 
-    floweringStart: number;
-    floweringEnd: number;
-    fruitStart: number;
-    fruitEnd: number;
+    floweringStart: number = -1;
+    floweringEnd: number = -1;
+    fruitStart: number = -1;
+    fruitEnd: number = -1;
 
-    treeDesc: string;
+    treeDesc: string = "";
 
     constructor(json: any) {
         this.treeId = json["treeId"];
@@ -32,10 +32,10 @@ export default class Tree {
         this.hkRare = json["hkRare"] === 1;
         this.cnRare = json["cnRare"] === 1;
 
-        this.floweringStart = json["floweringStart"];
-        this.floweringEnd = json["floweringEnd"];
-        this.fruitStart = json["fruitStart"];
-        this.fruitEnd = json["fruitEnd"];
+        this.floweringStart = json["floweringStart"] || -1;
+        this.floweringEnd = json["floweringEnd"] || -1;
+        this.fruitStart = json["fruitStart"] || -1;
+        this.fruitEnd = json["fruitEnd"] || -1;
         
         this.treeDesc = json["treeDesc"];
     }

@@ -7,29 +7,67 @@ export default defineComponent({
     name: 'tree',
     data() {
         return {
-            viewMode: "table",
-            treeData: [] as any,
-            selectedTree: {}
+            viewMode: "table" as string,
+            treeData: [] as Tree[],
+            selectedTree: {} as Tree
         }
     },
     created() {
         axios
-        .get("https://7ipwaamd2b.execute-api.us-east-1.amazonaws.com/test/trees")
-        .then(response => {
-            let data = response.data as [];
-            this.treeData = data.map(row => new Tree(row));
-            console.log('starLog data', this.treeData);
-            
-        });
+            .get("https://7ipwaamd2b.execute-api.us-east-1.amazonaws.com/test/trees")
+            .then(response => {
+                let data = response.data as [];
+                this.treeData = data.map(row => new Tree(row));
+                console.log('starLog data', this.treeData);
+
+            });
     },
     methods: {
         onTreeItemClick(index: number) {
-            this.viewMode = "edit";
             this.selectedTree = this.treeData[index];
+            this.viewMode = "edit";
         },
         onEditBackClick() {
-            this.selectedTree = {};
+            this.selectedTree = new Tree({});
             this.viewMode = "table";
+        },
+        onAddClick() {
+            this.selectedTree = new Tree({});
+            this.viewMode = "create";
+        },
+        onSubmitClick() {
+            console.log('starLog submit clicked', this.selectedTree);
+            if (this.viewMode === "create") {
+                this.createTree();
+            }
+        },
+        createTree() {
+            axios
+            .put(
+                "https://7ipwaamd2b.execute-api.us-east-1.amazonaws.com/test/trees",
+                {
+                    "treeName": this.selectedTree.treeName,
+                    "alias": this.selectedTree.alias,
+                    "scientificName": this.selectedTree.scientificName,
+                    "familyCode": this.selectedTree.familyCode,
+                    "ecologic": this.selectedTree.ecologic,
+
+                    "cap95": this.selectedTree.cap95,
+                    "cap586": this.selectedTree.cap586,
+                    "hkRare": this.selectedTree.hkRare,
+                    "cnRare": this.selectedTree.cnRare,
+                    
+                    "floweringStart": this.selectedTree.floweringStart,
+                    "floweringEnd": this.selectedTree.floweringEnd,
+                    "fruitStart": this.selectedTree.fruitStart,
+                    "fruitEnd": this.selectedTree.fruitEnd,
+
+                    "treeDesc": this.selectedTree.treeDesc
+                })
+                .then(res => {
+                    console.log('starLog response', res);
+                    
+                })
         }
     }
 })

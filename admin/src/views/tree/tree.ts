@@ -41,6 +41,9 @@ export default defineComponent({
             if (this.viewMode === "create") {
                 this.createTree();
             }
+            if(this.viewMode === "edit") {
+                this.updateTree();
+            }
         },
         onDeleteClick() {
             axios.delete(this.url, {
@@ -78,6 +81,30 @@ export default defineComponent({
                     console.log('starLog response', res);
 
                 })
+        },
+        updateTree() {
+            axios.post(this.url, {
+                "treeID": this.selectedTree.treeId,
+                "treeName": this.selectedTree.treeName,
+                "alias": this.selectedTree.alias,
+                "scientificName": this.selectedTree.scientificName,
+                "familyCode": this.selectedTree.familyCode,
+                "ecologic": this.selectedTree.ecologic,
+
+                "cap95": this.selectedTree.cap95,
+                "cap586": this.selectedTree.cap586,
+                "hkRare": this.selectedTree.hkRare,
+                "cnRare": this.selectedTree.cnRare,
+
+                "floweringStart": this.selectedTree.floweringStart,
+                "floweringEnd": this.selectedTree.floweringEnd,
+                "fruitStart": this.selectedTree.fruitStart,
+                "fruitEnd": this.selectedTree.fruitEnd,
+
+                "treeDesc": this.selectedTree.treeDesc
+            }).then(res => {
+                console.log('starLog response', res);
+            })
         }
     }
 })

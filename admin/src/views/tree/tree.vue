@@ -211,7 +211,7 @@
       </div>
       <div id="editButtonGroup">
         <button class="btn btn-primary" @click="onSubmitClick">Submit</button>
-        <button class="btn btn-danger" @click="onDeleteClick">Delete</button>
+        <button class="btn btn-danger" @click="onDeleteClick" v-show="viewMode === 'edit'">Delete</button>
       </div>
     </div>
   </div>

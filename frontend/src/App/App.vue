@@ -20,6 +20,11 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
+Vue.component('v-select', VueSelect.VueSelect)
+	
 export default {
   name: "App",
   appmargin: '0px',
@@ -49,7 +54,8 @@ export default {
           icon: "fa fa-sign-in"
         },
         {
-          href: "/searchtreepage",
+	      href: "/searchtreepage",
+		  params: "{ Select_Individual_Tree_Info: Select_Individual_Tree_Info }",
           title: "Search Tree",
           icon: "fa fa-magnifying-glass"
         },

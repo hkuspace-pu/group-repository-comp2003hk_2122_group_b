@@ -1,6 +1,6 @@
-USE COMP2003HK_GROUP_B
-
-INSERT INTO trees VALUES
+INSERT INTO trees (tree_name, tree_alias, scientific_name, family_code,
+    ecologic, cap_95, cap_586, hk_rare, cn_rare, flowering_start,
+    flowering_end, fruit_start, fruit_end, tree_desc) VALUES
     ('African Tulip Tree', 
     '',
     'Spathodea campanulata P. Beauv.',
@@ -137,3 +137,5 @@ INSERT INTO trees VALUES
     'https://www.herbarium.gov.hk/en/hk-plant-database/plant-detail/index.html?pType=species&oID=3369'
     )
 ;
+
+SELECT * FROM trees;

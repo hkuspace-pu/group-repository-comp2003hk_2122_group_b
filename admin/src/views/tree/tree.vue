@@ -32,7 +32,7 @@
           <tr>
             <th scope="col" class="title treeId">#</th>
             <th scope="col" class="title name">Name</th>
-            <th scope="col" class="title scientificName">Scientific Nam</th>
+            <th scope="col" class="title scientificName">Scientific Name</th>
             <th scope="col" class="title familyCode">Family Code</th>
           </tr>
         </thead>
@@ -84,7 +84,7 @@
           type="text"
           class="form-control"
           placeholder="Enter Alias Name"
-          v-model="selectedTree.alias"
+          v-model="selectedTree.treeAlias"
         />
         <!-- <small id="emailHelp" class="form-text text-muted"
             >We'll never share your email with anyone else.</small
@@ -209,9 +209,26 @@
             >We'll never share your email with anyone else.</small
           > -->
       </div>
+
+      <div class="input-group">
+        <span class="input-group-btn">
+          <span class="btn btn-primary btn-file">
+            Tree Image&hellip; <input type="file" single  @change="handleFiles"/>
+          </span>
+        </span>
+        <input type="text" class="form-control" readonly :value="imageName"/>
+      </div>
+      <img :src="selectedTree.treeImage" alt="picked image" v-if="selectedTree.treeImage">
+      
       <div id="editButtonGroup">
         <button class="btn btn-primary" @click="onSubmitClick">Submit</button>
-        <button class="btn btn-danger" @click="onDeleteClick" v-show="viewMode === 'edit'">Delete</button>
+        <button
+          class="btn btn-danger"
+          @click="onDeleteClick"
+          v-show="viewMode === 'edit'"
+        >
+          Delete
+        </button>
       </div>
     </div>
   </div>

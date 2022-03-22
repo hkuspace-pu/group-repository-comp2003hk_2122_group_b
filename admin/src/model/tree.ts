@@ -1,7 +1,7 @@
 export default class Tree {
     treeId: number;
     treeName: string = "";
-    alias: string = "";
+    treeAlias: string = "";
     scientificName: string = "";
     familyCode: string = "";
     ecologic: string = "";
@@ -17,11 +17,13 @@ export default class Tree {
     fruitEnd: number = -1;
 
     treeDesc: string = "";
+    
+    treeImage: string = "";
 
     constructor(json: any) {
         this.treeId = json["treeId"];
         this.treeName = json["treeName"];
-        this.alias = json["alias"];
+        this.treeAlias = json["treeAlias"];
         this.scientificName = json["scientificName"];
         
         this.familyCode = json["familyCode"];
@@ -38,5 +40,7 @@ export default class Tree {
         this.fruitEnd = json["fruitEnd"] || -1;
         
         this.treeDesc = json["treeDesc"];
+
+        this.treeImage = json["treeImage"];
     }
 }

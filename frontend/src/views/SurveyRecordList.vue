@@ -61,7 +61,7 @@ import axios from 'axios';
 import VueSimpleAlert from 'vue-simple-alert';
 import { Vue, Component } from 'vue-property-decorator';
 import { SweetAlertOptions, SweetAlertResult } from 'sweetalert2';
-import { version, description } from 'vue-simple-alert/package.json';
+import { version, description } from 'vue-simple-alert';
 import SortedTablePlugin from "vue-sorted-table";
 import { SortedTable, SortLink } from "vue-sorted-table";
 

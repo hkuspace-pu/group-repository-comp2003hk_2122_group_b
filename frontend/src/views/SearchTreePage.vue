@@ -2,11 +2,16 @@
 
 <template>
 	<div class="searchtreepage">
+		<br>
         <table border='0' width='95%' style='border-collapse: collapse;'>
 			<tr>
-				<td width='30%'style="text-align:center" ><button class="btn btn-default"><img src="../assets/icons8-search-64.png"><h3>Advanced Search</h3></button></td>
+				<!--<td width='30%'style="text-align:center" ><button class="btn btn-default"><img src="../assets/icons8-search-64.png"><h3>Advanced Search</h3></button></td> -->
+				<td width='30%'style="text-align:center" >
+					<b-button :class="visible ? null : 'collapsed'" :aria-expanded="visible ? 'true' : 'false'" aria-controls="advancesearch_page" @click="visible = !visible" img src="../assets/icons8-search-64.png" pill variant="info" :pressed="false" variant="success">
+						<h5>Advance Search</h5>
+					</b-button>
+				</td>
 				<td width='65%'style="text-align:center">
-
 					<form class="card card-sm" style="text-align:right" >
 						<div class="card-body row no-gutters align-items-right">
 							<div class="col-auto">
@@ -14,22 +19,151 @@
 								<!-- <i class="fa-solid fa-magnifying-glass h4 text-body"></i> -->
 							</div>
 							<div class="col">
-										<!-- <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search Tree Name">-->
-								<v-select  multiple v-model="SearchTreeNameModel" :options="ListOfTreeName"  placeholder="Search Tree Name"/>
+										<!-- <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search Tree Name"> -->
+								<h4><v-select  multiple v-model="SearchTreeNameModel" :options="ListOfTreeName"  placeholder="Search Tree Name"/></h4>
 							</div>
 							<div class="col-auto">
-									<button type="button" class="btn btn-lg btn-success"  @click="select_individual_tree_name(SearchTreeNameModel)">Search</button>
-								
+									<button type="button" class="btn btn-lg btn-success"  @click="select_individual_tree_name(SearchTreeNameModel)">Search Name</button>
 							</div>
 						</div>
 					</form>
 					</H4>
 				</td>
 			</tr>
-	   </table>	
+		</table>	
+		<div>
+			<b-collapse width='95%' id="advancesearch_page" v-model="visible" class="mt-2">
+				<b-card>
+					<p class="card-text"><h2>Advanced Search Filter</h2></p>
+					<h3>
+					<b-list-group flush>
+				    <b-list-group-item>
+					<div>
+						<b-row class="my-1">
+						    <b-col sm="6">
+						      <label for="input-large">A tree name contains a string (blank to ignore):</label>
+						    </b-col>
+						    <b-col sm="4">
+						      <b-form-input id="input-large" size="lg" placeholder="input 'amb' when tree name(s) contains 'amb' (i.e. Carambola)"></b-form-input>
+						    </b-col>
+						</b-row>
+					</div>
+					<br>	
+					<div>
+						<b-form-group label="Species:" v-slot="{ ariaDescribedby }">
+							<b-form-radio-group 
+								v-model="Exotic_Radio_Button_selected" 
+								:options="Exotic_Radio_Button_options" 
+								:aria-describedby="ariaDescribedby" 
+								 name="Exotic_Radio"
+								plain>
+							</b-form-radio-group>
+						</b-form-group>
+					</div>
+					<br>
+					<div>
+					    <b-form-group label="Flower Starting Period (1 - 12 /Jan - Dec, Uncheck all boxes to ignore)" v-slot="{ ariaDescribedby }">
+							<b-form-checkbox-group
+							:options="Flower_Starting_Period_Checked_Box_Group_Options"
+							v-model="Flower_Starting_Period_Checked_Box_Group_Selected"
+							:aria-describedby="ariaDescribedby"
+							value-field="monthtext"
+							text-field="monthvalue"
+							name="Flower_Starting_Period_Checked_Box_Group"
+							plain>
+							</b-form-checkbox-group>
+					    </b-form-group>
+					</div>
+					<br>
+					<div>
+					    <b-form-group label="Fruit Starting Period (1 - 12 /Jan - Dec, Uncheck all boxes to ignore)" v-slot="{ ariaDescribedby }">
+							<b-form-checkbox-group
+							:options="Fruit_Starting_Period_Checked_Box_Group_Options"
+							v-model="Fruit_Starting_Period_Checked_Box_Group_Selected"
+							:aria-describedby="ariaDescribedby"
+							value-field="fruit_month_value"
+							text-field="fruit_month_text"
+							name="Fruit_Starting_Period_Checked_Box_Group"
+							plain>
+							</b-form-checkbox-group>
+					    </b-form-group>
+					</div>
+					<br>
+					<div>
+						<b-form-group label="Subject to Forests and Countryside (Cap. 95)" v-slot="{ ariaDescribedby }">
+							<b-form-radio-group 
+								v-model="Cap95_selected" 
+								:options="Cap95_options" 
+								:aria-describedby="ariaDescribedby" 
+								 name="Cap95_Radio"
+								plain>
+							</b-form-radio-group>
+						</b-form-group>
+					</div>
+					<br>
+					<div>
+						<b-form-group label="Subject to Protection of Endangered Species of Animals and Plant Ordiance (Cap. 586)" v-slot="{ ariaDescribedby }">
+							<b-form-radio-group 
+								v-model="Cap586_selected" 
+								:options="Cap586_options" 
+								:aria-describedby="ariaDescribedby" 
+								 name="Cap586_Radio"
+								plain>
+							</b-form-radio-group>
+						</b-form-group>
+					</div>
+					<br>
+					<div>
+						<b-form-group label="Rare Species in Hong Kong" v-slot="{ ariaDescribedby }">
+							<b-form-radio-group 
+								v-model="RareHK_selected" 
+								:options="RareHK_options" 
+								:aria-describedby="ariaDescribedby" 
+								 name="RareHK_Radio"
+								plain>
+							</b-form-radio-group>
+						</b-form-group>
+					</div>
+					<br>
+					<div>
+						<b-form-group label="Rare Species in China" v-slot="{ ariaDescribedby }">
+							<b-form-radio-group 
+								v-model="RareChina_selected" 
+								:options="RareChina_options" 
+								:aria-describedby="ariaDescribedby" 
+								 name="RareChina_Radio"
+								plain>
+							</b-form-radio-group>
+						</b-form-group>
+					</div>
+					<br>
+					</b-list-group-item>
+					<b-list-group-item>
+					</h3>
+					<h2>Filter Summary</h2>
+					<h3>
+					<br>
+					<div class="ecologic mt-3">Ecologic: <strong>{{ Exotic_Radio_Button_selected }}</strong></div>
+					<div class="flower_starting_period mt-3">Flowering Starting Period / Month: <strong>{{ Flower_Starting_Period_Checked_Box_Group_Selected }}</strong></div>
+					<div class="fruit_starting_period mt-3">Fruit Starting Period / Month: <strong>{{ Fruit_Starting_Period_Checked_Box_Group_Selected }}</strong></div>
+					<div class="Cap95 mt-3">Subject to Forests and Countryside (Cap. 95): <strong>{{ Cap95_selected }}</strong></div>
+					<div class="Cap586 mt-3">Subject to Protection of Endangered Species of Animals and Plant Ordiance (Cap. 586): <strong>{{ Cap586_selected }}</strong></div>
+					<div class="RareHK mt-3">Rare in Hong Kong: <strong>{{ RareHK_selected }}</strong></div>
+					<div class="RareChina mt-3">Rare in China: <strong>{{ RareChina_selected }}</strong></div>
+					</h3>
+					<br>
+					</b-list-group-item>
+					</b-list-group>
+					<br>
+					<b-button pill variant="info"><h5>Confirm</h5></b-button>
+				</b-card>
+			</b-collapse>
+	    </div>
+	   
 	   <br>
-		<H4>Search Result</H4>
+		<H2>Search Result</H2>
 		<br>
+		<H3>
 		<b-container class="bv-example-row">
 			<b-row v-for="row in rows">
 				<b-col v-for="objitem in row" >
@@ -83,6 +217,7 @@
 				<br>
 			</b-row>
 		</b-container>
+		</H3>
 	</div>
 	
 </template>
@@ -106,6 +241,69 @@ export default {
 			loadeddata: '',
 			individualtreeinfo: null,
 			Select_Individual_Tree_Info: '',
+			visible: false,
+			Exotic_Radio_Button_selected: 'Exotic and Native',
+			Exotic_Radio_Button_options: [
+			    { value: 'Exotic', text: 'Exotic' },
+			    { value: 'Native', text: 'Native' },
+			    { value: 'Exotic and Native', text: 'Exotic and Native' }
+			],
+			Cap95_selected: 'Ignore',
+			Cap95_options: [
+			    { value: 'Yes', text: 'Yes' },
+			    { value: 'No', text: 'No' },
+				{ value: 'Ignore', text: 'Ignore' },
+			],
+			Cap586_selected: 'Ignore',
+			Cap586_options: [
+			    { value: 'Yes', text: 'Yes' },
+			    { value: 'No', text: 'No' },
+				{ value: 'Ignore', text: 'Ignore' },
+			],
+			RareHK_selected: 'Ignore',
+			RareHK_options: [
+			    { value: 'Yes', text: 'Yes' },
+			    { value: 'No', text: 'No' },
+				{ value: 'Ignore', text: 'Ignore' },
+			],
+			RareChina_selected: 'Ignore',
+			RareChina_options: [
+			    { value: 'Yes', text: 'Yes' },
+			    { value: 'No', text: 'No' },
+				{ value: 'Ignore', text: 'Ignore' },
+			],
+			Flower_Starting_Period_Checked_Box_Group_Selected: [],
+			Flower_Starting_Period_Checked_Box_Group_Options: [
+			    { monthtext: 1, monthvalue: "1		"},
+			    { monthtext: 2, monthvalue: "2		"},
+			    { monthtext: 3, monthvalue: 3},
+				{ monthtext: 4, monthvalue: 4 },
+				{ monthtext: 5, monthvalue: 5},
+				{ monthtext: 6, monthvalue: 6 },
+				{ monthtext: 7, monthvalue: 7},
+				{ monthtext: 8, monthvalue: 8 },
+				{ monthtext: 9, monthvalue: 9 },
+				{ monthtext: 10, monthvalue: 10},
+				{ monthtext: 11, monthvalue: 11 },
+				{ monthtext: 12, monthvalue: 12 }
+				
+			],
+			Fruit_Starting_Period_Checked_Box_Group_Selected: [],
+			Fruit_Starting_Period_Checked_Box_Group_Options: [
+			    { fruit_month_value: 1, fruit_month_text:  1 },
+			    { fruit_month_value: 2, fruit_month_text: 2 },
+			    { fruit_month_value: 3, fruit_month_text: 3 },
+				{ fruit_month_value: 4, fruit_month_text: 4},
+				{ fruit_month_value: 5, fruit_month_text: 5},
+				{ fruit_month_value: 6, fruit_month_text: 6 },
+				{ fruit_month_value: 7, fruit_month_text: 7},
+				{ fruit_month_value: 8, fruit_month_text: 8 },
+				{ fruit_month_value: 9, fruit_month_text: 9},
+				{ fruit_month_value: 10, fruit_month_text: 10 },
+				{ fruit_month_value: 11, fruit_month_text: 11 },
+				{ fruit_month_value: 12, fruit_month_text: 12 }
+				
+			],
 	    }
 	},	
 	
@@ -132,11 +330,7 @@ export default {
 		
 	},
 	
-
-	
 	methods: {
-
-
 	   select_individual_tree_name(tree_name_array) {
 	   		//this.$router.push({name:'SearchTreePage', params: {Select_Individual_Tree_Info : Select_Individual_Tree_Info}});
 			if (tree_name_array.length > 0 ) {

@@ -1,5 +1,3 @@
-
-
 <template>
 	<div class="home">
 		<br>
@@ -12,15 +10,13 @@
 						<div class="card-body row no-gutters align-items-right">
 							<div class="col-auto">
 								<i class="fa-solid fa-magnifying-glass"></i>
-								<!-- <i class="fa-solid fa-magnifying-glass h4 text-body"></i> -->
 							</div>
 							<div class="col">
 										<!-- <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search Tree Name">-->
 								<v-select  multiple v-model="SearchTreeNameModel" :options="ListOfTreeName"  @change="select_treename" placeholder="Search Tree Name" />
 							</div>
 							<div class="col-auto">
-									<button type="button" class="btn btn-lg btn-success"  @click="select_individual_tree_name(SearchTreeNameModel)">Search</button>	
-											
+								<button type="button" class="btn btn-lg btn-success"  @click="select_individual_tree_name(SearchTreeNameModel)">Search</button>	
 							</div>
 						</div>
 					</form>
@@ -28,18 +24,18 @@
 				</td>
 			</tr>
 	   </table>	
-		<H4><v-select multiple v-model="selectedoption" :options="searchmonthoptions"  @change="select_value" placeholder="Choose a Month ..."/></H4>
+		<H4><v-select multiple  :value="selected" :options="searchmonthoptions" @input="setSelected"  placeholder="Choose a Month ..."/></H4>
 		<b-container class="bv-example-row">
 			<b-row v-for="row in rows">
 				<b-col v-for="objitem in row" >
-					<!-- you card -->
 					<div v-for="(item, key, index) in objitem" v-bind:key="objitem.treeId">
 						<div v-if="key === 'treeName'">
-							<b-card  style="max-width: 120rem;" class="mb-3">
-								<b-card-title>{{objitem.treeName}}</b-card-title>
-								<b-card-text>{{objitem.treeDesc}}</b-card-text>
+							<b-card :img-src="objitem.treeImage" img-alt="Image" img-top tag="article" style="max-width: 120rem;" class="mb-3">
+								<b-card-title>{{objitem.treeName}}</b-card-title> 
+								<b-card-sub-title class="mb-3">{{objitem.scientificName}}</b-card-sub-title>
+								<b-card-text>Alias:{{objitem.treeAlias}}</b-card-text>
 								<b-button variant="primary" @click='select_individual_tree_index(objitem.treeId);'>Details</b-button> 
-								<b-card-footer>Tree Id: {{objitem.treeId}}</b-card-footer>
+								<b-card-footer>Tree Id: {{objitem.treeId}}</b-card-footer> 
 							</b-card>
 						</div>
 					</div>
@@ -48,18 +44,14 @@
 			</b-row>
 		</b-container>
 	</div>
-	
 </template>
 
 <script>
-// @ is an alias to /src
-
 
 import axios from 'axios';
 import Vue from 'vue';
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
-
 
 Vue.component('v-select', VueSelect.VueSelect)
 export default {
@@ -84,11 +76,12 @@ export default {
 				'November',
 				'December'
 			],
-			selectedoption : [],
 			SearchTreeNameModel : [],
 			loadeddata: '',
 			individualtreeinfo: null,
-			
+			monthnumber : [1,2,3,4,5,6,7,8,9,10,11,12],
+			selected :[],
+			targetmonthnumber_list : [],
 	    }
 	},	
 	
@@ -100,12 +93,21 @@ export default {
 		      this.errorMessage = error.message;
 		      console.error("There was an error!", error);
 		    });
+		let d = new Date().getMonth()+1
+		console.log("month current:" + d);
+		this.targetmonthnumber_list.push(d);
+		this.selected = this.searchmonthoptions[new Date().getMonth()];
 	},
 	  
 	methods: {
-	   select_value(e) {
-			//console.log(e)
-			this.selectedoption = e
+	   setSelected(value) {
+		   this.selected = value
+		   this.targetmonthnumber_list = []
+			for(var j = 0; j < value.length; j++ ) {
+		    	//console.log('Tree Individual details:' +ListofTreeInfo[j].treeId)
+		    	this.targetmonthnumber_list.push(this.monthnumber[this.searchmonthoptions.indexOf(value[j])]);
+		    }
+			console.log("selected month(s):" + this.targetmonthnumber_list)
 	   },
 	   select_treename(e) {
 			//console.log(e)
@@ -151,14 +153,22 @@ export default {
 	computed: {
 	    rows() {
 	        var rows = []
-			var itemsPerRow = 3
-	        // assuming passer is an array of items..
+			var itemsPerRow = 3 // How many b-card per row
+	        console.log("rows() function called. New TargetMonthNumber:" + this.targetmonthnumber_list)
+			//This is to filter b-card according to preferable month filtered
 	        var arr = this.loadeddata
+			var filtered_loaddata = []
+			for (var i = 0; i<arr.length; i++){
+				if (this.targetmonthnumber_list.includes(arr[i].floweringStart)) {
+					console.log("tree id:" + arr[i].treeId + "->Flowering Start Month:" + arr[i].floweringStart);
+					filtered_loaddata.push(arr[i]);
+				}
+			}
 			
-	        for (var i = 0; i<arr.length; i+=itemsPerRow){
+	        for (var i = 0; i<filtered_loaddata.length; i+=itemsPerRow){
 	            var row = []
 	                for (var z = 0; z<itemsPerRow; z++) {
-	                    row.push(arr[i + z])
+	                    row.push(filtered_loaddata[i + z])
 	            }
 				rows.push(row)
 			}

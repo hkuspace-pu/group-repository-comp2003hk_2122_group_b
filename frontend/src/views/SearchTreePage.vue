@@ -35,7 +35,7 @@
 			<b-collapse width='95%' id="advancesearch_page" v-model="visible" class="mt-2">
 				<b-card>
 					<p class="card-text"><h2>Advanced Search Filter</h2></p>
-					<h3>
+					<h5>
 					<b-list-group flush>
 				    <b-list-group-item>
 					<div>
@@ -47,8 +47,7 @@
 						      <b-form-input id="input-large" size="lg" placeholder="input 'amb' when tree name(s) contains 'amb' (i.e. Carambola)"></b-form-input>
 						    </b-col>
 						</b-row>
-					</div>
-					<br>	
+					</div>	
 					<div>
 						<b-form-group label="Species:" v-slot="{ ariaDescribedby }">
 							<b-form-radio-group 
@@ -139,18 +138,18 @@
 					<br>
 					</b-list-group-item>
 					<b-list-group-item>
-					</h3>
+					</h5>
 					<h2>Filter Summary</h2>
-					<h3>
+					<h5>
 					<br>
 					<div class="ecologic mt-3">Ecologic: <strong>{{ Exotic_Radio_Button_selected }}</strong></div>
 					<div class="flower_starting_period mt-3">Flowering Starting Period / Month: <strong>{{ Flower_Starting_Period_Checked_Box_Group_Selected }}</strong></div>
 					<div class="fruit_starting_period mt-3">Fruit Starting Period / Month: <strong>{{ Fruit_Starting_Period_Checked_Box_Group_Selected }}</strong></div>
-					<div class="Cap95 mt-3">Subject to Forests and Countryside (Cap. 95): <strong>{{ Cap95_selected }}</strong></div>
+					<div class="Cap95 mt-3">Subject to Forests and Countryside Oridance(Cap. 96): <strong>{{ Cap96_selected }}</strong></div>
 					<div class="Cap586 mt-3">Subject to Protection of Endangered Species of Animals and Plant Ordiance (Cap. 586): <strong>{{ Cap586_selected }}</strong></div>
 					<div class="RareHK mt-3">Rare in Hong Kong: <strong>{{ RareHK_selected }}</strong></div>
 					<div class="RareChina mt-3">Rare in China: <strong>{{ RareChina_selected }}</strong></div>
-					</h3>
+					</h5>
 					<br>
 					</b-list-group-item>
 					</b-list-group>
@@ -163,7 +162,7 @@
 	   <br>
 		<H2>Search Result</H2>
 		<br>
-		<H3>
+		<H5>
 		<b-container class="bv-example-row">
 			<b-row v-for="row in rows">
 				<b-col v-for="objitem in row" >
@@ -174,7 +173,7 @@
 								<b-card
 								    no-body
 								    style="max-width: 110rem;"
-								    img-src="objitem.treeImage"
+								    :img-src="objitem.treeImage"
 								    img-alt="Image"
 								    img-top
 								  >
@@ -192,12 +191,17 @@
 								    </b-card-body>
 								
 								    <b-list-group flush>
-								      <b-list-group-item>Ecologic: {{objitem.ecologic}}</b-list-group-item>
-								      <b-list-group-item>Flower Start: {{objitem.floweringStart}}</b-list-group-item>
-								      <b-list-group-item>Flower End: {{objitem.floweringEnd}}</b-list-group-item>
-								      <b-list-group-item>Fruit Start: {{objitem.fruitStart}}</b-list-group-item>
-								      <b-list-group-item>Fruit End: {{objitem.fruitEnd}}</b-list-group-item>
-									  <b-list-group-item>Alias Name: {{objitem.treeAlias}}</b-list-group-item>
+										<b-list-group-item>Alias Name: {{objitem.treeAlias}}</b-list-group-item>
+										<b-list-group-item>Ecologic: {{objitem.ecologic}}</b-list-group-item>
+										
+										<b-list-group-item>Flower Start: {{searchmonthoptions[objitem.floweringStart-1]}}</b-list-group-item>
+										<b-list-group-item>Flower End: {{searchmonthoptions[objitem.floweringEnd-1]}}</b-list-group-item>
+										<b-list-group-item>Fruit Start: {{searchmonthoptions[objitem.fruitStart-1]}}</b-list-group-item>
+										<b-list-group-item>Fruit End: {{searchmonthoptions[objitem.fruitEnd-1]}}</b-list-group-item>
+										<b-list-group-item>Rare in China: {{objitem.cnRare}}</b-list-group-item>
+										<b-list-group-item>Rare in Hong Kong: {{objitem.hkRare}}</b-list-group-item>
+										<b-list-group-item>Under Forests and Countryside Oridance: {{objitem.cap96}}</b-list-group-item>
+										<b-list-group-item>Under Protection of Species Ordiance: {{objitem.cap586}}</b-list-group-item>																			
 									</b-list-group>
 								    <!--
 									<b-card-body>
@@ -217,7 +221,7 @@
 				<br>
 			</b-row>
 		</b-container>
-		</H3>
+		</H5>
 	</div>
 	
 </template>
@@ -242,14 +246,28 @@ export default {
 			individualtreeinfo: null,
 			Select_Individual_Tree_Info: '',
 			visible: false,
+			searchmonthoptions: [
+				'January',
+				'February',
+				'March',
+				'April',
+				'May',
+				'June',
+				'July',
+				'August',
+				'September',
+				'October',
+				'November',
+				'December'
+			],
 			Exotic_Radio_Button_selected: 'Exotic and Native',
 			Exotic_Radio_Button_options: [
 			    { value: 'Exotic', text: 'Exotic' },
 			    { value: 'Native', text: 'Native' },
 			    { value: 'Exotic and Native', text: 'Exotic and Native' }
 			],
-			Cap95_selected: 'Ignore',
-			Cap95_options: [
+			Cap96_selected: 'Ignore',
+			Cap96_options: [
 			    { value: 'Yes', text: 'Yes' },
 			    { value: 'No', text: 'No' },
 				{ value: 'Ignore', text: 'Ignore' },
@@ -274,36 +292,35 @@ export default {
 			],
 			Flower_Starting_Period_Checked_Box_Group_Selected: [],
 			Flower_Starting_Period_Checked_Box_Group_Options: [
-			    { monthtext: 1, monthvalue: "1		"},
-			    { monthtext: 2, monthvalue: "2		"},
-			    { monthtext: 3, monthvalue: 3},
-				{ monthtext: 4, monthvalue: 4 },
-				{ monthtext: 5, monthvalue: 5},
-				{ monthtext: 6, monthvalue: 6 },
-				{ monthtext: 7, monthvalue: 7},
-				{ monthtext: 8, monthvalue: 8 },
-				{ monthtext: 9, monthvalue: 9 },
-				{ monthtext: 10, monthvalue: 10},
-				{ monthtext: 11, monthvalue: 11 },
-				{ monthtext: 12, monthvalue: 12 }
-				
+			    { monthvalue: 'January', monthtext: "January"},
+			    { monthvalue: 'February', monthtext: "February"},
+			    { monthvalue: 'March', monthtext: 'March'},
+				{ monthvalue: 'April', monthtext: 'April' },
+				{ monthvalue: 'May', monthtext: 'May'},
+				{ monthvalue: 'June', monthtext: 'June' },
+				{ monthvalue: 'July', monthtext: 'July'},
+				{ monthvalue: 'August', monthtext: 'August' },
+				{ monthvalue: 'September', monthtext: 'September' },
+				{ monthvalue: 'October', monthtext: 'October'},
+				{ monthvalue: 'November', monthtext: 'November' },
+				{ monthvalue: 'December', monthtext: 'December' }
 			],
 			Fruit_Starting_Period_Checked_Box_Group_Selected: [],
 			Fruit_Starting_Period_Checked_Box_Group_Options: [
-			    { fruit_month_value: 1, fruit_month_text:  1 },
-			    { fruit_month_value: 2, fruit_month_text: 2 },
-			    { fruit_month_value: 3, fruit_month_text: 3 },
-				{ fruit_month_value: 4, fruit_month_text: 4},
-				{ fruit_month_value: 5, fruit_month_text: 5},
-				{ fruit_month_value: 6, fruit_month_text: 6 },
-				{ fruit_month_value: 7, fruit_month_text: 7},
-				{ fruit_month_value: 8, fruit_month_text: 8 },
-				{ fruit_month_value: 9, fruit_month_text: 9},
-				{ fruit_month_value: 10, fruit_month_text: 10 },
-				{ fruit_month_value: 11, fruit_month_text: 11 },
-				{ fruit_month_value: 12, fruit_month_text: 12 }
-				
+			    { fruit_month_value: 'January', fruit_month_text:  'January' },
+			    { fruit_month_value: 'February', fruit_month_text: 'February' },
+			    { fruit_month_value: 'March', fruit_month_text: 'March' },
+				{ fruit_month_value: 'April', fruit_month_text: 'April'},
+				{ fruit_month_value: 'May', fruit_month_text: 'May'},
+				{ fruit_month_value: 'June', fruit_month_text: 'June' },
+				{ fruit_month_value: 'July', fruit_month_text: 'July'},
+				{ fruit_month_value: 'August', fruit_month_text: 'August' },
+				{ fruit_month_value: 'September', fruit_month_text: 'September'},
+				{ fruit_month_value: 'October', fruit_month_text: 'October' },
+				{ fruit_month_value: 'November', fruit_month_text: 'November' },
+				{ fruit_month_value: 'December', fruit_month_text: 'December' }	
 			],
+			monthnumber : [1,2,3,4,5,6,7,8,9,10,11,12],	
 	    }
 	},	
 	
@@ -378,6 +395,7 @@ export default {
 			}	
 			return rows
 		},
+		
 		ListOfTreeName(){
 		    var ListofTreeInfo = this.loadeddata
 		    var ListOfTreeName = [];

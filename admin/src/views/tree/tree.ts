@@ -80,6 +80,7 @@ export default defineComponent({
         uploadImage(callback: any) {
             if(this.imageName.length === 0) {
                 callback("");
+                return;
             }
             const storage = getStorage();
             const imageHash = Math.floor(Math.random() * 10000);

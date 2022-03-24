@@ -66,6 +66,8 @@
         <h2 v-show="viewMode === 'create'">Create A Tree</h2>
       </div>
 
+      <img :src="selectedTree.treeImage" alt="picked image" v-if="selectedTree.treeImage"  rel="preload">
+
       <div class="form-group">
         <label>Tree Name</label>
         <input
@@ -217,8 +219,9 @@
           </span>
         </span>
         <input type="text" class="form-control" readonly :value="imageName"/>
+        <span class="btn btn-danger" v-if="!!imageName" @click="onRemoveImageClick">Remove</span>
       </div>
-      <img :src="selectedTree.treeImage" alt="picked image" v-if="selectedTree.treeImage">
+      <img :src="imageUrl" alt="picked image" v-if="!!imageUrl">
       
       <div id="editButtonGroup">
         <button class="btn btn-primary" @click="onSubmitClick">Submit</button>

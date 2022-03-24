@@ -8,8 +8,21 @@ import VueSimpleAlert from "vue-simple-alert";
 import SortedTablePlugin from "vue-sorted-table";
 import store from './store';
 import '@fortawesome/fontawesome-free/css/all.css';
-import Dropdown from 'vue-simple-search-dropdown'
+import Dropdown from 'vue-simple-search-dropdown';
+import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
+// Import Bootstrap an BootstrapVue CSS files (order is important)
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+// Make BootstrapVue available throughout your project
+Vue.use(BootstrapVue)
+// Optionally install the BootstrapVue icon components plugin
+Vue.use(IconsPlugin)
+
+Vue.component('v-select', vSelect)
 Vue.use(Dropdown);
 Vue.use(VueSimpleAlert);
 Vue.use(SortedTablePlugin);

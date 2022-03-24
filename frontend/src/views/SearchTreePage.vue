@@ -89,12 +89,12 @@
 					</div>
 					<br>
 					<div>
-						<b-form-group label="Subject to Forests and Countryside (Cap. 95)" v-slot="{ ariaDescribedby }">
+						<b-form-group label="Subject to Forests and Countryside (Cap. 96)" v-slot="{ ariaDescribedby }">
 							<b-form-radio-group 
-								v-model="Cap95_selected" 
-								:options="Cap95_options" 
+								v-model="Cap96_selected" 
+								:options="Cap96_options" 
 								:aria-describedby="ariaDescribedby" 
-								 name="Cap95_Radio"
+								 name="Cap96_Radio"
 								plain>
 							</b-form-radio-group>
 						</b-form-group>

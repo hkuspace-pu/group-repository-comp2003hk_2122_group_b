@@ -12,7 +12,7 @@ CREATE TABLE trees (
     family_code VARCHAR (10),
     
     ecologic VARCHAR (10),
-    cap_95 boolean,
+    cap_96 boolean,
     cap_586 boolean,
     hk_rare boolean,
     cn_rare boolean,

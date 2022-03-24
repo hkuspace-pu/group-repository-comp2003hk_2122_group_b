@@ -1,5 +1,5 @@
 INSERT INTO trees (tree_name, tree_alias, scientific_name, family_code,
-    ecologic, cap_95, cap_586, hk_rare, cn_rare, flowering_start,
+    ecologic, cap_96, cap_586, hk_rare, cn_rare, flowering_start,
     flowering_end, fruit_start, fruit_end, tree_desc) VALUES
     ('African Tulip Tree', 
     '',

@@ -48,7 +48,7 @@ def lambda_handler(event, context):
     sql += "scientific_name=%s, "
     sql += "family_code=%s, "
     sql += "ecologic=%s, "
-    sql += "cap_95=%s, "
+    sql += "cap_96=%s, "
     sql += "cap_586=%s, "
     sql += "hk_rare=%s, "
     sql += "cn_rare=%s, "
@@ -65,7 +65,7 @@ def lambda_handler(event, context):
         body["familyCode"],
         body["ecologic"],
         
-        body["cap95"],
+        body["cap96"],
         body["cap586"],
         body["hkRare"],
         body["cnRare"],

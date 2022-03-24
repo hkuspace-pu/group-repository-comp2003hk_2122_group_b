@@ -1,7 +1,7 @@
 import { defineComponent } from "vue";
 import axios from "axios";
 import Tree from "./../../model/tree"
-
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 export default defineComponent({
     name: 'tree',
@@ -11,6 +11,8 @@ export default defineComponent({
             viewMode: "table" as string,
             treeData: [] as Tree[],
             selectedTree: {} as Tree,
+            // image related
+            imageFile: {} as any,
             imageName: "" as string,
             imageUrl: "" as string,
         }
@@ -20,11 +22,10 @@ export default defineComponent({
             .get(this.url)
             .then(response => {
                 console.log('starLog raw data', response.data);
-                
+
                 const data = response.data as [];
                 this.treeData = data.map(row => new Tree(row));
-                console.log('starLog data', this.treeData);
-
+                // console.log('starLog data', this.treeData);
             });
     },
     methods: {
@@ -34,7 +35,15 @@ export default defineComponent({
         },
         onEditBackClick() {
             this.selectedTree = new Tree({});
+            this.imageFile = {};
+            this.imageName = "";
+            this.imageUrl = "";
             this.viewMode = "table";
+        },
+        onRemoveImageClick() {
+            this.imageFile = {};
+            this.imageName = "";
+            this.imageUrl = "";
         },
         onAddClick() {
             this.selectedTree = new Tree({});
@@ -64,70 +73,131 @@ export default defineComponent({
             const file = element.target.files[0];
             // console.log('starLog file picked', file);
 
-            // show on edit view
+            this.imageFile = file;
             this.imageName = file.name;
             this.imageUrl = URL.createObjectURL(file);
-            
-            // convert image
-            reader.onloadend = () => {
-                this.selectedTree.treeImage = reader.result as string;
-                // console.log('starLog image raw', this.selectedTree.treeImage);
+        },
+        uploadImage(callback: any) {
+            if(this.imageName.length === 0) {
+                callback("");
+                return;
             }
-            reader.readAsDataURL(file);
+            const storage = getStorage();
+            const imageHash = Math.floor(Math.random() * 10000);
+
+            // Create the file metadata
+            /** @type {any} */
+            const metadata = {
+                contentType: 'image/jpeg'
+            };
+
+            // Upload file and metadata to the object 'images/mountains.jpg'
+            const storageRef = ref(storage, 'images/' + this.imageFile.name + imageHash);
+            const uploadTask = uploadBytesResumable(storageRef, this.imageFile, metadata);
+
+            // Listen for state changes, errors, and completion of the upload.
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                    switch (snapshot.state) {
+                        case 'paused':
+                            console.log('Upload is paused');
+                            break;
+                        case 'running':
+                            console.log('Upload is running');
+                            break;
+                    }
+                },
+                (error) => {
+                    // A full list of error codes is available at
+                    // https://firebase.google.com/docs/storage/web/handle-errors
+                    switch (error.code) {
+                        case 'storage/unauthorized':
+                            // User doesn't have permission to access the object
+                            break;
+                        case 'storage/canceled':
+                            // User canceled the upload
+                            break;
+
+                        // ...
+
+                        case 'storage/unknown':
+                            // Unknown error occurred, inspect error.serverResponse
+                            break;
+                    }
+                },
+                () => {
+                    // Upload completed successfully, now we can get the download URL
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        console.log('File available at', downloadURL);
+                        callback(downloadURL);
+                    });
+                }
+            );
         },
         createTree() {
-            axios
-                .put(
-                    this.url,
-                    {
-                        "treeName": this.selectedTree.treeName,
-                        "treeAlias": this.selectedTree.treeAlias,
-                        "scientificName": this.selectedTree.scientificName,
-                        "familyCode": this.selectedTree.familyCode,
-                        "ecologic": this.selectedTree.ecologic,
+            let self = this;
+            let uploadCallback = function (downloadUrl: string) {
+                axios
+                    .put(
+                        self.url,
+                        {
+                            "treeName": self.selectedTree.treeName,
+                            "treeAlias": self.selectedTree.treeAlias,
+                            "scientificName": self.selectedTree.scientificName,
+                            "familyCode": self.selectedTree.familyCode,
+                            "ecologic": self.selectedTree.ecologic,
 
-                        "cap95": this.selectedTree.cap95,
-                        "cap586": this.selectedTree.cap586,
-                        "hkRare": this.selectedTree.hkRare,
-                        "cnRare": this.selectedTree.cnRare,
+                            "cap96": self.selectedTree.cap96,
+                            "cap586": self.selectedTree.cap586,
+                            "hkRare": self.selectedTree.hkRare,
+                            "cnRare": self.selectedTree.cnRare,
 
-                        "floweringStart": this.selectedTree.floweringStart,
-                        "floweringEnd": this.selectedTree.floweringEnd,
-                        "fruitStart": this.selectedTree.fruitStart,
-                        "fruitEnd": this.selectedTree.fruitEnd,
+                            "floweringStart": self.selectedTree.floweringStart,
+                            "floweringEnd": self.selectedTree.floweringEnd,
+                            "fruitStart": self.selectedTree.fruitStart,
+                            "fruitEnd": self.selectedTree.fruitEnd,
 
-                        "treeDesc": this.selectedTree.treeDesc,
-                        "treeImage": this.selectedTree.treeImage
+                            "treeDesc": self.selectedTree.treeDesc,
+                            "treeImage": downloadUrl
+                        })
+                    .then(res => {
+                        console.log('starLog response', res);
+
                     })
-                .then(res => {
-                    console.log('starLog response', res);
-
-                })
+            };
+            this.uploadImage(uploadCallback);
         },
         updateTree() {
-            axios.post(this.url, {
-                "treeID": this.selectedTree.treeId,
-                "treeName": this.selectedTree.treeName,
-                "treeAlias": this.selectedTree.treeAlias,
-                "scientificName": this.selectedTree.scientificName,
-                "familyCode": this.selectedTree.familyCode,
-                "ecologic": this.selectedTree.ecologic,
-
-                "cap95": this.selectedTree.cap95,
-                "cap586": this.selectedTree.cap586,
-                "hkRare": this.selectedTree.hkRare,
-                "cnRare": this.selectedTree.cnRare,
-
-                "floweringStart": this.selectedTree.floweringStart,
-                "floweringEnd": this.selectedTree.floweringEnd,
-                "fruitStart": this.selectedTree.fruitStart,
-                "fruitEnd": this.selectedTree.fruitEnd,
-
-                "treeDesc": this.selectedTree.treeDesc,
-                "treeImage": this.selectedTree.treeImage
-            }).then(res => {
-                console.log('starLog response', res);
-            })
+            let self = this;
+            let uploadCallback = function(downloadUrl: string) {
+                axios.post(self.url, {
+                    "treeID": self.selectedTree.treeId,
+                    "treeName": self.selectedTree.treeName,
+                    "treeAlias": self.selectedTree.treeAlias,
+                    "scientificName": self.selectedTree.scientificName,
+                    "familyCode": self.selectedTree.familyCode,
+                    "ecologic": self.selectedTree.ecologic,
+    
+                    "cap96": self.selectedTree.cap96,
+                    "cap586": self.selectedTree.cap586,
+                    "hkRare": self.selectedTree.hkRare,
+                    "cnRare": self.selectedTree.cnRare,
+    
+                    "floweringStart": self.selectedTree.floweringStart,
+                    "floweringEnd": self.selectedTree.floweringEnd,
+                    "fruitStart": self.selectedTree.fruitStart,
+                    "fruitEnd": self.selectedTree.fruitEnd,
+    
+                    "treeDesc": self.selectedTree.treeDesc,
+                    "treeImage": downloadUrl
+                }).then(res => {
+                    console.log('starLog response', res);
+                })
+            };
+           self.uploadImage(uploadCallback); 
         }
     }
 })

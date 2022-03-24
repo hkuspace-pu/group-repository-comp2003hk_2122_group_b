@@ -43,7 +43,7 @@ def lambda_handler(event, context):
     body = json.loads(event['body'])
     
     sql = "INSERT INTO trees "
-    sql += "(tree_name, alias, scientific_name, family_code, ecologic, cap_95, cap_586, hk_rare, cn_rare, flowering_start, flowering_end, fruit_start, fruit_end, tree_desc) "
+    sql += "(tree_name, alias, scientific_name, family_code, ecologic, cap_96, cap_586, hk_rare, cn_rare, flowering_start, flowering_end, fruit_start, fruit_end, tree_desc) "
     sql += "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     val = (
         body["treeName"],
@@ -52,7 +52,7 @@ def lambda_handler(event, context):
         body["familyCode"],
         body["ecologic"],
         
-        body["cap95"],
+        body["cap96"],
         body["cap586"],
         body["hkRare"],
         body["cnRare"],

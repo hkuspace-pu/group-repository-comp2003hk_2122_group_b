@@ -42,7 +42,7 @@ def lambda_handler(event, context):
             "scientificName": row[3],
             "familyCode": row[4],
             "ecologic": row[5],
-            "cap95": row[6],
+            "cap96": row[6],
             "cap586": row[7],
             "hkRare": row[8],
             "cnRare": row[9],

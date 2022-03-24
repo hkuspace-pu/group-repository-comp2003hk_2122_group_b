@@ -134,9 +134,9 @@
           <input
             type="checkbox"
             class="form-check-input"
-            v-model="selectedTree.cap95"
+            v-model="selectedTree.cap96"
           />
-          <label>Cap 95</label>
+          <label>Cap 96</label>
         </div>
         <div class="form-check">
           <input

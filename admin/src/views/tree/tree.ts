@@ -150,7 +150,7 @@ export default defineComponent({
                             "familyCode": self.selectedTree.familyCode,
                             "ecologic": self.selectedTree.ecologic,
 
-                            "cap95": self.selectedTree.cap95,
+                            "cap96": self.selectedTree.cap96,
                             "cap586": self.selectedTree.cap586,
                             "hkRare": self.selectedTree.hkRare,
                             "cnRare": self.selectedTree.cnRare,
@@ -181,7 +181,7 @@ export default defineComponent({
                     "familyCode": self.selectedTree.familyCode,
                     "ecologic": self.selectedTree.ecologic,
     
-                    "cap95": self.selectedTree.cap95,
+                    "cap96": self.selectedTree.cap96,
                     "cap586": self.selectedTree.cap586,
                     "hkRare": self.selectedTree.hkRare,
                     "cnRare": self.selectedTree.cnRare,

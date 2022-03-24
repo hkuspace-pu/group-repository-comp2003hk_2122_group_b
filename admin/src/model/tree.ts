@@ -6,7 +6,7 @@ export default class Tree {
     familyCode: string = "";
     ecologic: string = "";
 
-    cap95: boolean = false;
+    cap96: boolean = false;
     cap586: boolean = false;
     hkRare: boolean = false;
     cnRare: boolean = false;
@@ -29,7 +29,7 @@ export default class Tree {
         this.familyCode = json["familyCode"];
 
         this.ecologic = json["ecologic"];
-        this.cap95 = json["cap95"] === 1;
+        this.cap96 = json["cap96"] === 1;
         this.cap586 = json["cap586"] === 1;
         this.hkRare = json["hkRare"] === 1;
         this.cnRare = json["cnRare"] === 1;

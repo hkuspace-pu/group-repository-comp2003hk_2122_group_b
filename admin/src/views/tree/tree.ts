@@ -78,6 +78,9 @@ export default defineComponent({
             this.imageUrl = URL.createObjectURL(file);
         },
         uploadImage(callback: any) {
+            if(this.imageName.length === 0) {
+                callback("");
+            }
             const storage = getStorage();
             const imageHash = Math.floor(Math.random() * 10000);
 

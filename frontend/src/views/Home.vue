@@ -34,8 +34,9 @@
 								<b-card-title>{{objitem.treeName}}</b-card-title> 
 								<b-card-sub-title class="mb-3">{{objitem.scientificName}}</b-card-sub-title>
 								<b-card-text>Alias:{{objitem.treeAlias}}</b-card-text>
-								<b-button variant="primary" @click='select_individual_tree_index(objitem.treeId);'>Details</b-button> 
-								<b-card-footer>Tree Id: {{objitem.treeId}}</b-card-footer> 
+								<!--<b-button @click="ShowTreeDetails(objitem.treeId)">Details</b-button> -->
+								<b-button @click="ShowTreeDetails(objitem.treeId,objitem.treeName,objitem.treeAlias,objitem.scientificName,objitem.ecologic,objitem.floweringStart,objitem.floweringEnd,objitem.fruitStart,objitem.fruitEnd,objitem.cnRare,objitem.hkRare,objitem.cap96,objitem.cap586,objitem.treeImage,objitem.treeDesc)">Details</b-button> 		
+								<b-card-footer>Reference Id: {{objitem.treeId}}</b-card-footer> 
 							</b-card>
 						</div>
 					</div>
@@ -148,6 +149,57 @@ export default {
 			}
 	   		this.$router.push({name:'SearchTreePage', params: {Select_Individual_Tree_Info : Select_Individual_Tree_Info}});
 	   },
+	   
+	
+	   ShowTreeDetails(tree_id,tree_name,tree_alias,tree_scientific_name,tree_ecologic,tree_flowering_start,tree_flowering_end,tree_fruit_start,tree_fruit_end,rare_China,rare_HK,cap_96,cap_586,tree_image,tree_desc) {
+	           tree_fruit_start = this.searchmonthoptions[tree_fruit_start-1]
+			   tree_fruit_end = this.searchmonthoptions[tree_fruit_end-1]
+			   tree_flowering_start = this.searchmonthoptions[tree_flowering_start-1]
+			   tree_flowering_end = this.searchmonthoptions[tree_flowering_end-1]
+			   
+			   const h = this.$createElement
+	           // Using HTML string
+	           //const titleVNode = h('div', { domProps: { innerHTML:  tree_name } }  )
+			   const titleVNode = h('H2', [tree_name] )
+	           // More complex structure
+	           const messageVNode = h('div', { class: ['foobar'] }, [
+	             h('b-card' , {
+					 props : {
+					 'img-src': tree_image,
+					 'img-alt':'Image',
+					 'img-top' : true,
+					 tag: 'article',
+					 style:'max-width: 50rem',
+					 class:'mb-3'
+					} 
+				 }),
+				 
+				 h('b-card-body'),
+	
+				 h('b-card-title', [h('H2',['Sci. Name:    ',tree_scientific_name])]),
+				 h('b-card-sub-title' , { class: ['mb-3'] }, [h('H4'),['Alias Name:    ',tree_alias]]),
+				 h('b-card-text' ,{ class: ['mb-3'] }, [h('H3', [tree_desc])]),
+				 h('b-list-group-item' , [h('H4',['Ecologic: ',tree_ecologic])]),
+				 h('b-list-group-item' , [h('H4',['Flowering Start Month:    ',tree_flowering_start])]),
+				 h('b-list-group-item' , [h('H4',['Flowering End Month:    ',tree_flowering_end])]),
+				 h('b-list-group-item' , [h('H4',['Fruit Start Month:    ',tree_fruit_start])]),
+				 h('b-list-group-item' , [h('H4',['Fruit End Month:    ',tree_fruit_end])]),
+				 h('b-list-group-item' , [h('H4',['Rare in China:    ',rare_China])]),
+				 h('b-list-group-item' , [h('H4',['Rare in Hong Kong:    ',rare_HK])]),
+				 h('b-list-group-item' , [h('H4',['Subject to Forests and Countryside Oridance:    ',cap_96])]),
+				 h('b-list-group-item' , [h('H4',['Subject Protection of Species Ordiance:    ',cap_586])])
+
+				])
+	           // We must pass the generated VNodes as arrays
+	           this.$bvModal.msgBoxOk([messageVNode], {
+	             title: [titleVNode],
+	             buttonSize: 'xl',
+	             centered: true, size: 'xl'
+	           })
+			   
+			  																	
+			   
+	         }
 	},
 	
 	computed: {

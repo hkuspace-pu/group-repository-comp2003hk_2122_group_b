@@ -35,8 +35,12 @@ def lambda_handler(event, context):
     response = {
         'statusCode': 501,
     }
+    
     if event["httpMethod"] == "GET":
-        response = GetController.get(connection)
+        if event["queryStringParameters"] == None:
+            response = GetController.get(connection)
+        else:
+            response = GetController.getWithOptions(connection, event["queryStringParameters"])
     if event["httpMethod"] == "PUT":
         response = PutController.put(connection, event['body'])
     if event["httpMethod"] == "POST":

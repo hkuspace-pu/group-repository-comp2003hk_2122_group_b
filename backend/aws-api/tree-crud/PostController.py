@@ -2,7 +2,7 @@ import json
 
 def post(connection, data):
     cursor = connection.cursor()
-    body = json.loads(data['body'])
+    body = json.loads(data)
     
     sql = "UPDATE trees SET "
     sql += "tree_name=%s, "
@@ -14,12 +14,10 @@ def post(connection, data):
     sql += "cap_586=%s, "
     sql += "hk_rare=%s, "
     sql += "cn_rare=%s, "
-    sql += "flowering_start=%s, "
-    sql += "flowering_end=%s, "
-    sql += "fruit_start=%s, "
-    sql += "fruit_end=%s, "
-    sql += "tree_desc=%s "
-    sql += "tree_image=%s"
+    sql += "flowering=%s, "
+    sql += "fruit=%s, "
+    sql += "tree_desc=%s, "
+    sql += "tree_image=%s "
     sql += "WHERE tree_id=%s"
     val = (
         body["treeName"],
@@ -33,10 +31,8 @@ def post(connection, data):
         body["hkRare"],
         body["cnRare"],
         
-        body["floweringStart"],
-        body["floweringEnd"],
-        body["fruitStart"],
-        body["fruitEnd"],
+        body["flowering"],
+        body["fruit"],
         
         body["treeDesc"],
         body["treeImage"],
@@ -50,7 +46,7 @@ def post(connection, data):
         cursor.execute(sql, val)
         connection.commit()
         statusCode = 200
-        message = "Update tree record failure "
+        message = "Update tree record succeeded "
     except:
         connection.rollback()
     

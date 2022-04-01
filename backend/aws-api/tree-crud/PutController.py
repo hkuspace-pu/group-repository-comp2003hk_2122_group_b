@@ -2,11 +2,14 @@ import json
 
 def put(connection, data):
     cursor = connection.cursor()
-    body = json.loads(data['body'])
+    body = json.loads(data)
+    
+    print("=====testing=====")
+    print(body)
     
     sql = "INSERT INTO trees "
-    sql += "(tree_name, tree_alias, scientific_name, family_code, ecologic, cap_96, cap_586, hk_rare, cn_rare, flowering_start, flowering_end, fruit_start, fruit_end, tree_desc, tree_image) "
-    sql += "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    sql += "(tree_name, tree_alias, scientific_name, family_code, ecologic, cap_96, cap_586, hk_rare, cn_rare, flowering, fruit, tree_desc, tree_image) "
+    sql += "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     val = (
         body["treeName"],
         body["treeAlias"],
@@ -19,10 +22,8 @@ def put(connection, data):
         body["hkRare"],
         body["cnRare"],
         
-        body["floweringStart"],
-        body["floweringEnd"],
-        body["fruitStart"],
-        body["fruitEnd"],
+        body["flowering"],
+        body["fruit"],
         
         body["treeDesc"],
         body["treeImage"]

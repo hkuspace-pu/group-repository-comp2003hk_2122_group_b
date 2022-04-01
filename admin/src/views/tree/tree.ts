@@ -19,7 +19,20 @@ export default defineComponent({
     },
     created() {
         axios
-            .get(this.url)
+            .get(
+                this.url,
+                {
+                    params: JSON.stringify({
+                        "species": 3,
+                        "flowering": [1, 2, 3],
+                        "fruit": [4, 5, 6],
+                        "cap96": true,
+                        "cap586": true,
+                        "hkRare": true,
+                        "cnRare": true,
+                    })
+                }
+            )
             .then(response => {
                 console.log('starLog raw data', response.data);
 
@@ -78,7 +91,7 @@ export default defineComponent({
             this.imageUrl = URL.createObjectURL(file);
         },
         uploadImage(callback: any) {
-            if(this.imageName.length === 0) {
+            if (this.imageName.length === 0) {
                 callback("");
                 return;
             }
@@ -155,10 +168,8 @@ export default defineComponent({
                             "hkRare": self.selectedTree.hkRare,
                             "cnRare": self.selectedTree.cnRare,
 
-                            "floweringStart": self.selectedTree.floweringStart,
-                            "floweringEnd": self.selectedTree.floweringEnd,
-                            "fruitStart": self.selectedTree.fruitStart,
-                            "fruitEnd": self.selectedTree.fruitEnd,
+                            "flowering": "001110000000",
+                            "fruit": "000001110000",
 
                             "treeDesc": self.selectedTree.treeDesc,
                             "treeImage": downloadUrl
@@ -172,32 +183,30 @@ export default defineComponent({
         },
         updateTree() {
             let self = this;
-            let uploadCallback = function(downloadUrl: string) {
+            let uploadCallback = function (downloadUrl: string) {
                 axios.post(self.url, {
                     "treeID": self.selectedTree.treeId,
                     "treeName": self.selectedTree.treeName,
-                    "treeAlias": self.selectedTree.treeAlias,
+                    "treeAlias": self.selectedTree.treeAlias || "",
                     "scientificName": self.selectedTree.scientificName,
                     "familyCode": self.selectedTree.familyCode,
                     "ecologic": self.selectedTree.ecologic,
-    
+
                     "cap96": self.selectedTree.cap96,
                     "cap586": self.selectedTree.cap586,
                     "hkRare": self.selectedTree.hkRare,
                     "cnRare": self.selectedTree.cnRare,
-    
-                    "floweringStart": self.selectedTree.floweringStart,
-                    "floweringEnd": self.selectedTree.floweringEnd,
-                    "fruitStart": self.selectedTree.fruitStart,
-                    "fruitEnd": self.selectedTree.fruitEnd,
-    
+
+                    "flowering": "001110000000",
+                    "fruit": "000001110000",
+
                     "treeDesc": self.selectedTree.treeDesc,
-                    "treeImage": downloadUrl
+                    "treeImage": downloadUrl || ""
                 }).then(res => {
                     console.log('starLog response', res);
                 })
             };
-           self.uploadImage(uploadCallback); 
+            self.uploadImage(uploadCallback);
         }
     }
 })

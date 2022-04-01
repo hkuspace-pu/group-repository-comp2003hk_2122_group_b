@@ -23,7 +23,7 @@ export default class Tree {
     constructor(json: any) {
         this.treeId = json["treeId"];
         this.treeName = json["treeName"];
-        this.treeAlias = json["treeAlias"];
+        this.treeAlias = json["alias"];
         this.scientificName = json["scientificName"];
         
         this.familyCode = json["familyCode"];

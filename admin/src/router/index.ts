@@ -5,7 +5,7 @@ import user from '../views/user/user.vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
-        path: '/tree',
+        path: '/',
         name: 'Tree',
         component: tree
     },

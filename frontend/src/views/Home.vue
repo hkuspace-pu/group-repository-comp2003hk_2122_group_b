@@ -33,10 +33,10 @@
 							<b-card :img-src="objitem.treeImage" img-alt="Image" img-top tag="article" style="max-width: 120rem;" class="mb-3">
 								<b-card-title>{{objitem.treeName}}</b-card-title> 
 								<b-card-sub-title class="mb-3">{{objitem.scientificName}}</b-card-sub-title>
-								<b-card-text>Alias:{{objitem.treeAlias}}</b-card-text>
+								<b-card-text>Alias : {{objitem.alias}}</b-card-text>
 								<!--<b-button @click="ShowTreeDetails(objitem.treeId)">Details</b-button> -->
-								<b-button @click="ShowTreeDetails(objitem.treeId,objitem.treeName,objitem.treeAlias,objitem.scientificName,objitem.ecologic,objitem.floweringStart,objitem.floweringEnd,objitem.fruitStart,objitem.fruitEnd,objitem.cnRare,objitem.hkRare,objitem.cap96,objitem.cap586,objitem.treeImage,objitem.treeDesc)">Details</b-button> 		
-								<b-card-footer>Reference Id: {{objitem.treeId}}</b-card-footer> 
+								<b-button :pressed="false" pill variant="primary" @click="ShowTreeDetails(objitem.treeId,objitem.treeName,objitem.alias,objitem.scientificName,objitem.ecologic,objitem.flowering,objitem.fruit,objitem.cnRare,objitem.hkRare,objitem.cap96,objitem.cap586,objitem.treeImage,objitem.treeDesc)">Details</b-button> 		
+								<b-card-footer>Reference ID : {{objitem.treeId}}</b-card-footer> 
 							</b-card>
 						</div>
 					</div>
@@ -83,6 +83,7 @@ export default {
 			monthnumber : [1,2,3,4,5,6,7,8,9,10,11,12],
 			selected :[],
 			targetmonthnumber_list : [],
+			yes_no_convert: ['No', 'Yes', '-']
 	    }
 	},	
 	
@@ -114,21 +115,7 @@ export default {
 			//console.log(e)
 			this.SearchTreeNameModel = e
 	   },
-	   select_individual_tree_index(tree_index) {
-			//console.log('Tree Index:' + tree_index)
-			var ListofTreeInfo = this.loadeddata
-			var Select_Individual_Tree_Info = [];
-			for(var j = 0; j < ListofTreeInfo.length; j++ ) {
-				//console.log('Tree Individual details:' +ListofTreeInfo[j].treeId)
-			    if (ListofTreeInfo[j].treeId === tree_index ) {
-					Select_Individual_Tree_Info.push(ListofTreeInfo[j])
-					break
-				}
-			}
-		//	console.log('Tree Info:' + Select_Individual_Tree_Info[0])
-			this.$router.push({name:'SearchTreePage', params: {Select_Individual_Tree_Info : Select_Individual_Tree_Info}});
-			
-	   },
+	  
 	   select_individual_tree_name(tree_name_array) {
 		   //this.$router.push({name:'SearchTreePage', params: {Select_Individual_Tree_Info : Select_Individual_Tree_Info}});
 			//console.log('Tree Name Array:' + tree_name_array);
@@ -148,58 +135,69 @@ export default {
 				}
 			}
 	   		this.$router.push({name:'SearchTreePage', params: {Select_Individual_Tree_Info : Select_Individual_Tree_Info}});
-	   },
+	    },
 	   
-	
-	   ShowTreeDetails(tree_id,tree_name,tree_alias,tree_scientific_name,tree_ecologic,tree_flowering_start,tree_flowering_end,tree_fruit_start,tree_fruit_end,rare_China,rare_HK,cap_96,cap_586,tree_image,tree_desc) {
-	           tree_fruit_start = this.searchmonthoptions[tree_fruit_start-1]
-			   tree_fruit_end = this.searchmonthoptions[tree_fruit_end-1]
-			   tree_flowering_start = this.searchmonthoptions[tree_flowering_start-1]
-			   tree_flowering_end = this.searchmonthoptions[tree_flowering_end-1]
-			   
-			   const h = this.$createElement
-	           // Using HTML string
-	           //const titleVNode = h('div', { domProps: { innerHTML:  tree_name } }  )
-			   const titleVNode = h('H2', [tree_name] )
-	           // More complex structure
-	           const messageVNode = h('div', { class: ['foobar'] }, [
-	             h('b-card' , {
-					 props : {
-					 'img-src': tree_image,
-					 'img-alt':'Image',
-					 'img-top' : true,
-					 tag: 'article',
-					 style:'max-width: 50rem',
-					 class:'mb-3'
+	    periodRange(period_indicator){
+	    	var startMonth = "";
+	    	var endMonth = "";
+	    	for (var i = 0; i < period_indicator.length; i++) {
+	    		if (period_indicator.charAt(i) === "1" ) {
+	    			if (startMonth === ""){
+	    				startMonth = this.searchmonthoptions[i];
+	    			}
+	    		   endMonth = this.searchmonthoptions[i];
+	    		}
+	    	}
+	    	//period_Range = startMonth + " - " + endMonth;
+	    	//console.log (periodRange);
+	    	return startMonth + " - " + endMonth;
+	    },
+		
+		ShowTreeDetails(tree_id,tree_name,tree_alias,tree_scientific_name,tree_ecologic,tree_flowering,tree_fruit,rare_China,rare_HK,cap_96,cap_586,tree_image,tree_desc) {
+			var tree_fruit_period = this.periodRange(tree_fruit);
+			var tree_flowering_period = this.periodRange(tree_flowering);
+			var rare_China_yesno = this.yes_no_convert[rare_China];
+			var rare_HK_yesno = this.yes_no_convert[rare_HK];
+			var cap_96_yesno = this.yes_no_convert[cap_96];
+			var cap_586_yesno = this.yes_no_convert[cap_586]   ;
+			const h = this.$createElement
+			// Using HTML string
+			//const titleVNode = h('div', { domProps: { innerHTML:  tree_name } }  )
+			const titleVNode = h('H2', [tree_name] )
+			// More complex structure
+			const messageVNode = h('div', { class: ['foobar'] }, [
+				h('b-card' , {
+					props : {
+					'img-src': tree_image,
+					'img-alt':'Image',
+					'img-top' : true,
+					tag: 'article',
+					style:'max-width: 50rem',
+					class:'mb-3'
 					} 
-				 }),
-				 
-				 h('b-card-body'),
-	
-				 h('b-card-title', [h('H2',['Sci. Name:    ',tree_scientific_name])]),
-				 h('b-card-sub-title' , { class: ['mb-3'] }, [h('H4'),['Alias Name:    ',tree_alias]]),
-				 h('b-card-text' ,{ class: ['mb-3'] }, [h('H3', [tree_desc])]),
-				 h('b-list-group-item' , [h('H4',['Ecologic: ',tree_ecologic])]),
-				 h('b-list-group-item' , [h('H4',['Flowering Start Month:    ',tree_flowering_start])]),
-				 h('b-list-group-item' , [h('H4',['Flowering End Month:    ',tree_flowering_end])]),
-				 h('b-list-group-item' , [h('H4',['Fruit Start Month:    ',tree_fruit_start])]),
-				 h('b-list-group-item' , [h('H4',['Fruit End Month:    ',tree_fruit_end])]),
-				 h('b-list-group-item' , [h('H4',['Rare in China:    ',rare_China])]),
-				 h('b-list-group-item' , [h('H4',['Rare in Hong Kong:    ',rare_HK])]),
-				 h('b-list-group-item' , [h('H4',['Subject to Forests and Countryside Oridance:    ',cap_96])]),
-				 h('b-list-group-item' , [h('H4',['Subject Protection of Species Ordiance:    ',cap_586])])
-
-				])
+				}),
+				
+				h('b-card-body'),
+				h('b-card-title', [h('H2',['Sci. Name :    ',tree_scientific_name])]),
+				h('b-card-sub-title' , { class: ['mb-3'] }, [h('H4'),['Alias Name :    ',tree_alias]]),
+				h('b-card-text' ,{ class: ['mb-3'] }, [h('H3', [tree_desc])]),
+				h('b-list-group-item' , [h('H4',['Ecologic : ',tree_ecologic])]),
+				h('b-list-group-item' , [h('H4',['Flowering Period :    ',tree_flowering_period])]),
+				h('b-list-group-item' , [h('H4',['Fruiting Period :    ',tree_fruit_period])]),
+				h('b-list-group-item' , [h('H4',['Rare in China :    ',rare_China_yesno])]),
+				h('b-list-group-item' , [h('H4',['Rare in Hong Kong :    ',rare_HK_yesno])]),
+				h('b-list-group-item' , [h('H4',['Subject to Forests and Countryside Oridance :    ',cap_96_yesno])]),
+				h('b-list-group-item' , [h('H4',['Subject Protection of Species Ordiance :    ',cap_586_yesno])])
+			])
 	           // We must pass the generated VNodes as arrays
-	           this.$bvModal.msgBoxOk([messageVNode], {
-	             title: [titleVNode],
-	             buttonSize: 'xl',
-	             centered: true, size: 'xl'
-	           })
-			   
-			  																	
-			   
-	         }
+			this.$bvModal.msgBoxOk([messageVNode], {
+					title: [titleVNode],
+					buttonSize: 'xl',
+					centered: true, size: 'xl'
+			}) 
+	    }
+		
+
 	},
 	
 	computed: {
@@ -210,10 +208,16 @@ export default {
 			//This is to filter b-card according to preferable month filtered
 	        var arr = this.loadeddata
 			var filtered_loaddata = []
+			var floweringperiod = ''
 			for (var i = 0; i<arr.length; i++){
-				if (this.targetmonthnumber_list.includes(arr[i].floweringStart)) {
-					console.log("tree id:" + arr[i].treeId + "->Flowering Start Month:" + arr[i].floweringStart);
-					filtered_loaddata.push(arr[i]);
+				floweringperiod = arr[i].flowering
+				for (var j = 0; j<floweringperiod.length; j++){
+					if (floweringperiod.charAt(j) === "1" ) {
+						if (this.targetmonthnumber_list.includes(j+1)) {
+							filtered_loaddata.push(arr[i]);
+							break;
+						}
+					}	
 				}
 			}
 			

@@ -10,7 +10,7 @@
     <sidebar-menu
       class="sidebar"
       :menu="menu"
-	  width='220px'
+	  width='240px'
       :collapsed="collapsed"
 	  @toggle-collapse="onCollapse"
       @item-click="onItemClick"
@@ -31,7 +31,7 @@ export default {
   data() {
     return {
      appmargin: this.appmargin,	
-	 width: '220px',
+	 width: '240px',
       menu: [
         {
           header: true,
@@ -45,7 +45,7 @@ export default {
 		},
         {
           href: "/register",
-          title: "New Member",
+          title: "Join us",
           icon: "fa fa-user-plus"
         },
         {
@@ -61,14 +61,20 @@ export default {
         },
         {
           href: "/surveyrecordlist",
-          title: "Your Survey Records",
+          title: "Survey Record List",
           icon: "fa fa-list-check"
         },
         {
           href: "/individualsurveypage",
-          title: "Survey Form",
+          title: "Single Survey Form",
           icon: "fa fa-file-invoice"
         },
+		{
+		  href: "/surveycsvimportpage",
+		  title: "Survey CSV Import",
+		  icon: "fa fa-cloud-arrow-up"
+		  
+		},
         {
           href: "/yourprofile",
           title: "Your Profile",
@@ -96,7 +102,7 @@ export default {
 	  if (this.collapsed) {
 		  this.appmargin = '0px';
 	  } else {
-		   this.appmargin = '220px';
+		   this.appmargin = '240px';
 	  }
 	  
     },
@@ -104,11 +110,11 @@ export default {
       console.log("onCollapse");
       this.collapsed = c;
 	  console.log(this.appmargin);
-	  if (this.appmargin == '220px' ) {
+	  if (this.appmargin == '240px' ) {
 	     this.appmargin = '0px';
 		  console.log('new margin' + this.appmargin);
 	  }  else {
-		   this.appmargin = '220px';
+		   this.appmargin = '240px';
 		    console.log('new margin' + this.appmargin);
 	  }
 	  

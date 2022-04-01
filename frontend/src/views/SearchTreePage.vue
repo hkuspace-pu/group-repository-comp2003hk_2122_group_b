@@ -8,7 +8,7 @@
 				<!--<td width='30%'style="text-align:center" ><button class="btn btn-default"><img src="../assets/icons8-search-64.png"><h3>Advanced Search</h3></button></td> -->
 				<td width='30%'style="text-align:center" >
 					<b-button :class="visible ? null : 'collapsed'" :aria-expanded="visible ? 'true' : 'false'" aria-controls="advancesearch_page" @click="visible = !visible" img src="../assets/icons8-search-64.png" pill variant="info" :pressed="false" variant="success">
-						<h5>Advance Search</h5>
+						<h5>Advance Tree Search</h5>
 					</b-button>
 				</td>
 				<td width='65%'style="text-align:center">
@@ -40,10 +40,10 @@
 				    <b-list-group-item>
 					<div>
 						<b-row class="my-1">
-						    <b-col sm="6">
+						    <b-col sm="4">
 						      <label for="input-large">A tree name contains a string (blank to ignore):</label>
 						    </b-col>
-						    <b-col sm="4">
+						    <b-col sm="3">
 						      <b-form-input id="input-large" size="lg" placeholder="input 'amb' when tree name(s) contains 'amb' (i.e. Carambola)"></b-form-input>
 						    </b-col>
 						</b-row>
@@ -61,7 +61,7 @@
 					</div>
 					<br>
 					<div>
-					    <b-form-group label="Flower Starting Period (1 - 12 /Jan - Dec, Uncheck all boxes to ignore)" v-slot="{ ariaDescribedby }">
+					    <b-form-group label="Flowering Period (Jan - Dec, Uncheck all boxes to ignore)" v-slot="{ ariaDescribedby }">
 							<b-form-checkbox-group
 							:options="Flower_Starting_Period_Checked_Box_Group_Options"
 							v-model="Flower_Starting_Period_Checked_Box_Group_Selected"
@@ -75,7 +75,7 @@
 					</div>
 					<br>
 					<div>
-					    <b-form-group label="Fruit Starting Period (1 - 12 /Jan - Dec, Uncheck all boxes to ignore)" v-slot="{ ariaDescribedby }">
+					    <b-form-group label="Fruiting Period (Jan - Dec, Uncheck all boxes to ignore)" v-slot="{ ariaDescribedby }">
 							<b-form-checkbox-group
 							:options="Fruit_Starting_Period_Checked_Box_Group_Options"
 							v-model="Fruit_Starting_Period_Checked_Box_Group_Selected"
@@ -143,8 +143,8 @@
 					<h5>
 					<br>
 					<div class="ecologic mt-3">Ecologic: <strong>{{ Exotic_Radio_Button_selected }}</strong></div>
-					<div class="flower_starting_period mt-3">Flowering Starting Period / Month: <strong>{{ Flower_Starting_Period_Checked_Box_Group_Selected }}</strong></div>
-					<div class="fruit_starting_period mt-3">Fruit Starting Period / Month: <strong>{{ Fruit_Starting_Period_Checked_Box_Group_Selected }}</strong></div>
+					<div class="flowering_period mt-3">Flowering Period(s) / Month: <strong>{{ Flower_Starting_Period_Checked_Box_Group_Selected }}</strong></div>
+					<div class="fruiting_period mt-3">Fruiting Period(s) / Month: <strong>{{ Fruit_Starting_Period_Checked_Box_Group_Selected }}</strong></div>
 					<div class="Cap95 mt-3">Subject to Forests and Countryside Oridance(Cap. 96): <strong>{{ Cap96_selected }}</strong></div>
 					<div class="Cap586 mt-3">Subject to Protection of Endangered Species of Animals and Plant Ordiance (Cap. 586): <strong>{{ Cap586_selected }}</strong></div>
 					<div class="RareHK mt-3">Rare in Hong Kong: <strong>{{ RareHK_selected }}</strong></div>
@@ -191,17 +191,14 @@
 								    </b-card-body>
 								
 								    <b-list-group flush>
-										<b-list-group-item>Alias Name: {{objitem.treeAlias}}</b-list-group-item>
-										<b-list-group-item>Ecologic: {{objitem.ecologic}}</b-list-group-item>
-										
-										<b-list-group-item>Flower Start: {{searchmonthoptions[objitem.floweringStart-1]}}</b-list-group-item>
-										<b-list-group-item>Flower End: {{searchmonthoptions[objitem.floweringEnd-1]}}</b-list-group-item>
-										<b-list-group-item>Fruit Start: {{searchmonthoptions[objitem.fruitStart-1]}}</b-list-group-item>
-										<b-list-group-item>Fruit End: {{searchmonthoptions[objitem.fruitEnd-1]}}</b-list-group-item>
-										<b-list-group-item>Rare in China: {{objitem.cnRare}}</b-list-group-item>
-										<b-list-group-item>Rare in Hong Kong: {{objitem.hkRare}}</b-list-group-item>
-										<b-list-group-item>Under Forests and Countryside Oridance: {{objitem.cap96}}</b-list-group-item>
-										<b-list-group-item>Under Protection of Species Ordiance: {{objitem.cap586}}</b-list-group-item>																			
+										<b-list-group-item>Alias Name : {{objitem.alias}}</b-list-group-item>
+										<b-list-group-item>Ecologic : {{objitem.ecologic}}</b-list-group-item>
+										<b-list-group-item>Flowering Period : {{ periodRange(objitem.flowering) }}</b-list-group-item>
+										<b-list-group-item>Fruiting Period : {{ periodRange(objitem.fruit) }}</b-list-group-item>
+										<b-list-group-item>Rare in China : {{ yes_no_convert[objitem.cnRare]}}</b-list-group-item>
+										<b-list-group-item>Rare in Hong Kong : {{yes_no_convert[objitem.hkRare]}}</b-list-group-item>
+										<b-list-group-item>Under Forests and Countryside Oridance : {{yes_no_convert[objitem.cap96]}}</b-list-group-item>
+										<b-list-group-item>Under Protection of Species Ordiance : {{yes_no_convert[objitem.cap586]}}</b-list-group-item>																			
 									</b-list-group>
 								    <!--
 									<b-card-body>
@@ -321,6 +318,7 @@ export default {
 				{ fruit_month_value: 'December', fruit_month_text: 'December' }	
 			],
 			monthnumber : [1,2,3,4,5,6,7,8,9,10,11,12],	
+			yes_no_convert: ['No', 'Yes', '-']
 	    }
 	},	
 	
@@ -348,6 +346,23 @@ export default {
 	},
 	
 	methods: {
+
+		periodRange(period_indicator){
+			var startMonth = "";
+			var endMonth = "";
+			for (var i = 0; i < period_indicator.length; i++) {
+				if (period_indicator.charAt(i) === "1" ) {
+					if (startMonth === ""){
+						startMonth = this.searchmonthoptions[i];
+					}
+				   endMonth = this.searchmonthoptions[i];
+				}
+			}
+			//period_Range = startMonth + " - " + endMonth;
+			//console.log (periodRange);
+			return startMonth + " - " + endMonth;
+		},
+		
 	   select_individual_tree_name(tree_name_array) {
 	   		//this.$router.push({name:'SearchTreePage', params: {Select_Individual_Tree_Info : Select_Individual_Tree_Info}});
 			if (tree_name_array.length > 0 ) {
@@ -372,6 +387,8 @@ export default {
 	},
 	
 	computed: {
+		
+
 	    rows() {
 	        var rows = []
 			var itemsPerRow = 2
@@ -411,9 +428,12 @@ export default {
 					ListOfTreeName.push(ListofTreeInfo[j].scientificName)
 				}
 		    }
-		    return ListOfTreeName
 			console.log('Final List Of Tree Name:' + ListofTreeInfo[0])
-		}
+		    return ListOfTreeName
+			
+		},
+		
+		
 		
 	}
 }

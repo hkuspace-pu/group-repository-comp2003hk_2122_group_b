@@ -1,21 +1,158 @@
 
 <template >
-   
    <div id="surveyrecordlist" >
-	<input type='button' @click='prompt_BulkExportToExcel_Path(bulkselectsurveycase)' value='Excel Bulk Output'><span>Survey ID Selected: {{ bulkselectsurveycase.join() }} </span>
-    <input type='button' @click='prompt_BulkImportFromExcel_Path()' value='Excel Bulk Survey Information Upload'>
-    
-	<table border='1' width='80%' style='border-collapse: collapse;background-color:rgb(207, 254, 247)'>
-        <tr>
-			<td><input type='button' value='All Survey Case No' @click='allRecords();'></td>
-			<td>  Input </td>
-            <td> Between </td>
-			<td><input type='number' v-model='Survey_Case_No_From' placeholder="Enter between 1 - 24"></td>
-            <td> And </td>
-            <td><input type='number' v-model='Survey_Case_No_To' placeholder="Enter between 1 - 24"></td>
-			<td><input type='button' @click='Filter_By_Survey_Case_No()' value='Filter by Case No'></td>
-		</tr>
-	</table>	
+		<br>
+		<center>
+		<b-row>
+			<b-col lg="4" sm="1">
+				<b-button :pressed="false" variant="success" pill @click='allRecords();'>
+					<h5>Download All Survey</h5>
+				</b-button>
+			</b-col>
+			<b-col lg="4" sm="1">			
+				<b-button :class="advance_filter_visible ? null : 'collapsed'" :aria-expanded="advance_filter_visible ? 'true' : 'false'" aria-controls="advancefilter_page" @click="advance_filter_visible = !advance_filter_visible" img src="../assets/icons8-search-64.png" pill variant="info" :pressed="false" >
+					<h5>Advance Survey Record Filter</h5>
+				</b-button>
+			</b-col>
+			<b-col lg="4" sm="1">
+				<vue-excel-xlsx :buttondisable="this.vueexcelxlsx" :data="this.selectedsurveydata" :columns="this.surveycolumns" :file-name="'survey'" :file-type="'csv'" pill :sheet-name="'survey'">
+					<h5>Export Selected Survey Record(s) in CSV</h5>
+				</vue-excel-xlsx>
+			</b-col>
+		</b-row>
+		</center>
+		<div>
+			<b-collapse width='95%' id="advancefilter_page" v-model="advance_filter_visible" class="mt-2">
+				<b-card>
+					<p class="card-text"><h2>Advanced Survey Record Filter</h2></p>
+					<h5>
+					<b-list-group flush>
+				    <b-list-group-item>
+					<div>
+						<b-form-group class="tree_name_string my-1" v-slot="{ ariaDescribedby }">
+						<b-row>
+						    <b-col sm="4">
+						      <label for="tree_name_string_input">Any sort of tree name contains a subset of string (blank to ignore):</label>
+						    </b-col>
+						    <b-col sm="6">
+						      <b-form-input v-model="tree_name_string_input" size="lg" placeholder="input 'amb' when tree name(s) contains 'amb' (i.e. Carambola)"></b-form-input>
+						    </b-col>
+						</b-row>
+						</b-form-group>
+					</div>	
+					<br>
+					<div>
+						<b-form-group class="survey_id my-1" v-slot="{ ariaDescribedby }">
+						<b-row>
+						    <b-col sm="3">
+						        <label for="survey_id_start_input">Survey ID From:</label>
+						    </b-col>
+						    <b-col sm="2">
+						        <b-form-input v-model="survey_id_start_input" type="number"></b-form-input>
+						    </b-col>
+							<b-col sm="1">
+								<center>
+									<label for="survey_id_end_label_input"> to </label>
+								</center>
+							</b-col>
+							<b-col sm="2">
+							    <b-form-input v-model="survey_id_end_input" type="number"></b-form-input>
+							</b-col>
+						</b-row>
+						</b-form-group>
+					</div>
+					<br>
+					<div>
+						<b-form-group class="created_time my-1" v-slot="{ ariaDescribedby }">
+						<b-row>
+							<b-col sm="3">
+								<label for="created_date_from_input">Survey Record Created Date from: </label>
+						    </b-col>
+						    <b-col sm="3">
+						        <b-form-input v-model="created_date_from_input" type="date"></b-form-input>
+						    </b-col>
+							<b-col sm="1">
+								<center>
+									<label for="created_date_to_input"> to </label>
+								</center>
+							</b-col>
+							<b-col sm="3">
+							    <b-form-input v-model="created_date_to_input" type="date"></b-form-input>
+							</b-col>
+						</b-row>
+						</b-form-group>
+					</div>
+					<br>
+					<div>
+						<b-form-group class="last_amended_date my-1" v-slot="{ ariaDescribedby }">
+						<b-row>
+						    <b-col sm="3">
+						        <label for="last_amended_date_from_input">Survey Record Last Amendment Date from: </label>
+						    </b-col>
+						    <b-col sm="3">
+						        <b-form-input v-model="last_amended_date_from_input" type="date"></b-form-input>
+						    </b-col>
+							<b-col sm="1">
+								<center>
+									<label for="last_amended_date_to_input"> to: </label>
+								</center>
+							</b-col>
+							<b-col sm="3">
+							    <b-form-input v-model="last_amended_date_to_input" type="date"></b-form-input>
+							</b-col>
+						</b-row>
+						</b-form-group>
+					</div>
+					<br>
+					<div>
+						<b-form-group label="Tree Condition ( Uncheck all boxes to ignore )" v-slot="{ ariaDescribedby }">
+							<b-form-checkbox-group
+								:options="Tree_Condition_Checked_Box_Group_Options"
+								v-model="Tree_Condition_Checked_Box_Selected"
+								:aria-describedby="ariaDescribedby"
+								value-field="tree_condition_text"
+								text-field="tree_condition_value"
+								name="Tree_Condition_Checked_Box_Group"
+								plain>
+							</b-form-checkbox-group>
+						</b-form-group>
+					</div>
+					<br>
+					<div>
+						<b-form-group label="Survey Status ( Uncheck all boxes to ignore )" v-slot="{ ariaDescribedby }">
+							<b-form-checkbox-group
+								:options="Survey_Status_Checked_Box_Group_Options"
+								v-model="Survey_Status_Checked_Box_Selected"
+								:aria-describedby="ariaDescribedby"
+								value-field="survey_status_text"
+								text-field="survey_status_value"
+								name="Survey_Status_Checked_Box_Group"
+								plain>
+							</b-form-checkbox-group>
+						</b-form-group>
+					</div>
+					<br>
+					</b-list-group-item>
+					<b-list-group-item>
+					</h5>
+					<br>
+					<h2>Filter Summary</h2>
+					<h5>
+					<div class="treenamekeyword mt-3">A general/scientific/alias tree name contains:* <strong>{{ tree_name_string_input }} </strong>*</div>
+					<div class="surveyidrange mt-3">Survey ID From: <strong>{{ survey_id_start_input }} to {{ survey_id_end_input }}</strong></div>
+					<div class="survey_record_created_date_from mt-3">Survey Record Created Date from:   <strong>{{ created_date_from_input }}  to  {{ created_date_to_input }}</strong> </div>
+					<div class="last_amended_date_from_input mt-3">Survey Record Last Amended Date from:   <strong>{{ last_amended_date_from_input }}  to  {{ last_amended_date_to_input }}</strong></div>
+					<div class="tree_condition mt-3">Tree Condition: <strong>{{ Tree_Condition_Checked_Box_Selected }}</strong></div>
+					<div class="survey_status mt-3">Survey Status: <strong>{{ Survey_Status_Checked_Box_Selected }}</strong></div>
+					</h5>
+					<br>
+					</b-list-group-item>
+					</b-list-group>
+					<br>
+					<b-button pill variant="info"><h5>Confirm</h5></b-button>
+				</b-card>
+			</b-collapse>
+		</div>
 		<br><br>
 		<sorted-table :values="values">
 		<thead>
@@ -49,6 +186,7 @@
 		</tbody>
 	   </template>
 	    </sorted-table>	
+		
 	</div>
 	
 </template>
@@ -64,67 +202,101 @@ import { SweetAlertOptions, SweetAlertResult } from 'sweetalert2';
 import { version, description } from 'vue-simple-alert';
 import SortedTablePlugin from "vue-sorted-table";
 import { SortedTable, SortLink } from "vue-sorted-table";
-
+import VueExcelXlsx from "vue-excel-xlsx";
+Vue.use(VueExcelXlsx);
 
 export default  { 
-	    name: "App",
-		props:['data'],
-		provide: {
-			message: 'hello!'
+	name: "App",
+	props:['data'],
+    data () {
+        return {
+			//surveycases:this.surveycases,
+			surveycases:[],
+			Survey_Case_No: 0,
+			Creator_Name: '',
+			Created_Time:'',
+			Created_Venue: '',
+            Species_Name: '',
+            Survey_Status: '',
+            Administrator_Comment: '',
+            Survey_Case_No_To: 0,
+            Survey_Case_No_From: 0,
+			mode:'',
+			bulkselectsurveycase:[],
+			values: [],
+			selectedsurveydata:[],
+			advance_filter_visible: false,
+			tree_name_string_input:"",
+			survey_id_start_input:"",
+			survey_id_end_input:"",
+			last_amended_date_from_input:"",
+			last_amended_date_to_input:"",
+			created_date_to_input:"",
+			created_date_from_input:"",
+			vueexcelxlsx: true,
+			surveycolumns : [
+				{
+					label: "Survey ID",
+				    field: "Survey_Case_No",
+				},
+				{
+				    label: "Creator Name",
+				    field: "Creator_Name",  
+				},
+				{
+				    label: "Created Time",
+				    field: "Created_Time",
+				},
+				{
+				    label: "Species Name",
+				    field: "Species_Name",
+				},
+				{
+				    label: "Survey Status",
+				    field: "Survey_Status",
+				},
+				{
+				    label: "Administrator Comment",
+				    field: "Administrator_Comment",
+				},														
+			],
+			
+			Tree_Condition_Checked_Box_Selected: [],
+			Tree_Condition_Checked_Box_Group_Options: [
+			    { tree_condition_value: 'Bad', tree_condition_text:  'Bad' },
+				{ tree_condition_value: 'Poor', tree_condition_text:  'Poor' },
+				{ tree_condition_value: 'Normal', tree_condition_text:  'Normal' },
+				{ tree_condition_value: 'Good', tree_condition_text:  'Good' },
+				{ tree_condition_value: 'Excellent', tree_condition_text:  'Excellent' },
+			],
+			Survey_Status_Checked_Box_Selected: [],
+			Survey_Status_Checked_Box_Group_Options: [
+			    { survey_status_value: 'Draft', survey_status_text:  'Draft' },
+				{ survey_status_value: 'Submitted', survey_status_text:  'Submitted' },
+				{ survey_status_value: 'Pending Approval', survey_status_text:  'Pending Approval' },
+				{ survey_status_value: 'Approved', survey_status_text:  'Approved' },
+				{ survey_status_value: 'Published', survey_status_text:  'Published' },
+			],
+		}                                            
+	},
+
+	methods: {
+		priceFormat(value){
+			return '$ ' + value;
 		},
-        data: function () {
-            return {
-				//surveycases:this.surveycases,
-				surveycases:[],
-				Survey_Case_No: 0,
-				Creator_Name: '',
-				Created_Time:'',
-				Created_Venue: '',
-                Species_Name: '',
-                Survey_Status: '',
-                Administrator_Comment: '',
-                Survey_Case_No_To: 0,
-                Survey_Case_No_From: 0,
-				mode:'',
-				bulkselectsurveycase:[],
-				values: [],
-					  
-			}                                            
-		},
-        mounted() {
-			if (localStorage.getItem('surveycases')) {
-				try {
-					localStorage.setItem('surveycases', JSON.stringify(this.surveycases));   
-		        } catch(e) {
-                    localStorage.removeItem('surveycases');
-                }
-            }
-        },
-		persist() {
-			localStorage.surveycases = this.surveycases;			      
-				console.log('persist localStorage.surveycases = this.surveycases;	');   
-	    },
-                
-		watch:{
-			surveycases(newsurveycases) {        
-				try {
-					localStorage.setItem('surveycases', JSON.stringify(newsurveycases));
-				} catch (e) {
-					console.log('erro watch localStorage.surveycases = newsurveycases;');  
-				}       
-			}
-		},
-		methods: {
-			allRecords: function(){
-				axios.get('ajaxfile_get_surveyrecords.php').then((response) => {
+						
+		allRecords: function(){
+			axios.get('ajaxfile_get_surveyrecords.php').then((response) => {
 					//this.surveycases = response.data;
 					this.values = [];
 					for (const eachsurvey of response.data) {
 					  eachsurvey["Selected"] = false;
 					  eachsurvey["Survey_Case_No"] = Number(eachsurvey["Survey_Case_No"]) ;
+					 
 					}
 					this.bulkselectsurveycase =[];
 					this.values=    response.data;
+					this.json_data = response.data;
 					console.log(this.values); 
 				}).catch((error) => {
 					console.log('error on all Records:' + error);
@@ -232,7 +404,14 @@ export default  {
 						break;
 					}
 				  }
-				  
+				  this.vueexcelxlsx = true;
+				  this.selectedsurveydata = [];
+				  for (const eachsurvey of this.values) {
+				    if (eachsurvey["Selected"] === true) {
+						this.selectedsurveydata.push(eachsurvey)
+						this.vueexcelxlsx = false;
+					}
+				  }				    
 			},
 								
         },
@@ -247,6 +426,15 @@ export default  {
 	input[type=text]{
 	width: 100%;
     }
+	.form-control-borderless {
+	    border: none;
+	}
+	
+	.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+	    border: none;
+	    outline: none;
+	    box-shadow: none;
+	}
 </style>
 
 export default 

@@ -17,6 +17,13 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+ import VueExcelXlsx from "vue-excel-xlsx";
+
+
+    Vue.use(VueExcelXlsx);
+
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
@@ -28,7 +35,7 @@ Vue.use(VueSimpleAlert);
 Vue.use(SortedTablePlugin);
 Vue.use(VueRouter);
 Vue.use(VueSidebarMenu);
-
+Vue.use(VueSweetalert2);
 
 const router = new VueRouter({
   mode: "history",
@@ -71,15 +78,16 @@ const router = new VueRouter({
     name: 'IndividualSurveyPage',
     component: () => import( './views/IndividualSurveyPage.vue')
    },
-   
-
-    
+   {
+    path: '/surveycsvimportpage',
+    name: 'SurveyCSVImportPage',
+    component: () => import( './views/SurveyCSVImportPage.vue')
+   },   
    {
     path: '/yourprofile',
     name: 'YourProfile',
     component: () => import( './views/YourProfile.vue')
    },
-   
    
  {
     path: '/logout',

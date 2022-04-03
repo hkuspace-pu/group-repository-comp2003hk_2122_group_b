@@ -1,11 +1,10 @@
 <template>
 	<div class="home">
-		<br>
         <table border='0' width='100%' style='border-collapse: collapse;'>
 			<tr>
-				<td style= "vertical-align: bottom;"><H1>Tree Of The Month</H1></td>
+				<td style= "vertical-align: bottom;"><H5>Tree Of The Month</H5></td>
 				<td>
-					<H4>
+					<H5>
 					<form class="card card-sm" style="text-align:right" >
 						<div class="card-body row no-gutters align-items-right">
 							<div class="col-auto">
@@ -16,15 +15,64 @@
 								<v-select  multiple v-model="SearchTreeNameModel" :options="ListOfTreeName"  @change="select_treename" placeholder="Search Tree Name" />
 							</div>
 							<div class="col-auto">
-								<button type="button" class="btn btn-lg btn-success"  @click="select_individual_tree_name(SearchTreeNameModel)">Search</button>	
+								<button type="button" class="btn btn-lg btn-success"  @click="select_individual_tree_name(SearchTreeNameModel)"><H5>Search</H5></button>	
 							</div>
 						</div>
 					</form>
-					</H4>
+					</H5>
 				</td>
 			</tr>
 	   </table>	
-		<H4><v-select multiple  :value="selected" :options="searchmonthoptions" @input="setSelected"  placeholder="Choose a Month ..."/></H4>
+		<H5><v-select multiple  :value="selected" :options="searchmonthoptions" @input="setSelected"  placeholder="Choose a Month ..."/></H5>
+		<b-container>
+			<div id="example">
+			  <carousel-3d :controls-visible="true" :clickable="false" :width="620" :height="500" :count="sliderows.length" :autoplay= "true" :loop="true"
+			               :controls-prev-html="'&#10092; '" :controls-next-html="'&#10093;'" :controls-width="30" :controls-height="60">
+			    <slide v-for="(slide,  i) in sliderows" :key="i" :index="i">
+			      <figure>
+			        <img :src="slide.treeImage">
+					 <figcaption >
+					  <table border='0' width='100%' style='border-collapse: collapse; '>
+						<tr>
+							<td style= "vertical-align: bottom;  top:40px">
+							<tr>
+								<H5>{{slide.treeName}}</H5>
+							</tr>
+							<tr>
+								<H6>Flowering: {{periodRange(slide.flowering)}}</H6>
+							</tr>
+							</td>
+							<td style= "vertical-align: bottom;">
+								<b-button :pressed="false" pill variant="primary" @click="ShowTreeDetails(slide.treeId,slide.treeName,slide.alias,slide.scientificName,slide.ecologic,slide.flowering,slide.fruit,slide.cnRare,slide.hkRare,slide.cap96,slide.cap586,slide.treeImage,slide.treeDesc)"><H5>Details</H5></b-button>
+							</td>
+					    </tr>
+						</table>
+					</figcaption>
+			      </figure>
+				</slide>
+			  </carousel-3d>
+			</div>
+		</b-container>
+		<!--
+		<b-container fluid="sm">
+		<div class = "slidepart">
+			<b-carousel
+				class ="slidetree"
+				id="carousel"
+				v-model="slide"
+				:interval="4000"
+				controls
+				indicators
+				background="#ababab"
+				img-width="256"
+				img-height="120"
+				style="text-shadow: 1px 1px 2px #333;"
+				@sliding-start="onSlideStart"
+				@sliding-end="onSlideEnd">
+				 <b-carousel-slide  class="slideshow" v-for="(item,key,index) in sliderows" img-width="256" img-height="120" v-bind:key="index" :img-src="item.treeImage" :caption = "item.treeName"></b-carousel-slide>
+			</b-carousel>
+			</div>
+			</b-container>
 		<b-container class="bv-example-row">
 			<b-row v-for="row in rows">
 				<b-col v-for="objitem in row" >
@@ -34,16 +82,18 @@
 								<b-card-title>{{objitem.treeName}}</b-card-title> 
 								<b-card-sub-title class="mb-3">{{objitem.scientificName}}</b-card-sub-title>
 								<b-card-text>Alias : {{objitem.alias}}</b-card-text>
-								<!--<b-button @click="ShowTreeDetails(objitem.treeId)">Details</b-button> -->
+								<b-button @click="ShowTreeDetails(objitem.treeId)">Details</b-button> 
 								<b-button :pressed="false" pill variant="primary" @click="ShowTreeDetails(objitem.treeId,objitem.treeName,objitem.alias,objitem.scientificName,objitem.ecologic,objitem.flowering,objitem.fruit,objitem.cnRare,objitem.hkRare,objitem.cap96,objitem.cap586,objitem.treeImage,objitem.treeDesc)">Details</b-button> 		
 								<b-card-footer>Reference ID : {{objitem.treeId}}</b-card-footer> 
 							</b-card>
 						</div>
 					</div>
 				</b-col>
-				<br>
+				<br> 
 			</b-row>
 		</b-container>
+		-->
+
 	</div>
 </template>
 
@@ -53,14 +103,19 @@ import axios from 'axios';
 import Vue from 'vue';
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
-
+import { Carousel3d, Slide } from 'vue-carousel-3d';
+  
+	Vue.use(Carousel3d);
 Vue.component('v-select', VueSelect.VueSelect)
 export default {
 	
 	props:['data'],
 	components: {
 	            vSelect,
-	},
+
+	    Carousel3d,
+	    Slide
+	  },
 	data() {
 	    return {
 			searchmonthoptions: [
@@ -83,9 +138,18 @@ export default {
 			monthnumber : [1,2,3,4,5,6,7,8,9,10,11,12],
 			selected :[],
 			targetmonthnumber_list : [],
-			yes_no_convert: ['No', 'Yes', '-']
+			yes_no_convert: ['No', 'Yes', '-'],
+			Tree_Name  : "",
+			Tree_Alias : "",
+			Tree_Reference_ID : "",
+			slide : 0,
+			sliding: null,
+			slides : this.sliderows
+			
 	    }
 	},	
+	
+
 	
 	created() {
 	    console.log('Component has been created!');
@@ -102,6 +166,31 @@ export default {
 	},
 	  
 	methods: {
+		
+		periodRange(period_indicator){
+			var startMonth = "";
+			var endMonth = "";
+			for (var i = 0; i < period_indicator.length; i++) {
+				if (period_indicator.charAt(i) === "1" ) {
+					if (startMonth === ""){
+						startMonth = this.searchmonthoptions[i];
+					}
+				   endMonth = this.searchmonthoptions[i];
+				}
+			}
+			//period_Range = startMonth + " - " + endMonth;
+			//console.log (periodRange);
+			return startMonth + " - " + endMonth;
+		},
+		
+		//onSlideStart(slide) {
+		//        this.sliding = true
+		//},
+		
+		//onSlideEnd(slide) {
+		//        this.sliding = false
+		//},
+		
 	   setSelected(value) {
 		   this.selected = value
 		   this.targetmonthnumber_list = []
@@ -201,7 +290,7 @@ export default {
 	},
 	
 	computed: {
-	    rows() {
+	   /** rows() {
 	        var rows = []
 			var itemsPerRow = 3 // How many b-card per row
 	        console.log("rows() function called. New TargetMonthNumber:" + this.targetmonthnumber_list)
@@ -229,6 +318,25 @@ export default {
 				rows.push(row)
 			}
 			return rows
+		},
+		**/
+		sliderows(){
+			var arr = this.loadeddata
+			var sliderows = []
+			var floweringperiod = ''
+			for (var i = 0; i<arr.length; i++){
+				floweringperiod = arr[i].flowering
+				for (var j = 0; j<floweringperiod.length; j++){
+					if (floweringperiod.charAt(j) === "1" ) {
+						if (this.targetmonthnumber_list.includes(j+1)) {
+							console.log("+++" + arr[i].treeName + "+++")
+							sliderows.push(arr[i]);
+							break;
+						}
+					}	
+				}
+			}
+			return sliderows
 		},
 		ListOfTreeName(){
 		    var ListofTreeInfo = this.loadeddata
@@ -261,6 +369,21 @@ export default {
     outline: none;
     box-shadow: none;
 }
+.carousel-3d-container figure {
+  margin:0;
+}
 
+.carousel-3d-container figcaption {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  bottom: 0;
+  position: absolute;
+  bottom: 0;
+  padding: 15px;
+  font-size: 12px;
+  min-width: 100%;
+  box-sizing: border-box;
+}
 </style>
 

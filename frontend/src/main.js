@@ -19,10 +19,11 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
- import VueExcelXlsx from "vue-excel-xlsx";
+import VueExcelXlsx from "vue-excel-xlsx";
 
-
+import { Carousel3d, Slide } from 'vue-carousel-3d';
     Vue.use(VueExcelXlsx);
+	Vue.use(Carousel3d);
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
@@ -107,8 +108,16 @@ const router = new VueRouter({
 new Vue({
   router,
   store,
+   // data: {
+   //   slides: 7
+   // },
+   // components: {
+   //   'carousel-3d': window['carousel-3d'].Carousel3d,
+    //  'slide': window['carousel-3d'].Slide
+   // },
   render: h => h(App)
 }).$mount('#app')
+
 
 
 

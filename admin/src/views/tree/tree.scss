@@ -17,7 +17,7 @@
     h2 {
         width: 100%;
         text-align: center;
-    } 
+    }
 
     #checkboxGroup,
     #editButtonGroup {
@@ -36,8 +36,8 @@
     .btn-file {
         position: relative;
         overflow: hidden;
-      }
-      .btn-file input[type=file] {
+    }
+    .btn-file input[type="file"] {
         position: absolute;
         top: 0;
         right: 0;
@@ -50,13 +50,23 @@
         background: red;
         cursor: inherit;
         display: block;
-      }
-      input[readonly] {
+    }
+    input[readonly] {
         background-color: white !important;
         cursor: text !important;
-      }
+    }
 
-      img {
-          width: 300px;
-      }
+    img {
+        width: 300px;
+    }
+
+    #floweringAndFruit {
+        display: flex;
+
+        .flowering,
+        .fruit {
+            width: 100%;
+            margin-right: 10px;
+        }
+    }
 }

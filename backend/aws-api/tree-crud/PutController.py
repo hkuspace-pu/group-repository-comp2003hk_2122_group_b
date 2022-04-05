@@ -8,10 +8,11 @@ def put(connection, data):
     print(body)
     
     sql = "INSERT INTO trees "
-    sql += "(tree_name, tree_alias, scientific_name, family_code, ecologic, cap_96, cap_586, hk_rare, cn_rare, flowering, fruit, tree_desc, tree_image) "
-    sql += "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    sql += "(tree_name_en, tree_name_cn, tree_alias, scientific_name, family_code, ecologic, cap_96, cap_586, hk_rare, cn_rare, flowering, fruit, tree_desc_en, tree_desc_cn, tree_image) "
+    sql += "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     val = (
-        body["treeName"],
+        body["treeNameEn"],
+        body["treeNameCn"],
         body["treeAlias"],
         body["scientificName"],
         body["familyCode"],
@@ -25,7 +26,8 @@ def put(connection, data):
         body["flowering"],
         body["fruit"],
         
-        body["treeDesc"],
+        body["treeDescEn"],
+        body["treeDescCn"],
         body["treeImage"]
         
     )

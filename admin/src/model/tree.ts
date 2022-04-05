@@ -1,6 +1,7 @@
 export default class Tree {
     treeId: number;
-    treeName: string = "";
+    treeNameEn: string = "";
+    treeNameCn: string = "";
     treeAlias: string = "";
     scientificName: string = "";
     familyCode: string = "";
@@ -11,21 +12,21 @@ export default class Tree {
     hkRare: boolean = false;
     cnRare: boolean = false;
 
-    floweringStart: number = -1;
-    floweringEnd: number = -1;
-    fruitStart: number = -1;
-    fruitEnd: number = -1;
+    flowering: boolean[] = [];
+    fruit: boolean[] = [];
 
-    treeDesc: string = "";
-    
+    treeDescEn: string = "";
+    treeDescCn: string = "";
+
     treeImage: string = "";
 
     constructor(json: any) {
         this.treeId = json["treeId"];
-        this.treeName = json["treeName"];
+        this.treeNameEn = json["treeNameEn"];
+        this.treeNameCn = json["treeNameCn"];
         this.treeAlias = json["alias"];
         this.scientificName = json["scientificName"];
-        
+
         this.familyCode = json["familyCode"];
 
         this.ecologic = json["ecologic"];
@@ -34,13 +35,40 @@ export default class Tree {
         this.hkRare = json["hkRare"] === 1;
         this.cnRare = json["cnRare"] === 1;
 
-        this.floweringStart = json["floweringStart"] || -1;
-        this.floweringEnd = json["floweringEnd"] || -1;
-        this.fruitStart = json["fruitStart"] || -1;
-        this.fruitEnd = json["fruitEnd"] || -1;
-        
-        this.treeDesc = json["treeDesc"];
+        let floweringStr = json["flowering"] || "",
+            floweringArr = floweringStr.split('') as [],
+            floweringMapped = floweringArr.map(i => i === "1");
+        let fruitStr = json["fruit"] || "",
+            fruitArr = fruitStr.split('') as [],
+            fruitMapped = fruitArr.map(i => i === "1")
+
+        this.flowering = floweringMapped;
+        this.fruit = fruitMapped;
+
+        this.treeDescEn = json["treeDescEn"];
+        this.treeDescCn = json["treeDescCn"];
 
         this.treeImage = json["treeImage"];
+    }
+
+    convertToString(target: string): string {
+        let result = "",
+            arr: boolean[] = [];
+        if(target === "flowering") {
+            arr = this.flowering;
+        }
+        if(target === "fruit") {
+            arr = this.fruit;
+        }
+
+        if(arr.length <= 0) {
+            return "";
+        }
+
+        arr.forEach(item => {
+            result += item ? "1" : "0";
+        });
+
+        return result;
     }
 }

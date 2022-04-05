@@ -11,6 +11,9 @@ export default defineComponent({
             viewMode: "table" as string,
             treeData: [] as Tree[],
             selectedTree: {} as Tree,
+            monthStr: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            isShowFlowering: false,
+            isShowFruit: false,
             // image related
             imageFile: {} as any,
             imageName: "" as string,
@@ -21,24 +24,24 @@ export default defineComponent({
         axios
             .get(
                 this.url,
-                {
-                    params: JSON.stringify({
-                        "species": 3,
-                        "flowering": [1, 2, 3],
-                        "fruit": [4, 5, 6],
-                        "cap96": true,
-                        "cap586": true,
-                        "hkRare": true,
-                        "cnRare": true,
-                    })
-                }
+                // {
+                //     params: JSON.stringify({
+                //         "species": 3,
+                //         "flowering": [1, 2, 3],
+                //         "fruit": [4, 5, 6],
+                //         "cap96": true,
+                //         "cap586": true,
+                //         "hkRare": true,
+                //         "cnRare": true,
+                //     })
+                // }
             )
             .then(response => {
                 console.log('starLog raw data', response.data);
 
                 const data = response.data as [];
                 this.treeData = data.map(row => new Tree(row));
-                // console.log('starLog data', this.treeData);
+                console.log('starLog data', this.treeData);
             });
     },
     methods: {
@@ -79,6 +82,12 @@ export default defineComponent({
             }).then(res => {
                 console.log('starLog response', res);
             });
+        },
+        onFloweringClick() {
+            this.isShowFlowering = !this.isShowFlowering;
+        },
+        onFruitClick() {
+            this.isShowFruit = !this.isShowFruit;
         },
         handleFiles(element: any) {
             if (element.target.files.length <= 0) return;
@@ -157,7 +166,8 @@ export default defineComponent({
                     .put(
                         self.url,
                         {
-                            "treeName": self.selectedTree.treeName,
+                            "treeNameEn": self.selectedTree.treeNameEn,
+                            "treeNameCn": self.selectedTree.treeNameCn,
                             "treeAlias": self.selectedTree.treeAlias,
                             "scientificName": self.selectedTree.scientificName,
                             "familyCode": self.selectedTree.familyCode,
@@ -168,10 +178,11 @@ export default defineComponent({
                             "hkRare": self.selectedTree.hkRare,
                             "cnRare": self.selectedTree.cnRare,
 
-                            "flowering": "001110000000",
-                            "fruit": "000001110000",
+                            "flowering": self.selectedTree.convertToString("flowering"),
+                            "fruit": self.selectedTree.convertToString("fruit"),
 
-                            "treeDesc": self.selectedTree.treeDesc,
+                            "treeDescEn": self.selectedTree.treeDescEn,
+                            "treeDescCn": self.selectedTree.treeDescCn,
                             "treeImage": downloadUrl
                         })
                     .then(res => {
@@ -186,8 +197,9 @@ export default defineComponent({
             let uploadCallback = function (downloadUrl: string) {
                 axios.post(self.url, {
                     "treeID": self.selectedTree.treeId,
-                    "treeName": self.selectedTree.treeName,
-                    "treeAlias": self.selectedTree.treeAlias || "",
+                    "treeNameEn": self.selectedTree.treeNameEn,
+                    "treeNameCn": self.selectedTree.treeNameCn,
+                    "treeAlias": self.selectedTree.treeAlias,
                     "scientificName": self.selectedTree.scientificName,
                     "familyCode": self.selectedTree.familyCode,
                     "ecologic": self.selectedTree.ecologic,
@@ -197,10 +209,11 @@ export default defineComponent({
                     "hkRare": self.selectedTree.hkRare,
                     "cnRare": self.selectedTree.cnRare,
 
-                    "flowering": "001110000000",
-                    "fruit": "000001110000",
+                    "flowering": self.selectedTree.convertToString("flowering"),
+                    "fruit": self.selectedTree.convertToString("fruit"),
 
-                    "treeDesc": self.selectedTree.treeDesc,
+                    "treeDescEn": self.selectedTree.treeDescEn,
+                    "treeDescCn": self.selectedTree.treeDescCn,
                     "treeImage": downloadUrl || ""
                 }).then(res => {
                     console.log('starLog response', res);

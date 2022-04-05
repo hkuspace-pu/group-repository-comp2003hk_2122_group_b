@@ -5,7 +5,8 @@ def post(connection, data):
     body = json.loads(data)
     
     sql = "UPDATE trees SET "
-    sql += "tree_name=%s, "
+    sql += "tree_name_en=%s, "
+    sql += "tree_name_cn=%s, "
     sql += "tree_alias=%s, "
     sql += "scientific_name=%s, "
     sql += "family_code=%s, "
@@ -16,11 +17,13 @@ def post(connection, data):
     sql += "cn_rare=%s, "
     sql += "flowering=%s, "
     sql += "fruit=%s, "
-    sql += "tree_desc=%s, "
+    sql += "tree_desc_en=%s, "
+    sql += "tree_desc_cn=%s, "
     sql += "tree_image=%s "
     sql += "WHERE tree_id=%s"
     val = (
-        body["treeName"],
+        body["treeNameEn"],
+        body["treeNameCn"],
         body["treeAlias"],
         body["scientificName"],
         body["familyCode"],
@@ -34,7 +37,8 @@ def post(connection, data):
         body["flowering"],
         body["fruit"],
         
-        body["treeDesc"],
+        body["treeDescEn"],
+        body["treeDescCn"],
         body["treeImage"],
         
         body["treeID"]

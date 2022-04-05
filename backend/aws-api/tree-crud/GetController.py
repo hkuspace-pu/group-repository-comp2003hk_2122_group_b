@@ -9,19 +9,21 @@ def get(connection):
     for row in rows:
         results.append({
             "treeId": row[0],
-            "treeName": row[1],
-            "alias": row[2],
-            "scientificName": row[3],
-            "familyCode": row[4],
-            "ecologic": row[5],
-            "cap96": row[6],
-            "cap586": row[7],
-            "hkRare": row[8],
-            "cnRare": row[9],
-            "flowering": row[10],
-            "fruit": row[11],
-            "treeDesc": row[12],
-            "treeImage": row[13]
+            "treeNameEn": row[1],
+            "treeNameCn": row[2],
+            "alias": row[3],
+            "scientificName": row[4],
+            "familyCode": row[5],
+            "ecologic": row[6],
+            "cap96": row[7],
+            "cap586": row[8],
+            "hkRare": row[9],
+            "cnRare": row[10],
+            "flowering": row[11],
+            "fruit": row[12],
+            "treeDescEn": row[13],
+            "treeDescCn": row[14],
+            "treeImage": row[15]
         })
         
     return {
@@ -49,19 +51,21 @@ def getWithOptions(connection, data):
     for row in rows:
         results.append({
             "treeId": row[0],
-            "treeName": row[1],
-            "alias": row[2],
-            "scientificName": row[3],
-            "familyCode": row[4],
-            "ecologic": row[5],
-            "cap96": row[6],
-            "cap586": row[7],
-            "hkRare": row[8],
-            "cnRare": row[9],
-            "flowering": row[10],
-            "fruit": row[11],
-            "treeDesc": row[12],
-            "treeImage": row[13]
+            "treeNameEn": row[1],
+            "treeNameCn": row[2],
+            "alias": row[3],
+            "scientificName": row[4],
+            "familyCode": row[5],
+            "ecologic": row[6],
+            "cap96": row[7],
+            "cap586": row[8],
+            "hkRare": row[9],
+            "cnRare": row[10],
+            "flowering": row[11],
+            "fruit": row[12],
+            "treeDescEn": row[13],
+            "treeDescCn": row[14],
+            "treeImage": row[15]
         })
     
     # check species

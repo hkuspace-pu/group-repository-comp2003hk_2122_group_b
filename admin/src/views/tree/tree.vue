@@ -31,8 +31,8 @@
         <thead>
           <tr>
             <th scope="col" class="title treeId">#</th>
-            <th scope="col" class="title name">Name</th>
-            <th scope="col" class="title scientificName">Scientific Name</th>
+            <th scope="col" class="title nameEn">Name</th>
+            <th scope="col" class="title nameCn">名稱</th>
             <th scope="col" class="title familyCode">Family Code</th>
           </tr>
         </thead>
@@ -43,10 +43,8 @@
             @click="onTreeItemClick(index)"
           >
             <th scope="row" class="item treeId">{{ item.treeId }}</th>
-            <th scope="row" class="item name">{{ item.treeName }}</th>
-            <th scope="row" class="item scientificName">
-              {{ item.scientificName }}
-            </th>
+            <th scope="row" class="item nameEn">{{ item.treeNameEn }}</th>
+            <th scope="row" class="item nameCn">{{ item.treeNameCn }}</th>
             <th scope="row" class="item familyCode">{{ item.familyCode }}</th>
           </tr>
         </tbody>
@@ -66,7 +64,12 @@
         <h2 v-show="viewMode === 'create'">Create A Tree</h2>
       </div>
 
-      <img :src="selectedTree.treeImage" alt="picked image" v-if="selectedTree.treeImage"  rel="preload">
+      <img
+        :src="selectedTree.treeImage"
+        alt="picked image"
+        v-if="selectedTree.treeImage"
+        rel="preload"
+      />
 
       <div class="form-group">
         <label>Tree Name</label>
@@ -74,7 +77,19 @@
           type="text"
           class="form-control"
           placeholder="Enter Tree Name"
-          v-model="selectedTree.treeName"
+          v-model="selectedTree.treeNameEn"
+        />
+        <!-- <small id="emailHelp" class="form-text text-muted"
+            >We'll never share your email with anyone else.</small
+          > -->
+      </div>
+      <div class="form-group">
+        <label>名稱</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="請輸入樹木名稱"
+          v-model="selectedTree.treeNameCn"
         />
         <!-- <small id="emailHelp" class="form-text text-muted"
             >We'll never share your email with anyone else.</small
@@ -164,40 +179,56 @@
         </div>
       </div>
 
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="">Flowering</span>
+      <div id="floweringAndFruit">
+        <div class="flowering">
+          <button
+            class="btn btn-primary"
+            type="button"
+            @click="onFloweringClick"
+          >
+            Flowering
+          </button>
+          <ul
+            class="list-group"
+            v-if="viewMode !== 'table'"
+            v-show="isShowFlowering"
+          >
+            <li
+              class="list-group-item"
+              v-for="(f, index) in selectedTree.flowering"
+            >
+              <input
+                class="form-check-input me-1"
+                type="checkbox"
+                v-model="selectedTree.flowering[index]"
+              />
+              {{ monthStr[index] }}
+            </li>
+          </ul>
         </div>
-        <input
-          type="number"
-          class="form-control"
-          v-model="selectedTree.floweringStart"
-        />
-        <input
-          type="number"
-          class="form-control"
-          v-model="selectedTree.floweringEnd"
-        />
-      </div>
-
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text" id="">Fruit</span>
+        <div class="fruit">
+          <button class="btn btn-primary" type="button" @click="onFruitClick">
+            Fruit
+          </button>
+          <ul
+            class="list-group"
+            v-if="viewMode !== 'table'"
+            v-show="isShowFruit"
+          >
+            <li
+              class="list-group-item"
+              v-for="(f, index) in selectedTree.fruit"
+            >
+              <input
+                class="form-check-input me-1"
+                type="checkbox"
+                v-model="selectedTree.fruit[index]"
+              />
+              {{ monthStr[index] }}
+            </li>
+          </ul>
         </div>
-        <input
-          type="number"
-          class="form-control"
-          v-model="selectedTree.fruitStart"
-        />
-        <input
-          type="number"
-          class="form-control"
-          v-model="selectedTree.fruitEnd"
-        />
       </div>
-      <small class="form-text text-muted"
-        >The number represent the mouth, input -1 represent NOT AVAILABLE</small
-      >
 
       <div class="form-group">
         <label>Description</label>
@@ -205,7 +236,20 @@
           type="text"
           class="form-control"
           placeholder="Enter Description"
-          v-model="selectedTree.treeDesc"
+          v-model="selectedTree.treeDescEn"
+        />
+        <!-- <small id="emailHelp" class="form-text text-muted"
+            >We'll never share your email with anyone else.</small
+          > -->
+      </div>
+
+      <div class="form-group">
+        <label>描述</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="請輸入樹木描述"
+          v-model="selectedTree.treeDescCn"
         />
         <!-- <small id="emailHelp" class="form-text text-muted"
             >We'll never share your email with anyone else.</small
@@ -215,14 +259,20 @@
       <div class="input-group">
         <span class="input-group-btn">
           <span class="btn btn-primary btn-file">
-            Tree Image&hellip; <input type="file" single  @change="handleFiles"/>
+            Tree Image&hellip;
+            <input type="file" single @change="handleFiles" />
           </span>
         </span>
-        <input type="text" class="form-control" readonly :value="imageName"/>
-        <span class="btn btn-danger" v-if="!!imageName" @click="onRemoveImageClick">Remove</span>
+        <input type="text" class="form-control" readonly :value="imageName" />
+        <span
+          class="btn btn-danger"
+          v-if="!!imageName"
+          @click="onRemoveImageClick"
+          >Remove</span
+        >
       </div>
-      <img :src="imageUrl" alt="picked image" v-if="!!imageUrl">
-      
+      <img :src="imageUrl" alt="picked image" v-if="!!imageUrl" />
+
       <div id="editButtonGroup">
         <button class="btn btn-primary" @click="onSubmitClick">Submit</button>
         <button

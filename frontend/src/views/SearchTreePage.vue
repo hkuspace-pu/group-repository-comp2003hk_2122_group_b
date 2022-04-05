@@ -168,7 +168,7 @@
 				<b-col v-for="objitem in row" >
 					<!-- you card -->
 					<div v-for="(item, key, index) in objitem" v-bind:key="objitem.treeId">
-						<div v-if="key === 'treeName'">
+						<div v-if="key === 'treeNameEn'">
 							<b-card  style="max-width: 120rem;" class="mb-3">
 								<b-card
 								    no-body
@@ -186,7 +186,7 @@
 								      <b-card-title>{{objitem.treeName}}</b-card-title>
 								      <b-card-sub-title class="mb-3">{{objitem.scientificName}}</b-card-sub-title>
 								      <b-card-text>
-								        {{objitem.treeDesc}}
+								        {{objitem.treeDescEn}}
 								      </b-card-text>
 								    </b-card-body>
 								
@@ -373,7 +373,7 @@ export default {
 				for(var j = 0; j < ListofTreeInfo.length; j++ ) {
 					//console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
 					for(var k = 0; k < tree_name_array.length; k++ ) {
-						if (ListofTreeInfo[j].treeName === tree_name_array[k] || ListofTreeInfo[j].scientificName === tree_name_array[k] || ListofTreeInfo[j].treeAlias === tree_name_array[k]) {
+						if (ListofTreeInfo[j].treeNameEn === tree_name_array[k] || ListofTreeInfo[j].scientificName === tree_name_array[k] || ListofTreeInfo[j].treeAlias === tree_name_array[k]) {
 							if (Select_Individual_Tree_Id.includes(ListofTreeInfo[j].treeId) === false) {
 								this.Select_Individual_Tree_Info.push(ListofTreeInfo[j])
 								Select_Individual_Tree_Id.push(ListofTreeInfo[j].treeId)
@@ -418,8 +418,8 @@ export default {
 		    var ListOfTreeName = [];
 			console.log('List Of Tree Name to be searched:' + ListofTreeInfo[0])
 		    for(var j = 0; j < ListofTreeInfo.length; j++ ) {
-	            if (ListofTreeInfo[j].treeName !== '' && ListOfTreeName.includes(ListofTreeInfo[j].treeName) === false) {
-					ListOfTreeName.push(ListofTreeInfo[j].treeName)
+	            if (ListofTreeInfo[j].treeNameEn !== '' && ListOfTreeName.includes(ListofTreeInfo[j].treeNameEn) === false) {
+					ListOfTreeName.push(ListofTreeInfo[j].treeNameEn)
 				}
 				if (ListofTreeInfo[j].treeAlias !== '' && ListOfTreeName.includes(ListofTreeInfo[j].treeAlias) === false) {
 					ListOfTreeName.push(ListofTreeInfo[j].treeAlias)

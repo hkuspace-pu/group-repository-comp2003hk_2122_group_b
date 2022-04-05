@@ -36,14 +36,14 @@
 						<tr>
 							<td style= "vertical-align: bottom;  top:40px">
 							<tr>
-								<H5>{{slide.treeName}}</H5>
+								<H5>{{slide.treeNameEn}}</H5>
 							</tr>
 							<tr>
 								<H6>Flowering: {{periodRange(slide.flowering)}}</H6>
 							</tr>
 							</td>
 							<td style= "vertical-align: bottom;">
-								<b-button :pressed="false" pill variant="primary" @click="ShowTreeDetails(slide.treeId,slide.treeName,slide.alias,slide.scientificName,slide.ecologic,slide.flowering,slide.fruit,slide.cnRare,slide.hkRare,slide.cap96,slide.cap586,slide.treeImage,slide.treeDesc)"><H5>Details</H5></b-button>
+								<b-button :pressed="false" pill variant="primary" @click="ShowTreeDetails(slide.treeId,slide.treeNameEn,slide.alias,slide.scientificName,slide.ecologic,slide.flowering,slide.fruit,slide.cnRare,slide.hkRare,slide.cap96,slide.cap586,slide.treeImage,slide.treeDescEn)"><H5>Details</H5></b-button>
 							</td>
 					    </tr>
 						</table>
@@ -214,7 +214,7 @@ export default {
 			for(var j = 0; j < ListofTreeInfo.length; j++ ) {
 				//console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
 				for(var k = 0; k < tree_name_array.length; k++ ) {
-					if (ListofTreeInfo[j].treeName === tree_name_array[k] || ListofTreeInfo[j].scientificName === tree_name_array[k] || ListofTreeInfo[j].treeAlias === tree_name_array[k]) {
+					if (ListofTreeInfo[j].treeNameEn === tree_name_array[k] || ListofTreeInfo[j].scientificName === tree_name_array[k] || ListofTreeInfo[j].treeAlias === tree_name_array[k]) {
 						if (Select_Individual_Tree_Id.includes(ListofTreeInfo[j].treeId) === false) {
 							Select_Individual_Tree_Info.push(ListofTreeInfo[j])
 							Select_Individual_Tree_Id.push(ListofTreeInfo[j].treeId)
@@ -329,7 +329,7 @@ export default {
 				for (var j = 0; j<floweringperiod.length; j++){
 					if (floweringperiod.charAt(j) === "1" ) {
 						if (this.targetmonthnumber_list.includes(j+1)) {
-							console.log("+++" + arr[i].treeName + "+++")
+							console.log("+++" + arr[i].treeNameEn + "+++")
 							sliderows.push(arr[i]);
 							break;
 						}
@@ -343,8 +343,8 @@ export default {
 		    var ListOfTreeName = [];
 			
 		    for(var j = 0; j < ListofTreeInfo.length; j++ ) {
-	            if (ListofTreeInfo[j].treeName !== '' && ListOfTreeName.includes(ListofTreeInfo[j].treeName) === false) {
-					ListOfTreeName.push(ListofTreeInfo[j].treeName)
+	            if (ListofTreeInfo[j].treeNameEn !== '' && ListOfTreeName.includes(ListofTreeInfo[j].treeNameEn) === false) {
+					ListOfTreeName.push(ListofTreeInfo[j].treeNameEn)
 				}
 				if (ListofTreeInfo[j].treeAlias !== '' && ListOfTreeName.includes(ListofTreeInfo[j].treeAlias) === false) {
 					ListOfTreeName.push(ListofTreeInfo[j].treeAlias)

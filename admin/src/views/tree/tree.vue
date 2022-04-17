@@ -2,7 +2,7 @@
   <div id="tree" class="bg-dark bg-gradient text-white">
     <div id="tableView" v-show="viewMode === 'table'">
       <div class="header">
-        <h1>Tree Page</h1>
+        <h1>Trees</h1>
         <button class="btn text-white" @click="onAddClick">
           <svg
             xmlns="http://www.w3.org/2000/svg"

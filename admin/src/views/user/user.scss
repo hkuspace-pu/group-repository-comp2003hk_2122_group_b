@@ -1,0 +1,27 @@
+#user {
+    width: 100%;
+    padding: 20px;
+    text-align: left;
+    overflow: scroll;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        width: 100%;
+        text-align: center;
+    }
+
+    .item {
+        cursor: pointer;
+    }
+
+    #editButtonGroup {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+}

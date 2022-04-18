@@ -28,7 +28,7 @@ export default {
         return decrypt.toString(CryptoJS.enc.Utf8);
     },
 
-    ivGenerator(length: number): string {
+    generateIV(length: number): string {
         let chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
             iv = "";
         for (var i = 0; i <= length; i++) {

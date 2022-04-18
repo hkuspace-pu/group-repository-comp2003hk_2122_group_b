@@ -43,12 +43,18 @@ export default defineComponent({
             this.createUser();
         },
         createUser(): void {
-            axios.put(this.url, {
-                "userName": this.selectedUser.userName,
-                "email": this.selectedUser.email,
-                "membership": this.selectedUser.membership,
-                "password": crypto.hash(this.newPassword)
-            }).then(res => {
+            let key = "yAQwfsssfLP48cHQ",
+                iv = crypto.generateIV(16),
+                sendObj = {
+                    "userName": this.selectedUser.userName,
+                    "email": this.selectedUser.email,
+                    "membership": this.selectedUser.membership,
+                    "password": crypto.encrypt(this.newPassword, key, iv),
+                    "iv": iv
+                };
+            // console.log('starLog send obj', sendObj);
+            
+            axios.put(this.url, sendObj).then(res => {
                 console.log('starLog create user response', res);
                 
             });

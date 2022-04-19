@@ -69,17 +69,14 @@
       </table>
     </div>
 
-    <div id="editMode" v-show="viewMode === 'edit' || viewMode === 'create'">
+    <div id="editMode" v-show="viewMode === 'create'">
       <div class="header">
         <button
           type="button"
           class="btn-close btn-close-white"
-          @click="onEditBackClick"
+          @click="onBackButtonClick"
         ></button>
-        <h2 v-show="viewMode === 'edit'">
-          Editing user #{{ selectedUser.userId }}
-        </h2>
-        <h2 v-show="viewMode === 'create'">Create A User</h2>
+        <h2>Create A User</h2>
       </div>
 
       <div class="form-group">
@@ -144,8 +141,124 @@
         </ul>
       </div>
 
+      <div id="createButtonGroup">
+        <button class="btn btn-primary" @click="onCreateClick">Submit</button>
+      </div>
+    </div>
+
+    <div id="editMode" v-show="viewMode === 'edit'">
+      <div class="header">
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          @click="onBackButtonClick"
+        ></button>
+        <h2>Editing user #{{ selectedUser.userId }}</h2>
+      </div>
+
+      <div class="form-group">
+        <label>User Name</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter User Name"
+          v-model="selectedUser.userName"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input
+          type="email"
+          class="form-control"
+          placeholder="Enter Email"
+          v-model="selectedUser.email"
+        />
+      </div>
+
+      <label>Membership</label>
+      <div class="dropdown">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          {{ selectedUser.membershipTxt }}
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li
+            v-for="(item, index) in memberships"
+            :key="index"
+            @click="onMembershipItemClick(index)"
+          >
+            <a class="dropdown-item">{{ item }}</a>
+          </li>
+        </ul>
+      </div>
+
       <div id="editButtonGroup">
-        <button class="btn btn-primary" @click="onSubmitClick">Submit</button>
+        <button class="btn btn-primary" @click="onUpdateClick">Submit</button>
+        <button class="btn btn-danger" @click="onDeleteClick">Delete</button>
+      </div>
+    </div>
+
+    <div id="passwordMode" v-show="viewMode === 'password'">
+      <div class="header">
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          @click="onBackButtonClick"
+        ></button>
+        <h2>Change password: user #{{ selectedUser.userId }}</h2>
+      </div>
+
+      <div>
+        <label>User Name:</label>
+        <label>{{ selectedUser.userName }}</label>
+      </div>
+      <div>
+        <label>Email:</label>
+        <label>{{ selectedUser.email }}</label>
+      </div>
+      <div>
+        <label>Memebership:</label>
+        <label>{{ selectedUser.membershipTxt }}</label>
+      </div>
+
+      <div class="form-group">
+        <label>Old Password</label>
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Enter old Password"
+          v-model="oldPassword"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>New Password</label>
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Enter new Password"
+          v-model="newPassword"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Re-enter Password"
+          v-model="confirmPassword"
+        />
+      </div>
+
+      <div id="passwordButtonGroup">
+        <button class="btn btn-primary" @click="onPasswordConfirmClick">Submit</button>
       </div>
     </div>
   </div>

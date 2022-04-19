@@ -26,3 +26,18 @@ CREATE TABLE trees (
     
     tree_image TEXT
 );
+
+SELECT * FROM trees;
+
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_name TEXT NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password TEXT NOT NULL,
+    membership int NOT NULL,
+    login TEXT,
+    
+    UNIQUE (email)
+)

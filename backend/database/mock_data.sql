@@ -1,3 +1,10 @@
+INSERT INTO users (user_name, email, password, membership) VALUES
+('star',
+'yiu.cheuk@students.plymouth.ac.uk',
+'abc123',
+900
+);
+
 INSERT INTO trees (tree_name_en, tree_name_cn, tree_alias, 
                     scientific_name, family_code, ecologic,
                     cap_96, cap_586, hk_rare, cn_rare, flowering, fruit, tree_desc_en, tree_desc_cn,

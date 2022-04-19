@@ -124,6 +124,20 @@ export default defineComponent({
                 console.log('starLog change password response', res);
             });
         },
+        login(): void {
+            let key = "yAQwfsssfLP48cHQ",
+                iv = crypto.generateIV(16),
+                sendObj = {
+                    "requestType": "login",
+                    "email": this.selectedUser.email,
+                    "password": crypto.encrypt(this.oldPassword, key, iv)
+                }
+
+            axios.post(this.url, sendObj).then(res => {
+                console.log('starLog login response', res);
+                
+            });
+        },
         checkCreationEmpty(): boolean {
             let name = this.selectedUser.userName || "",
                 email = this.selectedUser.email || "",

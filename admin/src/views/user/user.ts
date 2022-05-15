@@ -130,7 +130,8 @@ export default defineComponent({
                 sendObj = {
                     "requestType": "login",
                     "email": this.selectedUser.email,
-                    "password": crypto.encrypt(this.oldPassword, key, iv)
+                    "password": crypto.encrypt(this.oldPassword, key, iv),
+                    "iv": iv
                 }
 
             axios.put(this.url, sendObj).then(res => {

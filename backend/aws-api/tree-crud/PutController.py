@@ -4,12 +4,23 @@ def put(connection, data):
     cursor = connection.cursor()
     body = json.loads(data)
     
-    print("=====testing=====")
-    print(body)
-    
-    sql = "INSERT INTO trees "
-    sql += "(tree_name_en, tree_name_cn, tree_alias, scientific_name, family_code, ecologic, cap_96, cap_586, hk_rare, cn_rare, flowering, fruit, tree_desc_en, tree_desc_cn, tree_image) "
-    sql += "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    sql = "UPDATE trees SET "
+    sql += "tree_name_en=%s, "
+    sql += "tree_name_cn=%s, "
+    sql += "tree_alias=%s, "
+    sql += "scientific_name=%s, "
+    sql += "family_code=%s, "
+    sql += "ecologic=%s, "
+    sql += "cap_96=%s, "
+    sql += "cap_586=%s, "
+    sql += "hk_rare=%s, "
+    sql += "cn_rare=%s, "
+    sql += "flowering=%s, "
+    sql += "fruit=%s, "
+    sql += "tree_desc_en=%s, "
+    sql += "tree_desc_cn=%s, "
+    sql += "tree_image=%s "
+    sql += "WHERE tree_id=%s"
     val = (
         body["treeNameEn"],
         body["treeNameCn"],
@@ -28,17 +39,18 @@ def put(connection, data):
         
         body["treeDescEn"],
         body["treeDescCn"],
-        body["treeImage"]
+        body["treeImage"],
         
+        body["treeID"]
     )
     
     statusCode = 502
-    message = "Create tree record failure"
+    message = "Update tree record failure"
     try:
         cursor.execute(sql, val)
         connection.commit()
         statusCode = 200
-        message = "Create tree record succeeded "
+        message = "Update tree record succeeded "
     except:
         connection.rollback()
     
@@ -48,8 +60,7 @@ def put(connection, data):
             'Content-Type': 'application/json',
             'Access-Control-Allow-Headers': 'Content-Type',
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'OPTIONS,PUT'
+            'Access-Control-Allow-Methods': 'OPTIONS,POST'
         },
         'body': message
     }
-    

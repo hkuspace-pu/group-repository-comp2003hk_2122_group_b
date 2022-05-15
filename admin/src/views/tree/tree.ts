@@ -163,7 +163,7 @@ export default defineComponent({
             let self = this;
             let uploadCallback = function (downloadUrl: string) {
                 axios
-                    .put(
+                    .post(
                         self.url,
                         {
                             "treeNameEn": self.selectedTree.treeNameEn,
@@ -195,7 +195,7 @@ export default defineComponent({
         updateTree() {
             let self = this;
             let uploadCallback = function (downloadUrl: string) {
-                axios.post(self.url, {
+                axios.put(self.url, {
                     "treeID": self.selectedTree.treeId,
                     "treeNameEn": self.selectedTree.treeNameEn,
                     "treeNameCn": self.selectedTree.treeNameCn,

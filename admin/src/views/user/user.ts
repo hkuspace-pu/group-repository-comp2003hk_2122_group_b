@@ -57,7 +57,7 @@ export default defineComponent({
                 };
             // console.log('starLog send obj', sendObj);
 
-            axios.put(this.url, sendObj).then(res => {
+            axios.post(this.url, sendObj).then(res => {
                 console.log('starLog create user response', res);
 
             });
@@ -88,7 +88,7 @@ export default defineComponent({
                 "membership": this.selectedUser.membership
             };
 
-            axios.post(this.url, sendObj).then(res => {
+            axios.put(this.url, sendObj).then(res => {
                 console.log('starLog update user details response', res);
             });
         },
@@ -120,7 +120,7 @@ export default defineComponent({
                     "newPasswordIV": newPasswordIV
                 };
 
-            axios.post(this.url, sendObj).then(res => {
+            axios.put(this.url, sendObj).then(res => {
                 console.log('starLog change password response', res);
             });
         },
@@ -133,7 +133,7 @@ export default defineComponent({
                     "password": crypto.encrypt(this.oldPassword, key, iv)
                 }
 
-            axios.post(this.url, sendObj).then(res => {
+            axios.put(this.url, sendObj).then(res => {
                 console.log('starLog login response', res);
                 
             });

@@ -1,28 +1,56 @@
 <template>
-	 
+
   <div id="app" style="background-color:rgb(241, 255, 221)">
-	   <div class = "div-title" :style="'margin-left:'+this.appmargin">
-	 	<center><img alt="Tree Project logo" src="../assets/logo10.png"></center>
-			   </div>
+	   <!-- <div class = "div-title" :style="'margin-left:'+this.appmargin">
+			<center><img alt="Tree Project logo" src="../assets/logo10.png"></center>
+	  </div> -->
+	  
+	  <b-container >
+	  	<b-row  >
+	  		<b-col cols="10" align-self="center">
+	  			 <center><img alt="Tree Project logo" src="../assets/logo10.png"></center>
+	  		</b-col>
+	  	</b-row>
+		 </b-container >
+	 
     <div id="view" :class="[{'collapsed' : collapsed}]" :style="'margin-left:'+this.appmargin" >
       <router-view/>
+	 
     </div>
+	
     <sidebar-menu
       class="sidebar"
       :menu="menu"
 	  width='240px'
-      :collapsed="collapsed"
+      :collapsed="expanded"
 	  @toggle-collapse="onCollapse"
       @item-click="onItemClick"
       
     />
   </div>
+  <!--<div class="logout"  v-if ="this.$Login_Name != 'User'">
+      <b-form @submit.prevent="logout" >
+  		<b-container>
+  			<b-row>
+  				<b-col cols="3" align-self="left">
+  					<b-button type="submit" variant="primary">Logout</b-button>
+  				</b-col>
+  					<b-col cols="3" align-self="left">
+  						<H1></H1>Hi {{ this.$Login_Name }}</H1>
+  					</b-col>
+  			</b-row>
+  		</b-container>
+  	</b-form>
+  </div> -->
 </template>
 
 <script>
 import Vue from 'vue';
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
+import VueCryptojs from 'vue-cryptojs'
+Vue.use(VueCryptojs)
+
 Vue.component('v-select', VueSelect.VueSelect)
 	
 export default {
@@ -38,6 +66,10 @@ export default {
           title: "Application Menu",
 		  hiddenOnCollapse: true
         },
+		{ 
+		  title: "Hello! User",
+		  hiddenOnCollapse: true
+		},
 		{
 		  href: "/home",
 		  title: "Home",
@@ -96,6 +128,16 @@ export default {
 	 
     };
   },
+  computed: {
+  	updateuser: function() {
+  	    if(typeof(Vue.prototype.$Login_Name) !== 'undefined' || Vue.prototype.$Login_Name !== null) {
+			return "Hello! " + Vue.prototype.$Login_Name;	
+		} else {
+			return "Hello! User"
+		}	
+  	},
+  
+  },
   methods: {
     onItemClick(e, i) {
       console.log("onItemClick");
@@ -117,8 +159,9 @@ export default {
 		   this.appmargin = '240px';
 		    console.log('new margin' + this.appmargin);
 	  }
-	  
-    }
+	   this.menu[1].title = "Hello!  " + Vue.prototype.$Login_Name;
+    },
+	
   }
 };
 

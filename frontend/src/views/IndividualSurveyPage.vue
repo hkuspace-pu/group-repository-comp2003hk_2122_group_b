@@ -1,113 +1,151 @@
 <template>
-  <div class="individualsurveypage" :style="myStyle">
-	<h1><label>Survey ID: {{ this.survey_id }}</label></h1>  
-	<h1><label>Mode: {{ this.mode_state }}<label></h1>	
-	<input type='button' value='Create New Record' @click='alert_create_new()'>
-	<br />
-	<br />
-	<label>Your reference code</label><input v-model="client_reference" placeholder="any code you like (optional)" type="String"/>
-	<br />
-	<br />
-	<label>Please specific tree longitude and latitude using google map</label><input type='button' value='Open Google Map' @click='opengooglemap()'>
-	<br />
-	<br />
-	<label>Tree Location Longitude:</label><input v-model="location_longitude" placeholder="e.g. 22.256344094919317" type="String"/>
-	<br />
-	<br />
-	<label>Tree Location Latitude:</label><input v-model="location_latitude" placeholder="e.g. 114.18230964011866" type="String" />
-	<br />
-	<br />
-	<label>Survey Created Time:</label><label v-if ="mode_state ==='Edit'"><datetime type="datetime" v-model="datetime"></datetime></label><label v-else ="mode_state ==='View'">{{this.survey_created_time}}</label>
-	<br />
-	<br />
-	<label>Survey State (For Moderator Only):</label>
-	<span v-if ="mode_state ==='View'">
-		<label>{{ this.survey_state }}</label>
-	</span>
-	<span v-else >
-		<select v-model="survey_state_option_selected" id = survey_state_option_id > 
-			<option v-for="option in selectable_survey_state_options" :value="option.value"> {{ option.text }}</option>
-		</select>
-	</span>	
-	<br />
-	<br />
-	<label>You may filter Tree Family -> Tree Species to narrow down the list of selectable Tree Name</label>
-	<br >
-	<br />
-	<label for="tree_family_option_id">Tree Family : </label>
-	<select v-model="tree_family_option_selected" id = tree_family_option_id > 
-		<option v-for="option in selectable_tree_family_options" :value="option.value"> {{ option.text }}</option>
-	</select>
-	<label for="tree_species_option_id">Tree Genus : </label>
-	<select v-model="tree_species_option_selected" id = tree_species_option_id> 
-		<option v-for="option in selectable_tree_species_options" :value="option.value"> {{ option.text }}</option>
-	</select>
-	<br >
-	<br />
-	<label for="tree_name_option_id">Tree Name : </label>
-	<select v-model="tree_name_option_selected" id = tree_name_option_id>
-		<option v-for="option in selectable_tree_name_options" :value="option.value"> {{option.text }}</option>
-	</select>
-	<br />
-	<br />	
-	<label>Tree Observation:</label><input type="text" v-autowidth="{maxWidth: '960px', minWidth: '20px', comfortZone: 20}" v-model="treeobservation" placeholder="There are many birds living on this tree" />
-	<br />
-	<br />
-	<label>Tree Measurement:</label><input v-model="measurement" placeholder="Tall:15m Width:8m" type="String" />
-	<br />
-	<br />
-	<label for="tree_condition_option_id">Tree Condition: </label>	
-		<select v-model="tree_condition_option_selected" id = tree_condition_option_id>
-			<option v-for="option in selectable_tree_condition_options" :value="option.value"> {{option.text }}</option>
-		</select>
-	<br />
-	<br />
-	<label>Moderator Comment</label><input v-model="moderatorcomment" placeholder="Expert is Reviewing" type="String" />
-	<br />
-	<br />
-	<table border='1' width='70%' style="border-collapse: collapse;border:1px solid black;margin-left:auto;margin-right:auto">
-	<tr style="height:30px">
-		<td width="25%"><label>Image 1 (png only, size <= 500K)</label></td>
-		<td v-if ="mode_state ==='Edit' || mode_state ==='New' || mode_state ==='' " width="45%" style="text-align:left"><input type="file" ref="image1"  > </td>
-		<td v-else-if ="mode_state ==='View'"><img src="../assets/image_files/1/1.png" :alt="image1"></td>
-	</tr>
-	<tr style="height:30px">
-		<td width="25%"><label>Image 2 (png only, size <= 500K)</label></td>
-		<td v-if ="mode_state ==='Edit' || mode_state ==='New' || mode_state ==='' " width="45%" style="text-align:left"><input type="file" ref="image2"  > </td>
-		<td v-else-if ="mode_state ==='View'"><img src="../assets/image_files/1/2.png" :alt="image2"></td>
-	</tr>
-	<tr style="height:30px">
-		<td width="25%"><label>Image 3 (png only, size <= 500K)</label></td>
-		<td v-if ="mode_state ==='Edit' || mode_state ==='New' || mode_state ==='' " width="45%" style="text-align:left"><input type="file" ref="image3"  > </td>
-		<td v-else-if ="mode_state ==='View'"><img src="../assets/image_files/1/3.png" :alt="image3"></td>
-	</tr>
-	<tr style="height:30px">
-		<td width="25%"><label>Image 4 (png only, size <= 500K)</label></td>
-		<td v-if ="mode_state ==='Edit' || mode_state ==='New' || mode_state ==='' " width="45%" style="text-align:left"><input type="file" ref="image4"  > </td>
-		<td v-else-if ="mode_state ==='View'"><img src="../assets/image_files/1/4.png" :alt="image4"></td>
-	</tr>
-	<tr style="height:30px">
-		<td width="25%"><label>Image 5 (png only, size <= 500K)</label></td>
-		<td v-if ="mode_state ==='Edit' || mode_state ==='New' || mode_state ==='' " width="45%" style="text-align:left"><input type="file" ref="image5"  > </td>
-		<td v-else-if ="mode_state ==='View'"><img src="../assets/image_files/2/5.png" :alt="image5"></td>
-	</tr>
-	<tr style="height:30px">
-		<td width="25%"><label>Video (avi only, size <= 50M)</label></td>
-		<td v-if ="mode_state ==='Edit' || mode_state ==='New' || mode_state ==='' " width="45%" style="text-align:left"><input type="file" ref="video"  > </td>
-		<td v-else-if ="mode_state ==='View'"><a href="url">http://student.plymouth.ac.uk/timmok/treevideo.avi</a></td>
-		</tr>
-	</table >
-	<br />
-	<br />
-		<h1 id="action_buttons" v-if ="mode_state ==='Edit' || mode_state ==='New' ">
-			<input type='button' value='Clear All' @click='clearall()'>
-			<br />
-			<br />
-			<input type='button' value='Save as Draft' @click='confirm_alert_box("Confirm to save your draft? You can edit it many times until it is submitted as a final version for moderator approval.","Draft",survey_id)'>
-			<br />
-			<br />
-			<input type='button' value='Submit as Final' @click='confirm_alert_box("Confirm to submit it as a final version? After submitting, you are not allowed to edit it prior to moderator approval","Submitted", survey_id)'>
-		</h1>  
+	<div class="individualsurveypage">
+	<b-container>		
+		<b-container>
+			<b-row>
+				<b-row >
+					<b-col cols="3" align-self="left">
+						 <h2>Survey Form</h2>
+						 <br>
+						 <br>
+					</b-col>
+				</b-row>
+				<h4>
+				<b-row >
+					<b-col cols="3" align-self="left">
+						<label>Survey ID: {{ this.survey_id }}</label>
+					</b-col>
+					<b-col cols="3" align-self="left">
+						<label>Mode: {{ this.mode_state }}<label>	
+					</b-col>
+					<b-col cols="3" align-self="left">
+						<label>Survey State: {{ this.survey_state }}</label>
+					</b-col>
+					<b-col cols="3" align-self="left">
+						<b-button :disabled="this.disablecreatebutton" :pressed="false" variant="primary" @click='alert_create_new()'>Create New</b-button>
+					</b-col>
+				</b-row >
+				</h4>
+		</b-container>
+		<h4>
+		<b-row class="text-center" class="border border-primary">
+			<b-col cols="10" align-self="center">
+				
+												
+					<b-form   @submit.prevent="confirm_alert_box"  @reset.prevent="confirm_clearall"> 
+										
+					<b-form-group id="input_client_reference_group" label="Your reference code:" label-for="input_client_reference">
+						<b-form-input id="input_client_reference" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" v-model="client_reference" type="text" placeholder="For your internal reference only (optional)" type="text"></b-form-input>
+					</b-form-group>
+					<br>
+					<b-row>
+						<b-col cols="4" align-self="left">
+							<b-form-group id="input_GPS_location_longitude_group" label="GPS Location Longitude (Required Field):" label-for="input_GPS_location_longitude">
+								<b-form-input  type="number" v-autowidth="{maxWidth: '300px', minWidth: '250px', comfortZone: 20}" id="input_GPS_location_longitude" v-model="location_longitude" placeholder="e.g. 114.18230964011866" required> </b-form-input>
+							</b-form-group>
+						</b-col>
+						<b-col cols="4" align-self="left">
+							<b-form-group id="input_GPS_location_latitude_group" label="GPS Location Latitude (Required Field):" label-for="input_GPS_location_latitude">
+								<b-form-input  type="number" v-autowidth="{maxWidth: '300px', minWidth: '250px', comfortZone: 20}" id="input_GPS_location_latitude" v-model="location_latitude" placeholder="e.g. 22.256344094919317" required> </b-form-input>
+							</b-form-group>
+						</b-col>							
+						<b-col cols="4" align-self="center">
+							<b-button :pressed="false" variant="primary" @click='opengooglemap()'>Google Map</b-button>
+						</b-col>
+					</b-row>	
+					<br>
+					<b-form-group id="tree_name_group" label="Tree Name:" label-for="tree_name_option_input">
+						<select id="tree_name_option_input" v-model="tree_name_option_selected" >
+					    	<option v-for="option in selectable_tree_name_options" :value="option.value"> {{option.text }}</option>
+					    </select>
+					</b-form-group>
+					<br>
+					<b-form-group id="input_tree_observation_group" label="State your observation about this tree:" label-for="input_tree_observation" description="Body, Colour, Surrounding Environment, Pest, etc.">
+						<b-form-input type="text" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" id="input_tree_observation" v-model="observation"></b-form-input>
+					</b-form-group>
+					<br>
+					<b-form-group id="input_tree_measurement_group" label="Measurement about the tree:" label-for="input_tree_measurement" description="Height, Width or Radius">
+						<b-form-input type="text" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" id="input_tree_measurement" v-model="measurement" placeholder="Height:8m, Radius:9m" ></b-form-input>
+					</b-form-group>
+					<br>
+					<b-form-group id="tree_condition_option_id_group" label="Tree Condition:" label-for="tree_condition_option_id">
+						<select v-model="tree_condition_option_selected" id = "tree_condition_option_id">
+							<option v-for="option in selectable_tree_condition_options" :value="option.value"> {{option.text }}</option>
+						</select>
+					</b-form-group>
+					<br>
+					<b-form-group id="moderator_comment_group" label="Moderator Comment:" label-for="input_moderator_comment_id">
+						<b-form-input type="text" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" id="input_moderator_comment_id" v-model="moderatorcomment"></b-form-input>
+					</b-form-group>
+					<br>
+					<b-row>
+						<b-col cols="6" align-self="left"><label>Files</label></b-col>
+						<b-col cols="6" align-self="left">Choose Your Files</b-col>
+					</b-row>
+					<br>
+					<b-row>
+						<b-col cols="6" align-self="left"><label>Image 1 (png only, size <= 500K)</label></b-col>
+						<b-col v-if ="mode_state ==='Edit' || mode_state ==='New' || mode_state ==='' " cols="6" align-self="left"><input type="file" ref="image1"></b-col>
+						<b-col v-else-if ="mode_state ==='View'" cols="6" align-self="left"><img src="../assets/image_files/1/1.png" :alt="image1" ></b-col>
+					</b-row>
+					<br>
+					<b-row>
+						<b-col cols="6" align-self="left"><label>Image 2 (png only, size <= 500K)</label></b-col>
+						<b-col v-if ="mode_state ==='Edit' || mode_state ==='New' || mode_state ==='' " cols="6" align-self="left"><input type="file" ref="image2"></b-col>
+						<b-col v-else-if ="mode_state ==='View'" cols="6" align-self="left" ><img src="../assets/image_files/1/2.png" :alt="image2" ></b-col>
+					</b-row>
+					<br>
+					<b-row>
+						<b-col cols="6" align-self="left"><label>Image 3 (png only, size <= 500K)</label></b-col>
+						<b-col v-if ="mode_state ==='Edit' || mode_state ==='New' || mode_state ==='' " cols="6" align-self="left"><input type="file" ref="image3"></b-col>
+						<b-col v-else-if ="mode_state ==='View'" cols="6" align-self="left"><img src="../assets/image_files/1/3.png" :alt="image3" ></b-col>
+					</b-row>
+					<br>
+					<b-row>
+						<b-col cols="6" align-self="left"><label>Image 4 (png only, size <= 500K)</label></b-col>
+						<b-col v-if ="mode_state ==='Edit' || mode_state ==='New' || mode_state ==='' " cols="6" align-self="left"><input type="file" ref="image4"></b-col>
+						<b-col v-else-if ="mode_state ==='View'" cols="6" align-self="left"><img src="../assets/image_files/1/4.png" :alt="image4" ></b-col>
+					</b-row>
+					<br>
+					<b-row>
+						<b-col cols="6" align-self="left"><label>Image 5 (png only, size <= 500K)</label></b-col>
+						<b-col v-if ="mode_state ==='Edit' || mode_state ==='New' || mode_state ==='' " cols="6" align-self="left"><input type="file" ref="image5"></b-col>
+						<b-col v-else-if ="mode_state ==='View'" cols="6" align-self="left"><img src="../assets/image_files/2/5.png" :alt="image5" ></b-col>
+					</b-row>
+					<br>
+					<b-row>
+						<b-col cols="6" align-self="left"><label>Video(avi only, size <= 50M)</label></b-col>
+						<b-col v-if ="mode_state ==='Edit' || mode_state ==='New' || mode_state ==='' " cols="6" align-self="left"><input type="file" ref="video"></b-col>
+						<b-col v-else-if ="mode_state ==='View'" cols="6" align-self="left" ><a href="url">http://student.plymouth.ac.uk/timmok/treevideo.avi</a></b-col>
+					</b-row>
+					<br>
+					<b-form-group label="Submit as:" v-slot="{ ariaDescribedby }">
+						<b-form-radio-group 
+							v-model="submit_as_selected" 
+							:options="submit_as_options" 
+							:aria-describedby="ariaDescribedby" 
+							 name="submit_as_radio"
+							plain>
+						</b-form-radio-group>
+					</b-form-group>
+					<br>
+					<b-row  v-if ="mode_state ==='Edit' || mode_state ==='New' "> 
+						<b-col cols="4" align-self="left">
+							<b-button type="submit" variant="primary">Sumbit</b-button>
+						</b-col>
+						<b-col cols="4" align-self="left">
+							<b-button type="reset" variant="danger">Clear All</b-button>
+						</b-col>
+						<b-col cols="4" align-self="left">
+						</b-col>
+						
+					</b-row>
+					<br>
+				</b-form>
+			</b-col>
+		</b-row>	
+		</h4>
+	</b-container>	
 	</div>
 </template> 
 	
@@ -127,9 +165,7 @@ export default {
 		survey_created_time: String,
 	},
 	inject: ['message'],
-	created() {
-	    console.log("message: " + this.message); // injected value
-	},
+	
 	data() {
 	    return {
 			treesurveydata:this.treesurveydata,
@@ -146,7 +182,8 @@ export default {
 			tree_family_option_selected: 'Sapotaceae',
 			survey_id:'',
 			mode_state:'',
-			selectable_tree_family_options: [
+			client_reference:'',
+		        /** selectable_tree_family_options: [
 		  		{ text: 'All', value: 'All' },
 				{ text: 'Aceraceae', value: 'Aceraceae' },
 				{ text: 'Caesalpiniaceae', value: 'Caesalpiniaceae' },
@@ -179,7 +216,7 @@ export default {
 				{ text: 'Rhododendron', value: 'Rhododendron' },
 				{ text: 'Sarcosperma', value: 'Sarcosperma' }
 			],
-			
+			**/
 			tree_name_option_selected: 'Big-leaved Fign',
 			selectable_tree_name_options: [
 				{ text: 'All', value: 'All' },  
@@ -220,9 +257,12 @@ export default {
 				{ text: 'Rejected', values: 'Rejected'},
 				{ text: 'Published', values: 'Published'},
 			],	
-			myStyle:{
-				backgroundColor:"rgb(225, 228, 184)" 
-			},
+	
+			submit_as_selected: 'Draft',
+			submit_as_options: [
+			    { value: 'Draft', text: 'Draft' },
+			    { value: 'Final', text: 'Final' },
+			],
         }
 	},
 	
@@ -245,22 +285,24 @@ export default {
 	methods:{
 	
 		clearall() {
-			this.location_longitude= "",
-			this.location_latitude= "",
-			this.tree_id= "",
-			this.observation= "",
-			this.measurement="",
-			this.condition="",
-			this.moderatorcomment="",
-			this.tree_family_option_selected = "ALL",
-			this.tree_species_option_selected = "ALL",
-			this.tree_condition_option_selected = "-",
-			this.tree_name_option_selected = "-",
-			this.survey_state_selected = "-",
-			this.survey_state = "",
-			this.client_reference = ""
+			
+					this.location_longitude= "",
+					this.location_latitude= "",
+					this.tree_id= "",
+					this.observation= "",
+					this.measurement="",
+					this.condition="",
+					this.moderatorcomment="",
+					this.tree_family_option_selected = "ALL",
+					this.tree_species_option_selected = "ALL",
+					this.tree_condition_option_selected = "-",
+					this.tree_name_option_selected = "-",
+					this.survey_state_selected = "-",
+					this.survey_state = "",
+					this.client_reference = ""
+
 		},
-		submit(survey_id,new_survey_state){
+		submit_survey(survey_id,new_survey_state){
 			console.log('survey id: ' + survey_id +' new survey_state:' + new_survey_state)
 			console.log('longitude:' + this.location_longitude)
 			console.log('latitude:' + this.location_latitude)
@@ -308,12 +350,26 @@ export default {
 		},
 
 	 
-		confirm_alert_box(confirm_message, new_survey_state, survey_id) {
+		confirm_alert_box() {
+			console.log('Hello');
+			//let new_survey_state = this.submit_as_selected;
+			//let survey_id = this.survey_id;
+			let new_survey_state = 'Draft';
+			let survey_id = 1;
+				
+				
+			let confirm_message = "";
+			if (new_survey_state === "Draft") {
+				confirm_message = "Confirm to save your draft? You can edit it many times until it is submitted as a final version for moderator approval."
+			} else {
+				confirm_message = "Confirm to submit it as a final version? After submitting, you are not allowed to edit it prior to moderator approval"
+			}
+				  
 			console.log(confirm_message +  " " + new_survey_state + " "  + survey_id);
 		    this.$confirm(confirm_message, 'Confirm?', 'warning'
 			).then((r) => {
 				console.log("good to go!");
-				this.submit(survey_id, new_survey_state );
+				this.submit_survey(survey_id, new_survey_state );
 		    }).catch(() => {
 		        console.log('User cancel to submit');
 		    });
@@ -324,7 +380,7 @@ export default {
 		    this.$confirm("All Input will be removed!", 'Confirm?', 'warning'
 			).then((r) => {
 				console.log("User Confirm to clear all");
-				clearall();
+				this.clearall();
 		    }).catch(() => {
 		        console.log('User cancel to submit');
 		    });

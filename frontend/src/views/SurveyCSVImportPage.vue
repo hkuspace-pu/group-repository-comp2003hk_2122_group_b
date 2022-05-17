@@ -4,7 +4,6 @@
    <div id="surveycsvimportpage" >
 		<div>  
 		<br>
-		<br>
 			<b-form-group label="CSV/Tab File(s)" label-cols-sm="2" label-size="lg">
 				<b-form-file  v-model="browserfile" :state="Boolean(file)" size="lg" @change="fileinput"></b-form-file>
 	        </b-form-group>

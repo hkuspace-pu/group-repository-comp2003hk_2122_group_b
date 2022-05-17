@@ -1,6 +1,7 @@
 
 <template >
    <div id="surveyrecordlist" >
+
 		<br>
 		<center>
 		<b-row>

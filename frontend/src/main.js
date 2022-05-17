@@ -37,6 +37,7 @@ Vue.use(SortedTablePlugin);
 Vue.use(VueRouter);
 Vue.use(VueSidebarMenu);
 Vue.use(VueSweetalert2);
+Vue.prototype.$Login_Name = 'User';
 
 const router = new VueRouter({
   mode: "history",

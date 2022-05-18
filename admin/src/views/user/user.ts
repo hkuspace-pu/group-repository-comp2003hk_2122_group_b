@@ -82,7 +82,6 @@ export default defineComponent({
 
             let sendObj = {
                 "requestType": "updateDetail",
-                "userId": this.selectedUser.userId,
                 "userName": this.selectedUser.userName,
                 "email": this.selectedUser.email,
                 "membership": this.selectedUser.membership
@@ -113,7 +112,7 @@ export default defineComponent({
                 newPasswordIV = crypto.generateIV(16),
                 sendObj = {
                     "requestType": "changePassword",
-                    "userId": this.selectedUser.userId,
+                    "email": this.selectedUser.email,
                     "oldPassword": crypto.encrypt(this.oldPassword, key, oldPasswordIV),
                     "oldPasswordIV": oldPasswordIV,
                     "newPassword": crypto.encrypt(this.newPassword, key, newPasswordIV),

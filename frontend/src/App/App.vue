@@ -1,19 +1,20 @@
 <template>
 
   <div id="app" style="background-color:rgb(241, 255, 221)">
-	   <!-- <div class = "div-title" :style="'margin-left:'+this.appmargin">
+	   <div class = "div-title" :style="'margin-left:'+this.appmargin">
 			<center><img alt="Tree Project logo" src="../assets/logo10.png"></center>
-	  </div> -->
-	  
-	  <b-container >
+	  </div> 
+	  <!--
+	 <b-container >
 	  	<b-row  >
-	  		<b-col cols="10" align-self="center">
+	  		<b-col cols="12" align-self="left">
 	  			 <center><img alt="Tree Project logo" src="../assets/logo10.png"></center>
 	  		</b-col>
 	  	</b-row>
 		 </b-container >
-	 
-    <div id="view" :class="[{'collapsed' : collapsed}]" :style="'margin-left:'+this.appmargin" >
+	 -->
+   
+	<div id="view" :class="[{'collapsed' : collapsed}]" :style="'margin-left:'+this.appmargin" >	
       <router-view/>
 	 
     </div>
@@ -142,9 +143,9 @@ export default {
     onItemClick(e, i) {
       console.log("onItemClick");
 	  if (this.collapsed) {
-		  this.appmargin = '0px';
+		  this.appmargin = '240px';
 	  } else {
-		   this.appmargin = '240px';
+		   this.appmargin = '0px';
 	  }
 	  
     },
@@ -153,10 +154,10 @@ export default {
       this.collapsed = c;
 	  console.log(this.appmargin);
 	  if (this.appmargin == '240px' ) {
-	     this.appmargin = '0px';
+	     this.appmargin = '240px';
 		  console.log('new margin' + this.appmargin);
 	  }  else {
-		   this.appmargin = '240px';
+		   this.appmargin = '0px';
 		    console.log('new margin' + this.appmargin);
 	  }
 	   this.menu[1].title = "Hello!  " + Vue.prototype.$Login_Name;

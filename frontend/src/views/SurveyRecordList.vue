@@ -16,7 +16,7 @@
 				</b-button>
 			</b-col>
 			<b-col lg="4" sm="1">
-				<vue-excel-xlsx :buttondisable="this.vueexcelxlsx" :data="this.selectedsurveydata" :columns="this.surveycolumns" :file-name="'survey'" :file-type="'csv'" pill :sheet-name="'survey'">
+				<vue-excel-xlsx :buttondisable="this.vueexcelxlsx" :data="this.bulkselectsurveycase" :columns="this.survey_columns_in_bulk_excel" :file-name="'survey'" :file-type="'csv'" pill :sheet-name="'survey'">
 					<h5>Export Selected Survey Record(s) in CSV</h5>
 				</vue-excel-xlsx>
 			</b-col>
@@ -155,6 +155,7 @@
 			</b-collapse>
 		</div>
 		<br><br>
+		<!--
 		<sorted-table :values="values">
 		<thead>
 		<tr>
@@ -167,7 +168,7 @@
 			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Survey_Status">Survey Status</sort-link></th>
 			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Administrator_Comment">Administrator Comment</sort-link></th>
 			<th colspan = 3>Action</th>
-		</tr><!-- Details/Delete -->
+		</tr>
 		</thead>
 		<template #body="sort">
 		<tbody >
@@ -187,9 +188,40 @@
 		</tbody>
 	   </template>
 	    </sorted-table>	
-		
+		-->
+		<div>
+			<b-container >
+				<b-row  >
+					<b-col cols="12" align-self="center">
+					<H6>
+					<div>
+						Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
+						<b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b>
+						<b>,         You selected {{  this.bulkselectsurveycase.length }} of {{  this.values.length }} record(s)</b>
+				    </div>
+					<!--@row-selected="onRowSelected" -->
+					<b-table selectable :fields="fields"   @row-clicked="myRowClickHandler" :select-mode="multi"  responsive="sm"   hover sticky-header="550px"  head-variant="light" :items="new_sorted_table"  :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @sort-changed="sortChanged">
+						<template #head(id)="scope" > <div class="text-nowrap">Survey ID</div> </template>
+						<template #head()="scope">
+							<div class="text-nowrap"> {{ scope.label }} </div>
+							<template #cell(selected)="{ rowSelected }" >
+								<template v-if="rowSelected">
+									<span aria-hidden="true">&check;</span>
+									<span class="sr-only">Yes</span>
+								</template>
+								<template v-else>
+									<span aria-hidden="true">&nbsp;</span>
+									<span class="sr-only">No</span>
+								</template>
+							</template>	
+						</template>   
+					</b-table>
+				</H6>
+				</b-col>
+			</b-row  >
+		</b-container >	
+		</div>
 	</div>
-	
 </template>
 
 <script>
@@ -212,6 +244,8 @@ export default  {
     data () {
         return {
 			//surveycases:this.surveycases,
+			fields:[{key:'Survey_Case_No',stickyColumn: true,isRowHeader: true ,variant: 'primary', sortable: true}, {key:'selected', sortable: true},{key:'Creator_Name', sortable: true},{key:'Created_Time', sortable: true},{key:'Created_Venue', sortable: true},{key:'Species_Name', sortable: true},{key:'Survey_Status', sortable: true},{key:'Moderator_Comment', sortable: true},{key:'Latitude', sortable: true},{key:'Longitude', sortable: true},{key:'Measurement', sortable: true},{key:'Observation', sortable: true},{key:'Condition', sortable: true}],
+			 
 			surveycases:[],
 			Survey_Case_No: 0,
 			Creator_Name: '',
@@ -235,33 +269,24 @@ export default  {
 			created_date_to_input:"",
 			created_date_from_input:"",
 			vueexcelxlsx: true,
-			surveycolumns : [
-				{
-					label: "Survey ID",
-				    field: "Survey_Case_No",
-				},
-				{
-				    label: "Creator Name",
-				    field: "Creator_Name",  
-				},
-				{
-				    label: "Created Time",
-				    field: "Created_Time",
-				},
-				{
-				    label: "Species Name",
-				    field: "Species_Name",
-				},
-				{
-				    label: "Survey Status",
-				    field: "Survey_Status",
-				},
-				{
-				    label: "Administrator Comment",
-				    field: "Administrator_Comment",
-				},														
+			 sortBy: 'Survey_Case_No',
+			sortDesc: false,
+            fields:[
+				    {key:'Survey_Case_No',stickyColumn: true,isRowHeader: true ,variant: 'primary', sortable: true, label: "Survey ID",field: "Survey_Case_No", output_excel: true}, 
+			        {key:'selected', sortable: true, output_excel: false},
+					{key:'Creator_Name', sortable: true,label: "Creator Name",field: "Creator_Name", output_excel: true},
+					{key:'Created_Time', sortable: true,label: "Created Time",field: "Created_Time", output_excel: true},
+					{key:'Created_Venue', sortable: true,label: "Created Venue",field: "Created_Venue", output_excel: true},
+					{key:'Species_Name', sortable: true,label: "Species Name",field: "Species_Name", output_excel: true},
+					{key:'Survey_Status', sortable: true,label: "Survey Status",field: "Survey_Status", output_excel: true},
+					{key:'Moderator_Comment', sortable: true,label: "Moderator Comment",field: "Moderator_Comment", output_excel: true},
+					{key:'Latitude', sortable: true,label: "Latitude",field: "Latitude", output_excel: true},
+					{key:'Longitude', sortable: true,label: "Longitude",field: "Longitude", output_excel: true},
+					{key:'Measurement', sortable: true,label: "Measurment",field: "Measurment", output_excel: true},
+					{key:'Observation', sortable: true,label: "Observation",field: "Observation", output_excel: true},
+					{key:'Condition', sortable: true,label: "Condition",field: "Condition", output_excel: true}
 			],
-			
+            
 			Tree_Condition_Checked_Box_Selected: [],
 			Tree_Condition_Checked_Box_Group_Options: [
 			    { tree_condition_value: 'Bad', tree_condition_text:  'Bad' },
@@ -280,13 +305,29 @@ export default  {
 			],
 		}                                            
 	},
-
+    computed: {
+    	new_sorted_table: function() {
+    	   
+    	    return this.values;	
+    	},
+		survey_columns_in_bulk_excel: function() {
+    	    var survey_columns = [];
+    	  	
+			for(var j = 0; j < this.fields.length; j++ ) {
+				if (this.fields[j].output_excel){
+					survey_columns.push({'label': this.fields[j].key, 'field': this.fields[j].key})
+				}
+			}
+			  return survey_columns;
+    	},
+    
+    },
 	methods: {
 		priceFormat(value){
 			return '$ ' + value;
 		},
-						
-		allRecords: function(){
+				
+		/**allRecords: function(){
 			axios.get('ajaxfile_get_surveyrecords.php').then((response) => {
 					//this.surveycases = response.data;
 					this.values = [];
@@ -303,7 +344,27 @@ export default  {
 					console.log('error on all Records:' + error);
 				});	
 			},
-
+        **/
+		
+		allRecords: function(){
+			axios.get('ajaxfile_get_surveyrecords.php').then((response) => {
+					//this.surveycases = response.data;
+					this.values = [];
+					
+					 for(var j = 0; j < response.data.length; j++ ) {
+					  response.data[j]["Survey_Case_No"] = Number(response.data[j]["Survey_Case_No"]) ;
+					  response.data[j]["selected"] = false ;
+					}
+					this.bulkselectsurveycase =[];
+					this.values=    response.data;
+					this.json_data = response.data;
+					console.log(this.values); 
+				}).catch((error) => {
+					console.log('error on all Records:' + error);
+				});	
+			},
+				
+				
 			Filter_By_Survey_Case_No: function(){
 						
                 console.log('Survey_Case_No_To:' + this.Survey_Case_No_To); 
@@ -396,7 +457,7 @@ export default  {
 				.catch((e) => console.log("canceled" + e));
 			},
 			
-			check(e) {  
+			/**check(e) {  
 			      //console.log(e.target.id);  
 				  for (const eachsurvey of this.values) {
 				    if (eachsurvey["Survey_Case_No"] === Number(e.target.id)) {
@@ -414,6 +475,62 @@ export default  {
 					}
 				  }				    
 			},
+			**/
+			
+			myRowClickHandler(record, index) {
+				this.bulkselectsurveycase = [];
+				for(var j = 0; j < this.values.length; j++ ) {
+					if (record["Survey_Case_No"] === this.values[j]["Survey_Case_No"]) {
+						this.values[j]["selected"] = !this.values[j]["selected"];
+					}
+					if (this.values[j]["selected"]) {
+						this.bulkselectsurveycase.push(this.values[j])
+					}
+				}
+				if (this.bulkselectsurveycase.length > 0 ) {
+					for(var j = 0; j < this.bulkselectsurveycase.length; j++ ) {
+						console.log('last bulkinsert case no:' + this.bulkselectsurveycase[j]["Survey_Case_No"]); 									 
+					} 
+					this.vueexcelxlsx = false
+				} 
+				
+			},
+			onRowSelected(items) {
+			
+				
+				this.vueexcelxlsx = false;
+				if (items.length > 0) { 
+					
+				
+				//for(var j = 0; j < this.values.length; j++ ) {
+				//	console.log('this values case on row selected:' + this.values[j]["Survey_Case_No"] + " selected:" + this.values[j]["selected"]); 
+				//	}
+					this.bulkselectsurveycase = [];
+					console.log('on row selected:');
+					for(var j = 0; j < this.values.length; j++ ) {
+					
+						console.log('this values case no:' + this.values[j]["Survey_Case_No"]); 
+						for (const each_selected_survey of items) {
+							console.log('this selected items case no:' + each_selected_survey["Survey_Case_No"]); 
+							if (each_selected_survey["Survey_Case_No"] === this.values[j]["Survey_Case_No"]) {
+								console.log('this values case no before assign true:' + this.values[j]["selected"]); 
+								this.values[j]["selected"] = !this.values[j]["selected"];
+								console.log('this values case no after assign true:' + this.values[j]["selected"]); 
+								this.sortChanged;
+								break;
+							}
+						}
+						if (this.values[j]["selected"]) {
+							this.bulkselectsurveycase.push(this.values[j])
+						}
+					}	
+				}
+					
+			},
+			sortChanged(e) {
+				console.log('on sortchange:');
+			}
+			
 								
         },
 

@@ -200,6 +200,7 @@ export default {
 					this.login_email = "";
 					this.login_password = "";
 					Vue.prototype.$Login_Name  =  res.data.userName;
+					Vue.prototype.$Login_Email =  res.data.email;
 				}).catch((error) => {
 					this.$swal.fire({
 						position: 'center',
@@ -214,20 +215,33 @@ export default {
 		reset_password()  {
 		    let isEmpty = this.checkUpdatePasswordEmpty();
 		    if (isEmpty) return;
-		
+			if(typeof(Vue.prototype.$Login_Email) === 'undefined' || Vue.prototype.$Login_Email === null || Vue.prototype.$Login_Email === '') {
+				if (this.login_email === '') {
+					this.$swal.fire({
+						position: 'center',
+						icon: 'error',
+						title: "Please input your email in Login Session.",
+						showCloseButton: true
+					})
+					return;
+				}
+			} else {
+				this.login_email = Vue.prototype.$Login_Email
+			}
+			
 		    let key = "yAQwfsssfLP48cHQ",
 		        oldPasswordIV = crypto.generateIV(16),
 		        newPasswordIV = crypto.generateIV(16),
 		        sendObj = {
 		            "requestType": "changePassword",
-		            "userId": "this.selectedUser.userId",
+		             "email": this.login_email,
 		            "oldPassword": crypto.encrypt(this.login_password, key, oldPasswordIV),
 		            "oldPasswordIV": oldPasswordIV,
 		            "newPassword": crypto.encrypt(this.login_new_password, key, newPasswordIV),
 		            "newPasswordIV": newPasswordIV
 		        };
 		    console.log('reset message:', sendObj ); 
-		    axios.post(this.url, sendObj).then(res => {
+		    axios.put(this.url, sendObj).then(res => {
 				this.$swal.fire({
 					position: 'center',
 					icon: 'success',
@@ -237,7 +251,15 @@ export default {
 		        console.log('starLog change password response', res);
 				this.login_new_password = "";
 				this.login_new_password_confirmed = "";
-		    });
+		    }).catch((error) => {
+		    	this.$swal.fire({
+		    		position: 'center',
+		    		icon: 'error',
+		    		title:error,
+		    		showCloseButton: true
+		    	})
+		    	console.log('Login Error:' + error);
+		    });;
 		},
 		checkLoginEmpty()  {
 		    let email = this.login_email || "",

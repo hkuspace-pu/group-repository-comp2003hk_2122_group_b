@@ -44,7 +44,7 @@
 						      <label for="input-large">A tree name contains a string (blank to ignore):</label>
 						    </b-col>
 						    <b-col sm="3">
-						      <b-form-input id="input-large" size="lg" placeholder="input 'amb' when tree name(s) contains 'amb' (i.e. Carambola)"></b-form-input>
+						      <b-form-input id="input-large" size="lg" v-model = "tree_string" placeholder="input 'amb' when tree name(s) contains 'amb' (i.e. Carambola)"></b-form-input>
 						    </b-col>
 						</b-row>
 					</div>	
@@ -142,6 +142,7 @@
 					<h2>Filter Summary</h2>
 					<h5>
 					<br>
+					<div class="tree_string mt-3">Tree Name Contains: <strong>*{{ tree_string }}*</strong></div>
 					<div class="ecologic mt-3">Ecologic: <strong>{{ Exotic_Radio_Button_selected }}</strong></div>
 					<div class="flowering_period mt-3">Flowering Period(s) / Month: <strong>{{ Flower_Starting_Period_Checked_Box_Group_Selected }}</strong></div>
 					<div class="fruiting_period mt-3">Fruiting Period(s) / Month: <strong>{{ Fruit_Starting_Period_Checked_Box_Group_Selected }}</strong></div>
@@ -154,7 +155,7 @@
 					</b-list-group-item>
 					</b-list-group>
 					<br>
-					<b-button pill variant="info"><h5>Confirm</h5></b-button>
+					<b-button pill variant="info" @click='filter_individual_tree_name' ><h5>Confirm</h5></b-button>
 				</b-card>
 			</b-collapse>
 	    </div>
@@ -384,6 +385,140 @@ export default {
 				}
 			}
 		},
+		filter_individual_tree_name() {
+				//this.$router.push({name:'SearchTreePage', params: {Select_Individual_Tree_Info : Select_Individual_Tree_Info}});
+						var ListofTreeInfo = this.loadeddata;
+						var Select_Individual_Tree_Info = [];
+						var treeNameEN = ""
+						var treescientificName = ""
+						var treeNameEN = ""
+						
+						if (this.tree_string.length > 0) {
+							for(var j = 0; j < ListofTreeInfo.length; j++ ) {
+							//console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
+								if (ListofTreeInfo[j].treeNameEn.includes(this.tree_string) || ListofTreeInfo[j].scientificName.includes(this.tree_string) || ListofTreeInfo[j].alias.includes(this.tree_string)) {
+										Select_Individual_Tree_Info.push(ListofTreeInfo[j])
+								}
+							}
+					    } else {
+								Select_Individual_Tree_Info = ListofTreeInfo
+						}
+						
+						var Select_Individual_Tree_Info0 = [];
+						if (this.Exotic_Radio_Button_selected !=  'Exotic and Native') {
+							for(var j = 0; j < Select_Individual_Tree_Info.length; j++ ) {
+							//console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
+								if (Select_Individual_Tree_Info[j].ecologic === this.Exotic_Radio_Button_selected ) {
+										Select_Individual_Tree_Info0.push(Select_Individual_Tree_Info[j])
+								}
+							}
+						} else {
+							Select_Individual_Tree_Info0 = Select_Individual_Tree_Info
+						}
+						
+						var Select_Individual_Tree_Info1 = []
+						if (this.Flower_Starting_Period_Checked_Box_Group_Selected.length > 0) {
+							for(var j = 0; j < this.Flower_Starting_Period_Checked_Box_Group_Selected.length; j++ ) {
+								for(var k = 0; k < Select_Individual_Tree_Info.length; k++ ) {
+									if (Select_Individual_Tree_Info0[k].flowering.IndexOf(this.monthnumber[this.searchmonthoptions.IndexOf(this.Flower_Starting_Period_Checked_Box_Group_Selected[j])]-1) == 1) {
+										Select_Individual_Tree_Info1.push(Select_Individual_Tree_Info0[k])
+									}
+								}
+						    }
+						} else {
+							Select_Individual_Tree_Info1 = Select_Individual_Tree_Info0
+						}
+							
+						var Select_Individual_Tree_Info2 = []
+						if (this.Fruit_Starting_Period_Checked_Box_Group_Selected.length > 0) {
+							for(var j = 0; j < this.Fruit_Starting_Period_Checked_Box_Group_Selected.length; j++ ) {
+								for(var k = 0; k < Select_Individual_Tree_Info1.length; k++ ) {
+									if (Select_Individual_Tree_Info1[k].fruit.IndexOf(this.monthnumber[this.searchmonthoptions.IndexOf(this.Fruit_Starting_Period_Checked_Box_Group_Selected[j])]-1) == 1) {
+										Select_Individual_Tree_Info2.push(Select_Individual_Tree_Info1[k])
+									}
+								}
+						    }
+						} else {
+							Select_Individual_Tree_Info2 = Select_Individual_Tree_Info1
+						}
+						
+			            var Select_Individual_Tree_Info3 = []
+						var yes_no_value = -1;
+						if (this.Cap96_selected != 'Ignore') {
+							if (this.Cap96_selected === "Yes") {
+								yes_no_value = 1
+							} else if (this.Cap96_selected === "No") {
+								yes_no_value = 0
+							}
+							for(var j = 0; j < Select_Individual_Tree_Info2.length; j++ ) {
+								//console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
+								if (Select_Individual_Tree_Info2[j].cap96 == yes_no_value ) {
+										Select_Individual_Tree_Info3.push(Select_Individual_Tree_Info2[j])
+								}
+						    }
+						} else {
+							Select_Individual_Tree_Info3 = Select_Individual_Tree_Info2
+						}
+						
+			            var Select_Individual_Tree_Info4 = []
+						var yes_no_value = -1;
+						if (this.Cap586_selected != 'Ignore') {
+							if (this.Cap586_selected === "Yes") {
+								yes_no_value = 1
+							} else if (this.Cap586_selected === "No") {
+								yes_no_value = 0
+							}
+							for(var j = 0; j < Select_Individual_Tree_Info3.length; j++ ) {
+								//console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
+								if (Select_Individual_Tree_Info3[j].cap586 == yes_no_value ) {
+										Select_Individual_Tree_Info4.push(Select_Individual_Tree_Info3[j])
+								}
+						    }
+						} else {
+							Select_Individual_Tree_Info4 = Select_Individual_Tree_Info3
+						}						
+						
+			            var Select_Individual_Tree_Info5 = []
+						var yes_no_value = -1;
+						if (this.RareHK_selected != 'Ignore') {
+							if (this.RareHK_selected === "Yes") {
+								yes_no_value = 1
+							} else if (this.RareHK_selected === "No") {
+								yes_no_value = 0
+							}
+							for(var j = 0; j < Select_Individual_Tree_Info4.length; j++ ) {
+								//console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
+								if (Select_Individual_Tree_Info4[j].hkRare == yes_no_value ) {
+										Select_Individual_Tree_Info5.push(Select_Individual_Tree_Info4[j])
+								}
+						    }
+						} else {
+							Select_Individual_Tree_Info5 = Select_Individual_Tree_Info4
+						}							
+		
+						var Select_Individual_Tree_Info6 = []
+						var yes_no_value = -1;
+						if (this.RareChina_selected != 'Ignore') {
+							if (this.RareChina_selected === "Yes") {
+								yes_no_value = 1
+							} else if (this.RareChina_selected === "No") {
+								yes_no_value = 0
+							}
+							for(var j = 0; j < Select_Individual_Tree_Info5.length; j++ ) {
+								//console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
+								if (Select_Individual_Tree_Info5[j].cnRare == yes_no_value ) {
+										Select_Individual_Tree_Info6.push(Select_Individual_Tree_Info5[j])
+								}
+						    }
+						} else {
+							Select_Individual_Tree_Info6 = Select_Individual_Tree_Info5
+						}	
+				
+						this.Select_Individual_Tree_Info = Select_Individual_Tree_Info6	;	
+
+						
+					
+		},
 	},
 	
 	computed: {
@@ -394,7 +529,7 @@ export default {
 			var itemsPerRow = 2
 	        // assuming passer is an array of items..this.Select_Individual_Tree_Infoif
 			console.log('Tree Individual details to be displayed if any' + this.Select_Individual_Tree_Info)
-			if (typeof(this.Select_Individual_Tree_Infoif) !== 'undefined' || this.Select_Individual_Tree_Infoif !== null)  {
+			if (typeof(this.Select_Individual_Tree_Info) !== 'undefined' && this.Select_Individual_Tree_Info !== null)  {
 				try {
 					var arr = this.Select_Individual_Tree_Info
 					console.log('Tree Individual details to be displayed not empty:' + this.Select_Individual_Tree_Info)

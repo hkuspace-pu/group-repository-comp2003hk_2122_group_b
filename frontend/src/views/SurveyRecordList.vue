@@ -201,6 +201,7 @@
 				    </div>
 					<!--@row-selected="onRowSelected" -->
 					<b-table selectable :fields="fields"   @row-clicked="myRowClickHandler" :select-mode="multi"  responsive="sm"   hover sticky-header="550px"  head-variant="light" :items="new_sorted_table"  :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @sort-changed="sortChanged">
+
 						<template #head(id)="scope" > <div class="text-nowrap">Survey ID</div> </template>
 						<template #head()="scope">
 							<div class="text-nowrap"> {{ scope.label }} </div>
@@ -213,8 +214,24 @@
 									<span aria-hidden="true">&nbsp;</span>
 									<span class="sr-only">No</span>
 								</template>
-							</template>	
-						</template>   
+                         
+							</template>
+
+						</template>
+				
+						<template v-slot:cell(actions)="data">
+							<b-container style="{ width: '160px'}">
+								<b-row>
+									<b-col style="{ width: '70px'}"   align-self="center">
+										<b-button  @click="showDetail('View',data.item)" class="mr-1" variant="warning">View</b-button>
+									</b-col>	
+									<b-col style="{ width: '70px'}"  align-self="center">
+										<b-button  @click="showDetail('Edit',data.item)" class="mr-1" variant="warning">Edit</b-button>
+									</b-col>	
+								</b-row>
+							</b-container>
+						</template>
+						
 					</b-table>
 				</H6>
 				</b-col>
@@ -244,7 +261,7 @@ export default  {
     data () {
         return {
 			//surveycases:this.surveycases,
-			fields:[{key:'Survey_Case_No',stickyColumn: true,isRowHeader: true ,variant: 'primary', sortable: true}, {key:'selected', sortable: true},{key:'Creator_Name', sortable: true},{key:'Created_Time', sortable: true},{key:'Created_Venue', sortable: true},{key:'Species_Name', sortable: true},{key:'Survey_Status', sortable: true},{key:'Moderator_Comment', sortable: true},{key:'Latitude', sortable: true},{key:'Longitude', sortable: true},{key:'Measurement', sortable: true},{key:'Observation', sortable: true},{key:'Condition', sortable: true}],
+			//fields:[{key:'Survey_Case_No',stickyColumn: true,isRowHeader: true ,variant: 'primary', sortable: true}, {key:'selected', sortable: true},{key:'Creator_Name', sortable: true},{key:'Created_Time', sortable: true},{key:'Created_Venue', sortable: true},{key:'Species_Name', sortable: true},{key:'Survey_Status', sortable: true},{key:'Moderator_Comment', sortable: true},{key:'Latitude', sortable: true},{key:'Longitude', sortable: true},{key:'Measurement', sortable: true},{key:'Observation', sortable: true},{key:'Condition', sortable: true}],
 			 
 			surveycases:[],
 			Survey_Case_No: 0,
@@ -270,6 +287,8 @@ export default  {
 			created_date_from_input:"",
 			vueexcelxlsx: true,
 			 sortBy: 'Survey_Case_No',
+			 Client_Reference:"",
+			 Score:"",
 			sortDesc: false,
             fields:[
 				    {key:'Survey_Case_No',stickyColumn: true,isRowHeader: true ,variant: 'primary', sortable: true, label: "Survey ID",field: "Survey_Case_No", output_excel: true}, 
@@ -284,7 +303,10 @@ export default  {
 					{key:'Longitude', sortable: true,label: "Longitude",field: "Longitude", output_excel: true},
 					{key:'Measurement', sortable: true,label: "Measurment",field: "Measurment", output_excel: true},
 					{key:'Observation', sortable: true,label: "Observation",field: "Observation", output_excel: true},
-					{key:'Condition', sortable: true,label: "Condition",field: "Condition", output_excel: true}
+					{key:'Condition', sortable: true,label: "Condition",field: "Condition", output_excel: true},
+					{key:'Score', sortable: true,label: "Score",field: "Score", output_excel: true},
+					{key:'Client_Reference', sortable: true,label: "Client_Reference",field: "Client_Reference", output_excel: true},
+					{key:'actions',label: "Action", output_excel: false}
 			],
             
 			Tree_Condition_Checked_Box_Selected: [],
@@ -404,10 +426,10 @@ export default  {
 						  
 			},
 					
-			showDetail(mode, Survey_Case_No){
+			showDetail(mode, Survey_Case_Data){
 					//this.$router.push('/individualsurveypage'); 
-				console.log('Survey_Case_No:' + Survey_Case_No);
-				this.$router.push({name:'IndividualSurveyPage', params: {mode_state : mode, survey_id : Survey_Case_No}});
+				console.log('Survey_Case_Data:' + Survey_Case_Data);
+				this.$router.push({name:'IndividualSurveyPage', params: {mode_state : mode, individual_survey_data : Survey_Case_Data}});
 			}  ,  
 			
 			BulkExportToExcel(bulkselectsurveycase,excel_file_path) {
@@ -535,6 +557,7 @@ export default  {
         },
 
 		created: function(){
+			this.values = [];
         },
 
 }
@@ -552,6 +575,9 @@ export default  {
 	    border: none;
 	    outline: none;
 	    box-shadow: none;
+	}
+	.input-lg {
+		 font-size: 25px;
 	}
 </style>
 

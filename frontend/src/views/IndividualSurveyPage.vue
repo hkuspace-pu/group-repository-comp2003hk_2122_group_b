@@ -4,24 +4,24 @@
 		<b-container>
 			<b-row>
 				<b-row >
-					<b-col cols="3" align-self="left">
-						 <h2>Survey Form</h2>
+					<b-col cols="6" align-self="left">
+						 <h2>Survey Form (You are in a {{ this.mode_state }} mode)</h2>
 						 <br>
 						 <br>
 					</b-col>
 				</b-row>
 				<h4>
 				<b-row >
-					<b-col cols="3" align-self="left">
+					<b-col cols="2" align-self="left">
 						<label>Survey ID: {{ this.survey_id }}</label>
 					</b-col>
-					<b-col cols="3" align-self="left">
-						<label>Mode: {{ this.mode_state }}<label>	
-					</b-col>
-					<b-col cols="3" align-self="left">
+					<b-col cols="4" align-self="left">
 						<label>Survey State: {{ this.survey_state }}</label>
 					</b-col>
-					<b-col cols="3" align-self="left">
+					<b-col cols="4" align-self="left">
+						<label>Created Time: {{ this.last_created_time }}</label>
+					</b-col>
+					<b-col cols="2" align-self="left">
 						<b-button :disabled="this.disablecreatebutton" :pressed="false" variant="primary" @click='alert_create_new()'>Create New</b-button>
 					</b-col>
 				</b-row >
@@ -35,18 +35,18 @@
 					<b-form   @submit.prevent="confirm_alert_box"  @reset.prevent="confirm_clearall"> 
 										
 					<b-form-group id="input_client_reference_group" label="Your reference code:" label-for="input_client_reference">
-						<b-form-input id="input_client_reference" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" v-model="client_reference" type="text" placeholder="For your internal reference only (optional)" type="text"></b-form-input>
+						<b-form-input size="lg" id="input_client_reference" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" v-model="client_reference" type="text" placeholder="For your internal reference only (optional)" type="text"></b-form-input>
 					</b-form-group>
 					<br>
 					<b-row>
 						<b-col cols="4" align-self="left">
 							<b-form-group id="input_GPS_location_longitude_group" label="GPS Location Longitude (Required Field):" label-for="input_GPS_location_longitude">
-								<b-form-input  type="number" v-autowidth="{maxWidth: '300px', minWidth: '250px', comfortZone: 20}" id="input_GPS_location_longitude" v-model="location_longitude" placeholder="e.g. 114.18230964011866" required> </b-form-input>
+								<b-form-input size="lg"  type="number" v-autowidth="{maxWidth: '300px', minWidth: '250px', comfortZone: 20}" id="input_GPS_location_longitude" v-model="location_longitude" placeholder="e.g. 114.18230964011866" required> </b-form-input>
 							</b-form-group>
 						</b-col>
 						<b-col cols="4" align-self="left">
 							<b-form-group id="input_GPS_location_latitude_group" label="GPS Location Latitude (Required Field):" label-for="input_GPS_location_latitude">
-								<b-form-input  type="number" v-autowidth="{maxWidth: '300px', minWidth: '250px', comfortZone: 20}" id="input_GPS_location_latitude" v-model="location_latitude" placeholder="e.g. 22.256344094919317" required> </b-form-input>
+								<b-form-input size="lg"  type="number" v-autowidth="{maxWidth: '300px', minWidth: '250px', comfortZone: 20}" id="input_GPS_location_latitude" v-model="location_latitude" placeholder="e.g. 22.256344094919317" required> </b-form-input>
 							</b-form-group>
 						</b-col>							
 						<b-col cols="4" align-self="center">
@@ -61,11 +61,11 @@
 					</b-form-group>
 					<br>
 					<b-form-group id="input_tree_observation_group" label="State your observation about this tree:" label-for="input_tree_observation" description="Body, Colour, Surrounding Environment, Pest, etc.">
-						<b-form-input type="text" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" id="input_tree_observation" v-model="observation"></b-form-input>
+						<b-form-input  size="lg" type="text" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" id="input_tree_observation" v-model="observation"></b-form-input>
 					</b-form-group>
 					<br>
 					<b-form-group id="input_tree_measurement_group" label="Measurement about the tree:" label-for="input_tree_measurement" description="Height, Width or Radius">
-						<b-form-input type="text" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" id="input_tree_measurement" v-model="measurement" placeholder="Height:8m, Radius:9m" ></b-form-input>
+						<b-form-input  size="lg" type="text" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" id="input_tree_measurement" v-model="measurement" placeholder="Height:8m, Radius:9m" ></b-form-input>
 					</b-form-group>
 					<br>
 					<b-form-group id="tree_condition_option_id_group" label="Tree Condition:" label-for="tree_condition_option_id">
@@ -74,10 +74,15 @@
 						</select>
 					</b-form-group>
 					<br>
+					<b-form-group id="input_Score_group" label="Score:" label-for="input_score">
+						<label id="input_score" v-model="score" ></label>
+					</b-form-group>
 					<b-form-group id="moderator_comment_group" label="Moderator Comment:" label-for="input_moderator_comment_id">
-						<b-form-input type="text" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" id="input_moderator_comment_id" v-model="moderatorcomment"></b-form-input>
+						<b-form-input size="lg" type="text" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" id="input_moderator_comment_id" v-model="moderatorcomment"></b-form-input>
 					</b-form-group>
 					<br>
+					
+					
 					<b-row>
 						<b-col cols="6" align-self="left"><label>Files</label></b-col>
 						<b-col cols="6" align-self="left">Choose Your Files</b-col>
@@ -168,11 +173,11 @@ export default {
 	
 	data() {
 	    return {
-			treesurveydata:this.treesurveydata,
+			
 			location_longitude:'',
 			location_latitude:'',
 			tree_id:'',
-			survey_created_time: '',
+			last_created_time: '',
 			survey_state: '',
 			updatestatus: '',
 			observation: '',
@@ -183,6 +188,8 @@ export default {
 			survey_id:'',
 			mode_state:'',
 			client_reference:'',
+			creator_name:'',
+		
 		        /** selectable_tree_family_options: [
 		  		{ text: 'All', value: 'All' },
 				{ text: 'Aceraceae', value: 'Aceraceae' },
@@ -217,9 +224,9 @@ export default {
 				{ text: 'Sarcosperma', value: 'Sarcosperma' }
 			],
 			**/
-			tree_name_option_selected: 'Big-leaved Fign',
+			tree_name_option_selected: '-',
 			selectable_tree_name_options: [
-				{ text: 'All', value: 'All' },  
+				{ text: '-', value: '-' },  
 				{ text: 'Big-leaved Fig', value: 'Big-leaved Fign' },
 				{ text: 'Sapodilla', value: 'Sapodilla' },
 				{ text: 'Oblong-leaved Mallotus', value: 'Oblong-leaved Mallotus' },
@@ -234,7 +241,8 @@ export default {
 				{ text: 'Fleshy Nut Tree', value: 'Fleshy Nut Tree' },
 				{ text: 'Long-leaved Maple', value: 'Long-leaved Maple' },
 				{ text: 'Rhododendron', value: 'Rhododendron' },
-				{ text: 'Camels Foot Tree', value: 'Camels Foot Tree' },
+				{ text: 'Camels Foot Tree', value: 'Camels Foot Tree' }
+				
 			],
 			
 			tree_condition_option_selected: '-',
@@ -268,9 +276,24 @@ export default {
 	
 	
 	mounted: function () {
-		this.mode_state = this.$route.params.mode_state
-		this.survey_id = this.$route.params.survey_id
-		this.survey_created_time = this.getNow;
+		if (this.$route.params.mode_state === '') {
+			this.mode_state = "New"
+		} else {
+			this.mode_state = this.$route.params.mode_state
+		}
+		this.survey_id = this.$route.params.individual_survey_data.Survey_Case_No
+		this.location_longitude = this.$route.params.individual_survey_data.Longitude
+		this.location_latitude = this.$route.params.individual_survey_data.Latitude
+		this.last_created_time = this.$route.params.individual_survey_data.Created_Time
+		this.tree_name_option_selected = this.$route.params.individual_survey_data.Species_Name
+		this.survey_state = this.$route.params.individual_survey_data.Survey_Status
+		this.moderatorcomment = this.$route.params.individual_survey_data.Moderator_Comment
+		this.measurement = this.$route.params.individual_survey_data.Measurement
+		this.observation = this.$route.params.individual_survey_data.Observation
+		this.tree_condition_option_selected = this.$route.params.individual_survey_data.Condition	
+		this.client_reference = this.$route.params.individual_survey_data.Client_Reference
+		this.score = this.$route.params.individual_survey_data.Score
+		
 	},
 	computed: {
 		getNow: function() {
@@ -299,8 +322,9 @@ export default {
 					this.tree_name_option_selected = "-",
 					this.survey_state_selected = "-",
 					this.survey_state = "",
-					this.client_reference = ""
-
+					this.client_reference = "",
+					this.last_created_time = "",
+					this.score = ""
 		},
 		submit_survey(survey_id,new_survey_state){
 			console.log('survey id: ' + survey_id +' new survey_state:' + new_survey_state)
@@ -394,7 +418,7 @@ export default {
 			
 		},
 		alert_create_new() {
-			this.$alert( "Confirm to create new one? All unsaved data will be cleared on this form.","Create New Survey Record",'warning'
+			 this.$confirm("Confirm to create new one? All unsaved data will be cleared on this form.","Create New Survey Record", 'Confirm?', 'warning'
 			).then((r) => {
 				console.log("User Confirm to create new one");
 				this.clearall();	
@@ -417,4 +441,9 @@ export default {
 }
 
 </script>
-
+<style>
+	
+	.input-lg {
+		 font-size: 25px;
+	}
+</style>

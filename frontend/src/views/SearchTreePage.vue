@@ -184,14 +184,21 @@
 								    </template>
 									-->
 								    <b-card-body>
-								      <b-card-title>{{objitem.treeName}}</b-card-title>
-								      <b-card-sub-title class="mb-3">{{objitem.scientificName}}</b-card-sub-title>
-								      <b-card-text>
-								        {{objitem.treeDescEn}}
+								      <b-card-title>{{objitem.treeNameEn}}</b-card-title>
+								      <b-card-sub-title class="mb-3">Sci. Name:{{objitem.scientificName}}</b-card-sub-title>
+								      <b-card-text v-if="objitem.treeDescEn.includes('http')">
+								         <b-link :href="objitem.treeDescEn">{{objitem.treeDescEn}}</b-link> 
 								      </b-card-text>
+									  <b-card-text v-else>
+									     {{objitem.treeDescEn}}
+										 <br>
+										 <br>
+										 {{objitem.treeDescCn}}
+									  </b-card-text>
 								    </b-card-body>
 								
 								    <b-list-group flush>
+										<b-list-group-item>Chinese Name : {{objitem.treeNameCn}}</b-list-group-item>
 										<b-list-group-item>Alias Name : {{objitem.alias}}</b-list-group-item>
 										<b-list-group-item>Ecologic : {{objitem.ecologic}}</b-list-group-item>
 										<b-list-group-item>Flowering Period : {{ periodRange(objitem.flowering) }}</b-list-group-item>
@@ -396,7 +403,7 @@ export default {
 						if (this.tree_string.length > 0) {
 							for(var j = 0; j < ListofTreeInfo.length; j++ ) {
 							//console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
-								if (ListofTreeInfo[j].treeNameEn.includes(this.tree_string) || ListofTreeInfo[j].scientificName.includes(this.tree_string) || ListofTreeInfo[j].alias.includes(this.tree_string)) {
+								if (ListofTreeInfo[j].treeNameEn.toLowerCase().includes(this.tree_string.toLowerCase()) || ListofTreeInfo[j].scientificName.toLowerCase().includes(this.tree_string.toLowerCase()) || ListofTreeInfo[j].alias.toLowerCase().includes(this.tree_string.toLowerCase())) {
 										Select_Individual_Tree_Info.push(ListofTreeInfo[j])
 								}
 							}

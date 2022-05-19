@@ -43,7 +43,7 @@
 							</tr>
 							</td>
 							<td style= "vertical-align: bottom;">
-								<b-button :pressed="false" pill variant="primary" @click="ShowTreeDetails(slide.treeId,slide.treeNameEn,slide.alias,slide.scientificName,slide.ecologic,slide.flowering,slide.fruit,slide.cnRare,slide.hkRare,slide.cap96,slide.cap586,slide.treeImage,slide.treeDescEn)"><H5>Details</H5></b-button>
+								<b-button :pressed="false" pill variant="primary" @click="ShowTreeDetails(slide.treeId,slide.treeNameEn,slide.alias,slide.scientificName,slide.ecologic,slide.flowering,slide.fruit,slide.cnRare,slide.hkRare,slide.cap96,slide.cap586,slide.treeImage,slide.treeDescEn,slide.treeNameCn,slide.treeDescCn)"><H5>Details</H5></b-button>
 							</td>
 					    </tr>
 						</table>
@@ -242,7 +242,7 @@ export default {
 	    	return startMonth + " - " + endMonth;
 	    },
 		
-		ShowTreeDetails(tree_id,tree_name,tree_alias,tree_scientific_name,tree_ecologic,tree_flowering,tree_fruit,rare_China,rare_HK,cap_96,cap_586,tree_image,tree_desc) {
+		ShowTreeDetails(tree_id,tree_name,tree_alias,tree_scientific_name,tree_ecologic,tree_flowering,tree_fruit,rare_China,rare_HK,cap_96,cap_586,tree_image,tree_desc,tree_name_cn,tree_desc_cn) {
 			var tree_fruit_period = this.periodRange(tree_fruit);
 			var tree_flowering_period = this.periodRange(tree_flowering);
 			var rare_China_yesno = this.yes_no_convert[rare_China];
@@ -267,9 +267,14 @@ export default {
 				}),
 				
 				h('b-card-body'),
-				h('b-card-title', [h('H2',['Sci. Name :    ',tree_scientific_name])]),
+				
+				h('b-card-title', [h('H2',['Scientific. Name :    ',tree_scientific_name])]),
 				h('b-card-sub-title' , { class: ['mb-3'] }, [h('H4'),['Alias Name :    ',tree_alias]]),
-				h('b-card-text' ,{ class: ['mb-3'] }, [h('H3', [tree_desc])]),
+				h('b-card-text' ,{ class: ['mb-3'] }, [h('H3', 'English Description'  )]),
+				h('b-card-text' ,{ class: ['mb-3'] }, [h('H3', [tree_desc]   )]),
+				h('b-card-text' ,{ class: ['mb-3'] }, [h('H3', 'Chinese Description'  )]),
+				h('b-card-text' ,{ class: ['mb-3'] }, [h('H3', [tree_desc_cn])]),
+				h('b-list-group-item',  [h('H4',['Chinese Name :    ',tree_name_cn])]),
 				h('b-list-group-item' , [h('H4',['Ecologic : ',tree_ecologic])]),
 				h('b-list-group-item' , [h('H4',['Flowering Period :    ',tree_flowering_period])]),
 				h('b-list-group-item' , [h('H4',['Fruiting Period :    ',tree_fruit_period])]),

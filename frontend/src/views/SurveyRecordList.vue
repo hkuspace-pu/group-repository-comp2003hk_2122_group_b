@@ -64,7 +64,7 @@
 					</div>
 					<br>
 					<div>
-						<b-form-group class="created_time my-1" v-slot="{ ariaDescribedby }">
+						<b-form-group class="Last_Amended_Time my-1" v-slot="{ ariaDescribedby }">
 						<b-row>
 							<b-col sm="3">
 								<label for="created_date_from_input">Survey Record Created Date from: </label>
@@ -122,12 +122,12 @@
 					<div>
 						<b-form-group label="Survey Status ( Uncheck all boxes to ignore )" v-slot="{ ariaDescribedby }">
 							<b-form-checkbox-group
-								:options="Survey_Status_Checked_Box_Group_Options"
-								v-model="Survey_Status_Checked_Box_Selected"
+								:options="SurveyState_Checked_Box_Group_Options"
+								v-model="SurveyState_Checked_Box_Selected"
 								:aria-describedby="ariaDescribedby"
-								value-field="survey_status_text"
-								text-field="survey_status_value"
-								name="Survey_Status_Checked_Box_Group"
+								value-field="SurveyState_text"
+								text-field="SurveyState_value"
+								name="SurveyState_Checked_Box_Group"
 								plain>
 							</b-form-checkbox-group>
 						</b-form-group>
@@ -144,7 +144,7 @@
 					<div class="survey_record_created_date_from mt-3">Survey Record Created Date from:   <strong>{{ created_date_from_input }}  to  {{ created_date_to_input }}</strong> </div>
 					<div class="last_amended_date_from_input mt-3">Survey Record Last Amended Date from:   <strong>{{ last_amended_date_from_input }}  to  {{ last_amended_date_to_input }}</strong></div>
 					<div class="tree_condition mt-3">Tree Condition: <strong>{{ Tree_Condition_Checked_Box_Selected }}</strong></div>
-					<div class="survey_status mt-3">Survey Status: <strong>{{ Survey_Status_Checked_Box_Selected }}</strong></div>
+					<div class="SurveyState mt-3">Survey Status: <strong>{{ SurveyState_Checked_Box_Selected }}</strong></div>
 					</h5>
 					<br>
 					</b-list-group-item>
@@ -155,40 +155,7 @@
 			</b-collapse>
 		</div>
 		<br><br>
-		<!--
-		<sorted-table :values="values">
-		<thead>
-		<tr>
-			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Selected">Select</sort-link></th>
-			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Survey_Case_No">Survey ID</sort-link></th>
-			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Creator_Name">Creator Name</sort-link></th>
-			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Created_Time">Created Time</sort-link></th>
-			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Created_Venue">Created Venue</sort-link></th>
-			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Species_Name">Species Name</sort-link></th>
-			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Survey_Status">Survey Status</sort-link></th>
-			<th scope="col" style="text-align: left; width: 10rem;"><sort-link name="Administrator_Comment">Administrator Comment</sort-link></th>
-			<th colspan = 3>Action</th>
-		</tr>
-		</thead>
-		<template #body="sort">
-		<tbody >
-		<tr v-for="value in sort.values" :key="value.Survey_Case_No">
-			        <td><input type="checkbox" :id="value.Survey_Case_No" :value="value.Survey_Case_No" v-model="bulkselectsurveycase" @change="check($event)"   :checked="value.Selected"></td>
-		            <td>{{ value.Survey_Case_No }}</td>
-		            <td>{{ value.Creator_Name }}</td>
-		            <td>{{ value.Created_Time }}</td>
-					<td>{{ value.Created_Venue }}</td>
-					<td>{{ value.Species_Name }}</td>
-					<td>{{ value.Survey_Status }}</td>
-					<td>{{ value.Administrator_Comment }}</td>
-					<td><input type='button' value='Delete' @click='deleteRecord(index,value.Survey_Case_No);'></td>
-					<td><input type='button' value='View' @click='showDetail("View",value.Survey_Case_No);'></td>
-					<td><input type='button' value='Edit' @click='showDetail("Edit",value.Survey_Case_No);'></td>	
-		          </tr>
-		</tbody>
-	   </template>
-	    </sorted-table>	
-		-->
+	
 		<div>
 			<b-container >
 				<b-row  >
@@ -199,7 +166,7 @@
 						<b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b>
 						<b>,         You selected {{  this.bulkselectsurveycase.length }} of {{  this.values.length }} record(s)</b>
 				    </div>
-					<!--@row-selected="onRowSelected" -->
+					
 					<b-table selectable :fields="fields"   @row-clicked="myRowClickHandler" :select-mode="multi"  responsive="sm"   hover sticky-header="550px"  head-variant="light" :items="new_sorted_table"  :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @sort-changed="sortChanged">
 
 						<template #head(id)="scope" > <div class="text-nowrap">Survey ID</div> </template>
@@ -219,19 +186,25 @@
 
 						</template>
 				
-						<template v-slot:cell(actions)="data">
-							<b-container style="{ width: '160px'}">
+						<template v-slot:cell(actions)="data" align-self="center">
+							<b-container  align-self="center">
 								<b-row>
 									<b-col style="{ width: '70px'}"   align-self="center">
 										<b-button  @click="showDetail('View',data.item)" class="mr-1" variant="warning">View</b-button>
-									</b-col>	
-									<b-col style="{ width: '70px'}"  align-self="center">
-										<b-button  @click="showDetail('Edit',data.item)" class="mr-1" variant="warning">Edit</b-button>
-									</b-col>	
+									</b-col>		
 								</b-row>
 							</b-container>
 						</template>
-						
+						<template v-slot:cell(actions2)="data" align-self="center">
+							<b-container  align-self="center">
+								<b-row>
+									<b-col v-if="data.item.SurveyState==='Draft'" style="{ width: '70px'}"   align-self="center">
+										<b-button  @click="deleteRecord(data.item, data.index)" class="mr-1" variant="warning">Delete</b-button>
+									</b-col>	
+	
+								</b-row>
+							</b-container>
+						</template>
 					</b-table>
 				</H6>
 				</b-col>
@@ -253,6 +226,7 @@ import { version, description } from 'vue-simple-alert';
 import SortedTablePlugin from "vue-sorted-table";
 import { SortedTable, SortLink } from "vue-sorted-table";
 import VueExcelXlsx from "vue-excel-xlsx";
+
 Vue.use(VueExcelXlsx);
 
 export default  { 
@@ -260,19 +234,17 @@ export default  {
 	props:['data'],
     data () {
         return {
-			//surveycases:this.surveycases,
-			//fields:[{key:'Survey_Case_No',stickyColumn: true,isRowHeader: true ,variant: 'primary', sortable: true}, {key:'selected', sortable: true},{key:'Creator_Name', sortable: true},{key:'Created_Time', sortable: true},{key:'Created_Venue', sortable: true},{key:'Species_Name', sortable: true},{key:'Survey_Status', sortable: true},{key:'Moderator_Comment', sortable: true},{key:'Latitude', sortable: true},{key:'Longitude', sortable: true},{key:'Measurement', sortable: true},{key:'Observation', sortable: true},{key:'Condition', sortable: true}],
-			 
+	
 			surveycases:[],
-			Survey_Case_No: 0,
+			SurveyID: 0,
 			Creator_Name: '',
-			Created_Time:'',
+			Last_Amended_Time:'',
 			Created_Venue: '',
             Species_Name: '',
-            Survey_Status: '',
+            SurveyState: '',
             Administrator_Comment: '',
-            Survey_Case_No_To: 0,
-            Survey_Case_No_From: 0,
+            SurveyID_To: 0,
+            SurveyID_From: 0,
 			mode:'',
 			bulkselectsurveycase:[],
 			values: [],
@@ -286,45 +258,44 @@ export default  {
 			created_date_to_input:"",
 			created_date_from_input:"",
 			vueexcelxlsx: true,
-			 sortBy: 'Survey_Case_No',
+			 sortBy: 'SurveyID',
 			 Client_Reference:"",
 			 Score:"",
 			sortDesc: false,
+			selectable_tree_name_id:{},
+			tree_data:'',
+			Condition:'',
             fields:[
-				    {key:'Survey_Case_No',stickyColumn: true,isRowHeader: true ,variant: 'primary', sortable: true, label: "Survey ID",field: "Survey_Case_No", output_excel: true}, 
+				    {key:'SurveyID',stickyColumn: true,isRowHeader: true ,variant: 'primary', sortable: true, label: "Survey ID",field: "SurveyID", output_excel: true}, 
 			        {key:'selected', sortable: true, output_excel: false},
-					{key:'Creator_Name', sortable: true,label: "Creator Name",field: "Creator_Name", output_excel: true},
-					{key:'Created_Time', sortable: true,label: "Created Time",field: "Created_Time", output_excel: true},
-					{key:'Created_Venue', sortable: true,label: "Created Venue",field: "Created_Venue", output_excel: true},
-					{key:'Species_Name', sortable: true,label: "Species Name",field: "Species_Name", output_excel: true},
-					{key:'Survey_Status', sortable: true,label: "Survey Status",field: "Survey_Status", output_excel: true},
+				
+					{key:'Last_Amended_Time', sortable: true,label: "Last Amended Time",field: "Last_Amended_Time", output_excel: true},
+					{key:'Species_Name', sortable: true,label: "Tree Name",field: "Tree Name", output_excel: true},
 					{key:'Moderator_Comment', sortable: true,label: "Moderator Comment",field: "Moderator_Comment", output_excel: true},
 					{key:'Latitude', sortable: true,label: "Latitude",field: "Latitude", output_excel: true},
 					{key:'Longitude', sortable: true,label: "Longitude",field: "Longitude", output_excel: true},
 					{key:'Measurement', sortable: true,label: "Measurment",field: "Measurment", output_excel: true},
 					{key:'Observation', sortable: true,label: "Observation",field: "Observation", output_excel: true},
 					{key:'Condition', sortable: true,label: "Condition",field: "Condition", output_excel: true},
+					{key:'Video', sortable: true,label: "Video",field: "Video", output_excel: true},
 					{key:'Score', sortable: true,label: "Score",field: "Score", output_excel: true},
 					{key:'Client_Reference', sortable: true,label: "Client_Reference",field: "Client_Reference", output_excel: true},
-					{key:'actions',label: "Action", output_excel: false}
+					{key:'SurveyState', sortable: true,label: "Survey State",field: "Survey State", output_excel: true},
+					{key:'actions',label: "Actions", field: "actions", sortable: true, output_excel: false},
+					{key:'actions2',label: "Action 2", field: "actions2", sortable: true, output_excel: false}
+					
 			],
             
-			Tree_Condition_Checked_Box_Selected: [],
-			Tree_Condition_Checked_Box_Group_Options: [
-			    { tree_condition_value: 'Bad', tree_condition_text:  'Bad' },
-				{ tree_condition_value: 'Poor', tree_condition_text:  'Poor' },
-				{ tree_condition_value: 'Normal', tree_condition_text:  'Normal' },
-				{ tree_condition_value: 'Good', tree_condition_text:  'Good' },
-				{ tree_condition_value: 'Excellent', tree_condition_text:  'Excellent' },
+			selectable_tree_condition_options: [
+				{ text: '-', value: '-' },  
+				{ text: 'Excellent', value: 1 },
+				{ text: 'Normal', value: 2 },
+				{ text: 'Deteriorate', value: 3},
+				{ text: 'Poor',value: 4 },
+				{ text: 'Danger', value: 5 },
 			],
-			Survey_Status_Checked_Box_Selected: [],
-			Survey_Status_Checked_Box_Group_Options: [
-			    { survey_status_value: 'Draft', survey_status_text:  'Draft' },
-				{ survey_status_value: 'Submitted', survey_status_text:  'Submitted' },
-				{ survey_status_value: 'Pending Approval', survey_status_text:  'Pending Approval' },
-				{ survey_status_value: 'Approved', survey_status_text:  'Approved' },
-				{ survey_status_value: 'Published', survey_status_text:  'Published' },
-			],
+			
+
 		}                                            
 	},
     computed: {
@@ -355,7 +326,7 @@ export default  {
 					this.values = [];
 					for (const eachsurvey of response.data) {
 					  eachsurvey["Selected"] = false;
-					  eachsurvey["Survey_Case_No"] = Number(eachsurvey["Survey_Case_No"]) ;
+					  eachsurvey["SurveyID"] = Number(eachsurvey["SurveyID"]) ;
 					 
 					}
 					this.bulkselectsurveycase =[];
@@ -370,33 +341,35 @@ export default  {
 		
 		allRecords: function(){
 			axios.get('ajaxfile_get_surveyrecords.php').then((response) => {
-					//this.surveycases = response.data;
-					this.values = [];
+					//this.surveycases = response.data
+					for(var j = 0; j < response.data.length; j++ ) {
+					//console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
+						//console.log('tree name en:' + this.tree_data[j]['treeNameEn']);
+						//console.log('tree id:' + this.tree_data[j]['treeId']);
+						//let tree_id_pair[tree_id] = '';
+						response.data[j]["selected"] = false
 					
-					 for(var j = 0; j < response.data.length; j++ ) {
-					  response.data[j]["Survey_Case_No"] = Number(response.data[j]["Survey_Case_No"]) ;
-					  response.data[j]["selected"] = false ;
+						//this.selectable_tree_name_id[this.tree_data[j]['treeNameEn']] =  this.tree_data[j]['treeId']
 					}
 					this.bulkselectsurveycase =[];
 					this.values=    response.data;
-					this.json_data = response.data;
-					console.log(this.values); 
+;		 
 				}).catch((error) => {
 					console.log('error on all Records:' + error);
 				});	
 			},
 				
 				
-			Filter_By_Survey_Case_No: function(){
+			Filter_By_SurveyID: function(){
 						
-                console.log('Survey_Case_No_To:' + this.Survey_Case_No_To); 
-                console.log('Survey_Case_No_From:' + this.Survey_Case_No_From); 
+                console.log('SurveyID_To:' + this.SurveyID_To); 
+                console.log('SurveyID_From:' + this.SurveyID_From); 
 						
-				if(this.Survey_Case_No_From >= 0 && this.Survey_Case_No_To >= this.Survey_Case_No_From) {
+				if(this.SurveyID_From >= 0 && this.SurveyID_To >= this.SurveyID_From) {
 					axios.get('ajaxfile_get_surveyrecords.php', {
 						params: {
-							Survey_Case_No_From: this.Survey_Case_No_From ,
-                            Survey_Case_No_To: this.Survey_Case_No_To
+							SurveyID_From: this.SurveyID_From ,
+                            SurveyID_To: this.SurveyID_To
 						}
 					}).then((response) => {
 						//this.surveycases = response.data;
@@ -404,7 +377,7 @@ export default  {
 						this.bulkselectsurveycase = [];
 						for (const eachsurvey of response.data) {
 						  eachsurvey["Selected"] = false;
-						  eachsurvey["Survey_Case_No"] = Number(eachsurvey["Survey_Case_No"]) ;
+						  eachsurvey["SurveyID"] = Number(eachsurvey["SurveyID"]) ;
 						}
 						this.values=    response.data;
 					}).catch((error) => {
@@ -413,23 +386,84 @@ export default  {
 				}
 			},
 			
-			deleteRecord: function(index,Survey_Case_No){
-				axios.post('ajaxfile_delete_surveyrecords.php', {
-					 Survey_Case_No: Survey_Case_No
-				}).then((response) => {
-					//this.surveycases.splice(index, 1);
-					this.values.splice(index, 1);
-					alert(response.data);
-				}).catch((error) => {
-					console.log('error:' + error);
+			deleteRecord: function(Survey_Case, index){
+				var survey_info = 'Survey Case No: ' +  Survey_Case.SurveyID + ',\n'
+								+ 'Client_Reference: ' +  Survey_Case.Client_Reference + ",\n" 
+				                + 'Last Amended Time: ' +  Survey_Case.Last_Amended_Time + ",\n" 
+								+ 'Tree Name: ' +  Survey_Case.Species_Name + ",\n"  
+								+ 'Survey State: ' +  Survey_Case.SurveyState + ",\n" 
+								+ 'Latitude: ' +  Survey_Case.Latitude + ",\n" 
+								+ 'Latitude: ' +  Survey_Case.Longitude + ",\n" 
+								+ 'Measurement: ' +  Survey_Case.Measurement + ",\n"  
+								+ 'Observation: ' +  Survey_Case.Observation + ",\n" 
+								+ 'Condition: ' +  Survey_Case.Condition + ",\n" 
+								+ 'Index: ' +  index + ",\n";
+										
+				console.log("Confirm to delete?" + survey_info);
+				this.$swal.fire({
+				  title: 'Could you please confirm to delete this Survey Record ID :' +  Survey_Case.SurveyID + ' ?',
+				  text: "Surevey Record to be Deleted: " + survey_info,
+				  icon: 'warning',
+				  showCancelButton: true,
+				  confirmButtonColor: '#3085d6',
+				  cancelButtonColor: '#d33',
+				  confirmButtonText: 'Yes, please delete this survey record' ,
+				}).then((result) => {
+					if (result.isConfirmed) {
+						console.log("User Confirm to delete survey:" + Survey_Case);
+						axios.post('ajaxfile_delete_surveyrecords.php', {
+							SurveyID: Survey_Case.SurveyID
+						}).then((response) => {
+							//this.surveycases.splice(index, 1);
+							this.$swal.fire({
+								position: 'center',
+								icon: 'success',
+								title:'This survey has been successfully deleted!',
+								showCloseButton: true
+							})
+							this.values.splice(index, 1);
+						
+						}).catch((error) => {
+							console.log('Cancel failed:' + error + ". Please try again.");
+						});
+					} else {
+						console.log('User cancel to submit');
+					}
+				}).catch((e) => {
+				    console.log('Deletion get an error:' + e);
 				});
+				
+				
 						  
 			},
 					
 			showDetail(mode, Survey_Case_Data){
 					//this.$router.push('/individualsurveypage'); 
+				//console.log('Survey_Case_Data:' + Survey_Case_Data);
+				//if (Survey_Case_Data.length > 0 ) {
+				//	for(var j = 0; j < this.Survey_Case_Data.length; j++ ) {
+				//		console.log('last bulkinsert case no:' + this.bulkselectsurveycase[j]["SurveyID"]); 									 
+				//	} 
+				//	this.vueexcelxlsx = false
+				//} 
 				console.log('Survey_Case_Data:' + Survey_Case_Data);
-				this.$router.push({name:'IndividualSurveyPage', params: {mode_state : mode, individual_survey_data : Survey_Case_Data}});
+			
+				console.log('Survey_Case_Data: SurveyID->' + Survey_Case_Data.SurveyID)
+				console.log('Survey_Case_Data: Longitude->' + Survey_Case_Data.Longitude)
+				console.log('Survey_Case_Data: Latitude->' + Survey_Case_Data.Latitude)
+	
+				console.log('Survey_Case_Data: Last_Amended_Time->' + Survey_Case_Data.Last_Amended_Time)
+				console.log('Survey_Case_Data: Species_Name->' + Survey_Case_Data.Species_Name)
+				console.log('Survey_Case_Data: SurveyState->' + Survey_Case_Data.SurveyState)
+				console.log('Survey_Case_Data: Moderator_Comment->' +  Survey_Case_Data.Moderator_Comment)
+				console.log('Survey_Case_Data: Measurement->' + Survey_Case_Data.Measurement)
+				console.log('Survey_Case_Data: Observation->' + Survey_Case_Data.Observation)
+				console.log('Survey_Case_Data: Condition->' + Survey_Case_Data.Condition	)
+				console.log('Survey_Case_Data: Client_Reference->' + Survey_Case_Data.Client_Reference)
+				console.log('Survey_Case_Data: Score->' + Survey_Case_Data.Score)
+				
+				this.$router.push({name:'IndividualSurveyPage', params: {mode_as_selected: 'View', individual_survey_data : Survey_Case_Data}});
+				
 			}  ,  
 			
 			BulkExportToExcel(bulkselectsurveycase,excel_file_path) {
@@ -482,7 +516,7 @@ export default  {
 			/**check(e) {  
 			      //console.log(e.target.id);  
 				  for (const eachsurvey of this.values) {
-				    if (eachsurvey["Survey_Case_No"] === Number(e.target.id)) {
+				    if (eachsurvey["SurveyID"] === Number(e.target.id)) {
 						eachsurvey["Selected"] = e.target.checked;
 						console.log(e.target.id + " " + eachsurvey["Selected"]);  
 						break;
@@ -502,7 +536,7 @@ export default  {
 			myRowClickHandler(record, index) {
 				this.bulkselectsurveycase = [];
 				for(var j = 0; j < this.values.length; j++ ) {
-					if (record["Survey_Case_No"] === this.values[j]["Survey_Case_No"]) {
+					if (record["SurveyID"] === this.values[j]["SurveyID"]) {
 						this.values[j]["selected"] = !this.values[j]["selected"];
 					}
 					if (this.values[j]["selected"]) {
@@ -511,53 +545,58 @@ export default  {
 				}
 				if (this.bulkselectsurveycase.length > 0 ) {
 					for(var j = 0; j < this.bulkselectsurveycase.length; j++ ) {
-						console.log('last bulkinsert case no:' + this.bulkselectsurveycase[j]["Survey_Case_No"]); 									 
+						console.log('last bulkinsert case no:' + this.bulkselectsurveycase[j]["SurveyID"]); 									 
 					} 
 					this.vueexcelxlsx = false
 				} 
 				
 			},
-			onRowSelected(items) {
 			
-				
-				this.vueexcelxlsx = false;
-				if (items.length > 0) { 
-					
-				
-				//for(var j = 0; j < this.values.length; j++ ) {
-				//	console.log('this values case on row selected:' + this.values[j]["Survey_Case_No"] + " selected:" + this.values[j]["selected"]); 
-				//	}
-					this.bulkselectsurveycase = [];
-					console.log('on row selected:');
-					for(var j = 0; j < this.values.length; j++ ) {
-					
-						console.log('this values case no:' + this.values[j]["Survey_Case_No"]); 
-						for (const each_selected_survey of items) {
-							console.log('this selected items case no:' + each_selected_survey["Survey_Case_No"]); 
-							if (each_selected_survey["Survey_Case_No"] === this.values[j]["Survey_Case_No"]) {
-								console.log('this values case no before assign true:' + this.values[j]["selected"]); 
-								this.values[j]["selected"] = !this.values[j]["selected"];
-								console.log('this values case no after assign true:' + this.values[j]["selected"]); 
-								this.sortChanged;
-								break;
-							}
-						}
-						if (this.values[j]["selected"]) {
-							this.bulkselectsurveycase.push(this.values[j])
-						}
-					}	
-				}
-					
-			},
 			sortChanged(e) {
 				console.log('on sortchange:');
-			}
+			},
+			tree_name_download(){
+						axios.get("https://7ipwaamd2b.execute-api.us-east-1.amazonaws.com/test/trees")
+				       .then(response => {
+							    this.tree_data = response.data
+								Vue.prototype.$Tree_Data = response.data;
+						
+								this.selectable_tree_name_id = [];
+
+								
+								for(var j = 0; j < this.tree_data.length; j++ ) {
+								//console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
+									//console.log('tree name en:' + this.tree_data[j]['treeNameEn']);
+									//console.log('tree id:' + this.tree_data[j]['treeId']);
+									//let tree_id_pair[tree_id] = '';
+									this.selectable_tree_name_id.push({text: this.tree_data[j]['treeNameEn'] , value: this.tree_data[j]['treeId']  })
+
+									//this.selectable_tree_name_id[this.tree_data[j]['treeNameEn']] =  this.tree_data[j]['treeId']
+								}
+								
+								for(var j = 0; j < this.selectable_tree_name_id.length; j++ ) {
+									//console.log('tree name matching ID:' + this.selectable_tree_name_id[j]['text'] + " vs " + this.selectable_tree_name_id[j]['value']);
+								}
+								
+				       }).catch(error => {
+							this.$swal.fire({
+								position: 'center',
+								icon: 'error',
+								title:'Tree Name Cannot be Downloaded. Pleaser refresh later.',
+								showCloseButton: true
+							})
+							console.error("There was an error in tree name download!", error);
+				       });			
+			},
 			
 								
         },
 
 		created: function(){
 			this.values = [];
+			if(typeof(Vue.prototype.$Tree_Data) === 'undefined' || Vue.prototype.$Tree_Data === null || Vue.prototype.$Tree_Data === '') {
+					this.tree_name_download();
+			}
         },
 
 }

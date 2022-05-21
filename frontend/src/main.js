@@ -39,6 +39,7 @@ Vue.use(VueSidebarMenu);
 Vue.use(VueSweetalert2);
 Vue.prototype.$Login_Name = 'User';
 Vue.prototype.$Login_Email = '';
+Vue.prototype.$Tree_Data = '';
 
 const router = new VueRouter({
   mode: "history",

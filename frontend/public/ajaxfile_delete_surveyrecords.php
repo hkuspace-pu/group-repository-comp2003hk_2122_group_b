@@ -9,8 +9,8 @@ if ( $str === FALSE ) {
      $response[] = '{}';
 } else {
     $data = $str;   
-    $Survey_Case_No = $data->Survey_Case_No;
-	mysqli_query($con,"DELETE FROM survey_case WHERE survey_case_no=".$Survey_Case_No);
+    $Survey_Case_No = $data->SurveyID;
+	mysqli_query($con,"DELETE FROM survey WHERE SurveyID=".$Survey_Case_No);
 	echo "Delete successfully";
 	exit;
 }

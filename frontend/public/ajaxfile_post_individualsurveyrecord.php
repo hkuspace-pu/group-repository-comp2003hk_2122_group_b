@@ -18,44 +18,59 @@ $location_longitude = $data->location_longitude;
 $location_latitude = $data->location_latitude;
 $survey_state = $data->survey_state;
 $survey_created_time = $data->survey_created_time;
-$tree_id = $data->tree_id;
+$species_name = $data->species_name;
 $observation = $data->observation;
 $measurement = $data->measurement;
 $condition = $data->condition;
 $moderatorcomment = $data->moderatorcomment;
+$client_reference = $data->client_reference ;
 //echo 'survey id:'.$survey_id;
 
 $query = "SELECT SurveyID FROM survey WHERE SurveyID=$survey_id";
 $sqlsearch = mysqli_query($con,$query);
-$resultcount = mysqli_num_rows($sqlsearch);
-if($resultcount > 0){
+//$resultcount = mysqli_num_rows($sqlsearch);
+if($sqlsearch){
     
 	$update_survey_query =  "UPDATE survey SET
-        Longitude = '$location_longitude',
-        Latitude = '$location_latitude',
+        Longitude = $location_longitude,
+        Latitude = $location_latitude,
         SurveyState = '$survey_state',
         Last_Amended_Time = '$survey_created_time',
-        TreeID = '$tree_id',
+        Species_Name = '$species_name',
         Observation = '$observation',
         Measurement = '$measurement',
-        ConditionID = '$condition',
-		Moderator_Comment = '$moderatorcomment'
+        `Condition` = '$condition',
+		Client_Reference = '$client_reference' 
         WHERE SurveyID = $survey_id";
+		printf($update_survey_query);
 	//echo $update_survey_query;
 		
 		mysqli_query($con,
 		   $update_survey_query
 		);
 
-		echo 'Update Successfully!';
-	
+       // if (mysql_affected_rows($con) > 0) {
+		//	echo 'Update Successfully!';
+		//	printf('rows effected'.mysql_affected_rows());
+	  //  } else {
+		//	echo mysqli_error($con);
+	//		printf($update_survey_query);
+	//	}
+	//	json_encode($response)
 }else{
-	$update_survey_query =
-	"INSERT INTO survey (SurveyID, Longitude, Latitude, SurveyState, Last_Amended_Time, TreeID, Observation, Measurement, ConditionID, Video, SurveyorID, Moderator)
-	    VALUES ($survey_id,'$location_longitude','$location_latitude','$survey_state','$survey_created_time','$tree_id','$observation','$measurement','$condition','',1,'$moderatorcomment')";
-	//echo $update_survey_query;
-    mysqli_query($con, $update_survey_query ) ;
-	echo 'Create Successfully!';
+
+	$max_survey_id_result = mysqli_fetch_row(mysqli_query($con, "SELECT max(SurveyID) + 1 FROM Survey")) ;
+	$max_survey_id =$max_survey_id_result[0];
+					printf('new survey id:'.$max_survey_id);					
+		$update_survey_query =
+		"INSERT INTO survey (SurveyID, Longitude, Latitude, SurveyState, Last_Amended_Time, Species_Name, Observation, Measurement, `Condition`, Client_Reference, Video)
+		    VALUES ($max_survey_id,'$location_longitude','$location_latitude','$survey_state','$survey_created_time','$species_name','$observation','$measurement','$condition','$client_reference','')";
+		//echo $update_survey_query;
+		
+		printf($update_survey_query);
+		mysqli_query($con, $update_survey_query ) ;
+
+	
 	
 }
 

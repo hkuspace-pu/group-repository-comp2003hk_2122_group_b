@@ -330,11 +330,11 @@ export default {
 	    }
 	},	
 	
-	created() {
-		 
+	created() {		 
 	    axios.get("https://7ipwaamd2b.execute-api.us-east-1.amazonaws.com/test/trees")
-	        .then(response => this.loadeddata = response.data)
-	        .catch(error => {
+	        .then(response => {
+				this.loadeddata = response.data
+	        }).catch(error => {
 	          this.errorMessage = error.message;
 	          console.error("There was an error!", error);
 	        });

@@ -50,6 +50,11 @@ import Vue from 'vue';
 import vSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
 import VueCryptojs from 'vue-cryptojs'
+import axios from 'axios';
+import VueSimpleAlert from 'vue-simple-alert';
+import { Component } from 'vue-property-decorator';
+import { SweetAlertOptions, SweetAlertResult } from 'sweetalert2';
+
 Vue.use(VueCryptojs)
 
 Vue.component('v-select', VueSelect.VueSelect)
@@ -59,6 +64,7 @@ export default {
   appmargin: '0px',
   data() {
     return {
+	tree_data:'',
      appmargin: this.appmargin,	
 	 width: '240px',
       menu: [
@@ -162,7 +168,32 @@ export default {
 	  }
 	   this.menu[1].title = "Hello!  " + Vue.prototype.$Login_Name;
     },
+	tree_name_download(){
+			
+			axios.get("https://7ipwaamd2b.execute-api.us-east-1.amazonaws.com/test/trees")
+			.then(response => {
+				
+				Vue.prototype.$Tree_Data = response.data;	
+				
+						
+			}).catch(error => {
+				this.$swal.fire({
+					position: 'center',
+					icon: error,
+					title:'Tree Name Cannot be Downloaded. Pleaser refresh later.',
+					showCloseButton: true
+				})
+				console.error("There was an error in tree name download!", error);
+			});			
+		},
 	
+	
+  },
+  
+  created(){
+  	if(typeof(Vue.prototype.$Tree_Data) === 'undefined' || Vue.prototype.$Tree_Data === null || Vue.prototype.$Tree_Data === '') {
+  		this.tree_name_download();
+  	}
   }
 };
 

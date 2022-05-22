@@ -15,7 +15,7 @@
 						<H4 v-if="!isLoggedIn" >Hello, User</H4><H4 v-else="isLoggedIn"> Hello, {{this.updateloginuser}}</H4>
 					</b-col>
 					<b-col cols="1" align-self="right">		
-						<H4><router-link v-if="!isLoggedIn" to="/login">Log In</router-link><router-link v-else to="/home"> <a :href="href" @click.prevent="logout">Logout</a></router-link></H4>
+						<H4><router-link v-if="!isLoggedIn" to="/login">Sign-In</router-link><router-link v-else to="/home"> <a :href="href" @click.prevent="logout">Sign-Off</a></router-link></H4>
 					</b-col>
 					
 				</b-row>
@@ -101,7 +101,7 @@ export default {
         },
         {
           href: "/login",
-          title: "Login",
+          title: "Sign-In",
           icon: "fa fa-sign-in"
         },
         {
@@ -128,12 +128,12 @@ export default {
 		},
         {
           href: "/yourprofile",
-          title: "Your Profile",
+          title: "Your Contribution",
           icon: "fa fa-address-card"
         },
         {
           href: "/about",
-          title: "About",
+          title: "About US",
           icon: "fa fa-tree"
         },
        

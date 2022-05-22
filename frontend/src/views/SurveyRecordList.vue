@@ -323,8 +323,9 @@ export default  {
 		allRecords: function(){
 			axios.get('ajaxfile_get_surveyrecords.php').then((response) => {
 					//this.surveycases = response.data
+					console.log("response data: "+ response.data.toString());
 					for(var j = 0; j < response.data.length; j++ ) {
-					//console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
+					    //console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
 						//console.log('tree name en:' + this.tree_data[j]['treeNameEn']);
 						//console.log('tree id:' + this.tree_data[j]['treeId']);
 						//let tree_id_pair[tree_id] = '';

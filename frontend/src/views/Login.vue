@@ -32,7 +32,7 @@
 <br>
 <b-container class="bv-example-row">
    <b-row class="text-center" class="border border-primary">
-	<b-col align-self="center" cols="2"><h2>Login</h2></b-col>
+	<b-col align-self="center" cols="2"><h2>Sign-In</h2></b-col>
 	<br>
 	<b-col cols="10" align-self="center" >
 	 <h4>
@@ -117,7 +117,7 @@
 	  			<b-button type="reset" variant="danger">Reset</b-button>
 	  		</b-col>
 			<b-col cols="6" align-self="left">
-				<h6>*Please also enter your email and current password in "Login" Section</h6>
+				<h6>*Please also enter your email and current password in above "Sign-In" Section</h6>
 			</b-col>
 	  	</b-row>
 	  </b-container>
@@ -140,7 +140,7 @@
 	  			
 	  		</b-col>
 	  		<b-col cols="6" align-self="left">
-	  			<h6>*Please enter your email address in "Login" Section</h6>
+	  			<h6>*Please enter your email address in above "Sign-In" Section</h6>
 	  		</b-col>
 	  	</b-row>
 	  </b-container>

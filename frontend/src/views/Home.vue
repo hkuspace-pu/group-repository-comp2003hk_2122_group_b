@@ -2,7 +2,7 @@
 	<div class="home">
         <table border='0' width='100%' style='border-collapse: collapse;'>
 			<tr>
-				<td style= "vertical-align: bottom;"><H5>Tree Of The Month</H5></td>
+				<td style= "vertical-align: bottom;"><H3>Tree Of The Month</H3></td>
 				<td>
 					<H5>
 					<form class="card card-sm" style="text-align:right" >
@@ -53,6 +53,95 @@
 			  </carousel-3d>
 			</div>
 		</b-container>
+		 <div class="line-1"></div>
+		<div>
+			<b-container>
+				 <div class="mt-4">
+				    <h3>Recent News</h3>
+				    <b-card class="img-responsive img-thumbnail"  img-src="https://firebasestorage.googleapis.com/v0/b/tree-app-c9daf.appspot.com/o/default%2FWhite%20Azalea.jpeg?alt=media&token=9f84a4d0-7382-4d27-9eae-1b315d810022" img-alt="Card image" img-right class="mb-3">
+				      
+						<b-card-text class = "justify-content-center" >
+							<h4>2022 May 01</h4>
+							<H6> 
+							<ul>
+								Zentangle in Nature ‧ Online Workshop (Group Application)
+								<li><a href="https://www.kfbg.org/en/events/zentangle-in-nature-online-workshop-group-application">Click Here</a></li>
+							</ul>
+							</H6>
+							<h4>2022 Apr 22</h4>
+							<H6> 
+							<ul>
+								Certificate in Green Finance Essentials: Registration Open Now! (Click here to learn HOW to REGISTER)
+								<li><a href="https://foe.org.hk/FileUpload/Editor/ECE%20Course/Certificate%20Flyer_Apr%202022.pdf">Click Here</a></li>
+							</ul>
+							</H6>
+							<h4>2022 April 15</h4>
+							<H6> 
+							<ul>
+								Green Earth Companion Scheme
+								<li><a href="https://greenearth.org.hk/en/greenearthcompanion/">Click Here</a></li>
+							</ul>
+							</H6> 
+							<h4>2022 February 20</h4>
+							<H6> 
+							<ul>
+								Webinars on Tree Care before Wet Season 
+								<li><a href="https://www.greening.gov.hk/filemanager/greening/en/content_48/Webinars-on-Tree-Care-before-Wet-Season2022.pdf">Click Here</a></li>
+							</ul>
+							</H6> 
+				      </b-card-text>
+				    </b-card>
+				</div>				
+			<b-container>
+		</div>
+		<div class="line-1"></div>
+		<b-container>
+			 <div class="mt-4">
+			    <h3>Prized Q & A</h3>
+			    <b-card class="img-responsive img-thumbnail"  img-src="https://firebasestorage.googleapis.com/v0/b/tree-app-c9daf.appspot.com/o/default%2FChinese%20Albizia.jpeg?alt=media&token=4db961fa-0770-4ff4-8e0a-825345816b1c" img-alt="Card image" img-right class="mb-3">
+			       <h5>
+					<b-card-text class = "justify-content-center" >
+						<b-form-group label="What is the family of Albizia chinensis?" v-slot="{ ariaDescribedby }">
+							<b-form-radio-group 
+								v-model="Q1_Radio_Button_selected" 
+								:options="Q1_Radio_Button_options" 
+								:aria-describedby="ariaDescribedby" 
+								 name="Q1_Radio"
+								plain>
+							</b-form-radio-group>
+						
+						</b-form-group>
+						<br>
+						<b-form-group label="Which of the below seasons that a fruit of Brisbane Box normally grows" v-slot="{ ariaDescribedby }">
+							<b-form-radio-group 
+								v-model="Q2_Radio_Button_selected" 
+								:options="Q2_Radio_Button_options" 
+								:aria-describedby="ariaDescribedby" 
+								 name="Q2_Radio"
+								plain>
+							</b-form-radio-group>
+							
+						</b-form-group>
+						<br>
+						<b-form-group label="Which category that Camptotheca is under in our country?" v-slot="{ ariaDescribedby }">
+							<b-form-radio-group 
+								v-model="Q3_Radio_Button_selected" 
+								:options="Q3_Radio_Button_options" 
+								:aria-describedby="ariaDescribedby" 
+								name="Q3_Radio"
+								plain>
+							</b-form-radio-group>
+							
+						</b-form-group>
+						<br>
+						<b-button :pressed="false" variant="primary" @click='submit_answer()'>Submit</b-button>
+			      </b-card-text>
+				  </h5>
+			    </b-card>
+			<b-container>
+			<div class="line-1"></div>
+			
+			
 		<!--
 		<b-container fluid="sm">
 		<div class = "slidepart">
@@ -144,7 +233,31 @@ export default {
 			Tree_Reference_ID : "",
 			slide : 0,
 			sliding: null,
-			slides : this.sliderows
+			slides : this.sliderows,
+			Q1_Radio_Button_selected : 'Mimosaceae',
+			Q1_Radio_Button_options :  [
+			    { value: 'Mimosaceae', text: 'Mimosaceae' },
+			    { value: 'Araucariaceae', text: 'Araucariaceae' },
+			    { value: 'Cupressaceae', text: 'Cupressaceae' },
+				{ value: 'Betulaceae', text: 'Betulaceae' }
+			],
+			Q2_Radio_Button_selected : 'Spring',
+			Q2_Radio_Button_options : [
+			    { value: 'Spring', text: 'Spring' },
+			    { value: 'Summer', text: 'Summer' },
+			    { value: 'Autumn', text: 'Autumn' },
+				{ value: 'Winter', text: 'Winter' }
+			],
+			Q3_Radio_Button_selected : 'Category I',
+			Q3_Radio_Button_options : [
+			    { value: 'Category I', text: 'Category I' },
+			    { value: 'Category II', text: 'Category II' },
+			    { value: 'Category III', text: 'Category III' },
+				{ value: 'Category IV', text: 'Category IV' }
+			],
+
+			
+			
 			
 	    }
 	},	
@@ -359,7 +472,22 @@ export default {
 				}
 		    }
 		    return ListOfTreeName
-		}
+		},
+		
+		submit_answer() {
+			 this.$confirm("Confirm to submit your answer?", "Submit Prized Q & A", 'Confirm?', 'warning'
+			).then((r) => {
+				console.log("User Confirm to submit qa answer");
+			    this.$swal.fire({
+			    	position: 'center',
+			    	icon: 'Info',
+			    	title:'Your answer is submitted for Question ',
+			    	showCloseButton: true
+			    })
+			});
+			
+		},
+		
 		
 	}
 }
@@ -389,6 +517,11 @@ export default {
   font-size: 12px;
   min-width: 100%;
   box-sizing: border-box;
+}
+.card-img-right {
+    width: 40%;
+    height: 20vw;
+    object-fit: cover;
 }
 </style>
 

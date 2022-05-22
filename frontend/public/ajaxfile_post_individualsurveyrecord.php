@@ -22,16 +22,20 @@ $species_name = $data->species_name;
 $observation = $data->observation;
 $measurement = $data->measurement;
 $condition = $data->condition;
-$moderatorcomment = $data->moderatorcomment;
 $client_reference = $data->client_reference ;
 //echo 'survey id:'.$survey_id;
 
-$query = "SELECT SurveyID FROM survey WHERE SurveyID=$survey_id";
-$sqlsearch = mysqli_query($con,$query);
-//$resultcount = mysqli_num_rows($sqlsearch);
-if($sqlsearch){
+if ($survey_id != ""){
+	
+
+	$query = "SELECT SurveyID FROM survey WHERE SurveyID=$survey_id";
+	$sqlsearch = mysqli_fetch_row(mysqli_query($con,$query));
+	$current_survey_id_result = $sqlsearch[0];
+
+	//$resultcount = mysqli_num_rows($sqlsearch);
+	if($current_survey_id_result == $survey_id){
     
-	$update_survey_query =  "UPDATE survey SET
+		$update_survey_query =  "UPDATE survey SET
         Longitude = $location_longitude,
         Latitude = $location_latitude,
         SurveyState = '$survey_state',
@@ -57,19 +61,27 @@ if($sqlsearch){
 	//		printf($update_survey_query);
 	//	}
 	//	json_encode($response)
+	echo " Update Successfully";
+	}
 }else{
 
-	$max_survey_id_result = mysqli_fetch_row(mysqli_query($con, "SELECT max(SurveyID) + 1 FROM Survey")) ;
+
+	$max_survey_id_result = mysqli_fetch_row(mysqli_query($con, "SELECT max(SurveyID)+1 FROM Survey")) ;
 	$max_survey_id =$max_survey_id_result[0];
-					printf('new survey id:'.$max_survey_id);					
-		$update_survey_query =
-		"INSERT INTO survey (SurveyID, Longitude, Latitude, SurveyState, Last_Amended_Time, Species_Name, Observation, Measurement, `Condition`, Client_Reference, Video)
+	if (is_null($max_survey_id)) {
+		$max_survey_id = 1 ;
+	} else {
+		$max_survey_id = $max_survey_id + 1;
+	}
+	printf('new survey id:'.$max_survey_id);					
+	$update_survey_query =
+	"INSERT INTO survey (SurveyID, Longitude, Latitude, SurveyState, Last_Amended_Time, Species_Name, Observation, Measurement, `Condition`, Client_Reference, Video)
 		    VALUES ($max_survey_id,'$location_longitude','$location_latitude','$survey_state','$survey_created_time','$species_name','$observation','$measurement','$condition','$client_reference','')";
 		//echo $update_survey_query;
 		
-		printf($update_survey_query);
-		mysqli_query($con, $update_survey_query ) ;
-
+	printf($update_survey_query);
+	mysqli_query($con, $update_survey_query ) ;
+    echo " Insert Successfully";
 	
 	
 }

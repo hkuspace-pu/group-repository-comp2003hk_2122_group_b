@@ -7,7 +7,7 @@
 					<b-col cols="12" align-self="left">
 						 <h2>Survey Form</h2>
 						 <br>
-						 <h4>Note: You are in a {{ this.mode_state }} mode. Please 'create' button to enter a new survey record.</h4>
+						 <h4>Note: You are in a {{ this.mode_state }} mode. (or Please press 'Create New' button to enter a new survey record.)</h4>
 						 <br>
 					</b-col>
 				</b-row>
@@ -42,11 +42,8 @@
 		</b-container>
 		<h4>
 		<b-row class="text-center" class="border border-primary">
-			<b-col cols="10" align-self="center">
-				
-												
-					<b-form   @submit.prevent="confirm_alert_box"  @reset.prevent="confirm_clearall"> 
-										
+			<b-col cols="10" align-self="center">					
+					<b-form   @submit.prevent="confirm_alert_box()"  @reset.prevent="confirm_clearall"> 			
 					<b-form-group id="input_client_reference_group" label="Your reference code (Max 50 Characters):" label-for="input_client_reference">
 						<b-form-input size="lg" id="input_client_reference" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" v-model="client_reference" type="text" placeholder="For your internal reference only (optional)" type="text"></b-form-input>
 					</b-form-group>
@@ -298,6 +295,7 @@ export default {
 	mounted: function () {
 		
 		this.mode_state = this.mode_as_selected
+		if(typeof(this.$route.params.individual_survey_data.SurveyID) != 'undefined' && this.$route.params.individual_survey_data.SurveyID != null && this.$route.params.individual_survey_data.SurveyID != '') {
 		this.survey_id = this.$route.params.individual_survey_data.SurveyID
 		this.location_longitude = this.$route.params.individual_survey_data.Longitude
 		this.location_latitude = this.$route.params.individual_survey_data.Latitude
@@ -312,7 +310,7 @@ export default {
 		this.client_reference = this.$route.params.individual_survey_data.Client_Reference
 		this.score = this.$route.params.individual_survey_data.Score
 		this.video_path =  this.$route.params.individual_survey_data.Video
-		
+		}
 	},
 	computed: {
 		getNow: function() {
@@ -343,7 +341,7 @@ export default {
 					this.tree_species_option_selected = "ALL",
 					this.tree_condition_option_selected = "-",
 					this.tree_name_option_selected = "-",
-					this.survey_state_selected = "-",
+					this.mode_as_selected = "Draft",
 					this.survey_state = "",
 					this.client_reference = "",
 					this.last_created_time = "",
@@ -354,14 +352,15 @@ export default {
 					this.image3_path = '',
 					this.image4_path = '',
 					this.image5_path = ''
+	
 		},
-		submit_survey(survey_id,new_survey_state){
-			if (survey_id = ''){
-				survey_id = 0
-				console.log( 'create new survey in ' +'new survey_state:' + new_survey_state)
-			} else {
-				console.log('survey id: ' + survey_id +' new survey_state:' + new_survey_state)
-			}
+		submit_survey(new_survey_state){
+			//if (survey_id = ''){
+			//	survey_id = 0
+			//	console.log( 'create new survey in ' +'new survey_state:' + new_survey_state)
+			//} else {
+			//	console.log('survey id: ' + survey_id + ' new survey_state:' + new_survey_state)
+			//}
 			
 
 			console.log('location:' + this.location)
@@ -381,12 +380,11 @@ export default {
 			console.log('moderator_comment:' + this.moderatorcomment)
 			
 			axios.post('ajaxfile_post_individualsurveyrecord.php', {
-				survey_id:survey_id,
+				survey_id:this.survey_id,
 				location_longitude: this.location_longitude ,
 				location_latitude: this.location_latitude,
 				survey_created_time: this.getNow,
 				survey_state: this.submit_as_selected,
-						
 				observation: this.observation,
 				measurement: this.measurement,
 				condition: this.tree_condition_option_selected,
@@ -400,9 +398,9 @@ export default {
 				if (this.updatestatus = "Update Successfully!") {
 					
 					if (this.mode_state = "New") {
-	                    feedback_message = "The " + this.submit_as_selected + " version of Survey ID:" + survey_id + " has been created Successfullly!\nThanks you","success","Success !";
+	                    feedback_message = "The " + this.submit_as_selected + " version of Survey ID:" + this.survey_id + " has been created Successfullly!\nThanks you","success","Success !";
 					} else {
-						feedback_message = "The " + this.submit_as_selected + " version of Survey ID:" + survey_id + " has been submitted Successfullly!\nThanks you","success","Success !";	
+						feedback_message = "The " + this.submit_as_selected + " version of Survey ID:" + this.survey_id + " has been submitted Successfullly!\nThanks you","success","Success !";	
 					}
 					this.$swal.fire({
 						position: 'center',
@@ -418,7 +416,7 @@ export default {
 					this.$swal.fire({
 						position: 'center',
 						icon: 'error',
-						title: "The " +  this.submit_as_selected + " version of Survey ID:" + survey_id + " has been failed to submitted !\nPlease try again.",
+						title: "The " +  this.submit_as_selected + " version of Survey ID:" + this.survey_id + " has been failed to submitted !\nPlease try again.",
 						showCloseButton: true
 					})
 					console.log('error:' + error);
@@ -429,42 +427,42 @@ export default {
 				this.$swal.fire({
 					position: 'center',
 					icon: 'error',
-					title: this.submit_as_selected + " version of survey id: " + survey_id + " Submitted Failed:" + error,
+					title: this.submit_as_selected + " version of survey id: " + this.survey_id + " Submitted Failed:" + error,
 					showCloseButton: true
 				})
 						//this.alert_submitted(this.submit_as_selected + " version of " + survey_id + " Submitted Failure:" + error)
-				console.log(this.submit_as_selected + " version of survey id:" + survey_id + " Submitted Failed:" + error);
+				console.log(this.submit_as_selected + " version of survey id:" + this.survey_id + " Submitted Failed:" + error);
 			});
 		},
 			
 		confirm_alert_box() {
-			console.log('Hello');
+			
 			//let new_survey_state = this.submit_as_selected;
 			//let survey_id = this.survey_id;
 
 			
 			let confirm_message = "";
-			if (this.survey_state_selected === "Draft") {
-				confirm_message = "Confirm to save your draft? You can edit it many times until it is submitted as a final version for moderator approval."
+			if (this.submit_as_selected === "Draft") {
+				confirm_message = "Confirm to submit this survey (Survey ID: " + this.survey_id + " ) as a DRAFT? You can edit it many times until it is submitted as a final version for moderator approval."
 			} else {
-				confirm_message = "Confirm to submit it as a final version? After submitting, you are not allowed to edit it prior to moderator approval"
+				confirm_message = "Confirm to submit this survey (Survey ID: " + this.survey_id + " ) as a FINAL version? After submitting, you are NOT ALLOWED to edit it prior to moderator approval"
 			}
 				  
-			console.log(confirm_message +  " " + this.survey_state_selected + " "  + this.survey_id);
+			console.log(confirm_message +  " " + this.mode_as_selected + " "  + this.survey_id);
 			
 		    this.$swal.fire({
-		      title: 'Could you please confirm to submit this survey data as ' + this.submit_as_selected + '?',
+		      title: confirm_message,
 		      text: "Data Submitted as " + this.submit_as_selected,
 		      icon: 'warning',
 		      showCancelButton: true,
 		      confirmButtonColor: '#3085d6',
 		      cancelButtonColor: '#d33',
-		      confirmButtonText: 'Yes, please submit as ' + this.submit_as_selected,
+		      confirmButtonText: 'Yes, please submit it as ' + this.submit_as_selected,
 		    }).then((result) => {
 		    	 console.log('submit action confirmed by user?:' + result);
 		    	if (result.isConfirmed) {
-					console.log("good to go!");
-					this.submit_survey(this.survey_id, this.survey_state_selected );
+					console.log("good to go for survey id: " + this.survey_id);
+					this.submit_survey( this.submit_as_selected );
 				} else {
 					console.log("user cancelled to submit!");
 				}
@@ -529,7 +527,6 @@ export default {
 	created(){
 		if(typeof(Vue.prototype.$Tree_Data) === 'undefined' || Vue.prototype.$Tree_Data === null || Vue.prototype.$Tree_Data === '') {
 			this.tree_name_download();
-			console.error("There are null", error);
 		} 
 		this.tree_data = Vue.prototype.$Tree_Data
 		this.selectable_tree_name_id = []

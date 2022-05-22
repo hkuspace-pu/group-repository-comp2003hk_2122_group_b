@@ -268,7 +268,6 @@ export default  {
             fields:[
 				    {key:'SurveyID',stickyColumn: true,isRowHeader: true ,variant: 'primary', sortable: true, label: "Survey ID",field: "SurveyID", output_excel: true}, 
 			        {key:'selected', sortable: true, output_excel: false},
-				
 					{key:'Last_Amended_Time', sortable: true,label: "Last Amended Time",field: "Last_Amended_Time", output_excel: true},
 					{key:'Species_Name', sortable: true,label: "Tree Name",field: "Tree Name", output_excel: true},
 					{key:'Moderator_Comment', sortable: true,label: "Moderator Comment",field: "Moderator_Comment", output_excel: true},
@@ -319,25 +318,7 @@ export default  {
 		priceFormat(value){
 			return '$ ' + value;
 		},
-				
-		/**allRecords: function(){
-			axios.get('ajaxfile_get_surveyrecords.php').then((response) => {
-					//this.surveycases = response.data;
-					this.values = [];
-					for (const eachsurvey of response.data) {
-					  eachsurvey["Selected"] = false;
-					  eachsurvey["SurveyID"] = Number(eachsurvey["SurveyID"]) ;
-					 
-					}
-					this.bulkselectsurveycase =[];
-					this.values=    response.data;
-					this.json_data = response.data;
-					console.log(this.values); 
-				}).catch((error) => {
-					console.log('error on all Records:' + error);
-				});	
-			},
-        **/
+
 		
 		allRecords: function(){
 			axios.get('ajaxfile_get_surveyrecords.php').then((response) => {
@@ -512,27 +493,7 @@ export default  {
 				})
 				.catch((e) => console.log("canceled" + e));
 			},
-			
-			/**check(e) {  
-			      //console.log(e.target.id);  
-				  for (const eachsurvey of this.values) {
-				    if (eachsurvey["SurveyID"] === Number(e.target.id)) {
-						eachsurvey["Selected"] = e.target.checked;
-						console.log(e.target.id + " " + eachsurvey["Selected"]);  
-						break;
-					}
-				  }
-				  this.vueexcelxlsx = true;
-				  this.selectedsurveydata = [];
-				  for (const eachsurvey of this.values) {
-				    if (eachsurvey["Selected"] === true) {
-						this.selectedsurveydata.push(eachsurvey)
-						this.vueexcelxlsx = false;
-					}
-				  }				    
-			},
-			**/
-			
+
 			myRowClickHandler(record, index) {
 				this.bulkselectsurveycase = [];
 				for(var j = 0; j < this.values.length; j++ ) {

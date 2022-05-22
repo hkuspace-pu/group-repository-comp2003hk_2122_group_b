@@ -22,6 +22,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import VueExcelXlsx from "vue-excel-xlsx";
 
 import { Carousel3d, Slide } from 'vue-carousel-3d';
+Vue.prototype.$Login_Name = 'User';
     Vue.use(VueExcelXlsx);
 	Vue.use(Carousel3d);
 
@@ -37,7 +38,7 @@ Vue.use(SortedTablePlugin);
 Vue.use(VueRouter);
 Vue.use(VueSidebarMenu);
 Vue.use(VueSweetalert2);
-Vue.prototype.$Login_Name = 'User';
+
 Vue.prototype.$Login_Email = '';
 Vue.prototype.$Tree_Data = '';
 

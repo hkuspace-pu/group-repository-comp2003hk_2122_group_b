@@ -86,9 +86,20 @@ export default  {
 				disableclearpreviewtable : true, 
 				clearpreviewtableebutton_variant : "",
 				file_success_upload : "",
+				importerrorlist:[]
 			}                                            
 		},
+		computed: {
+			getNow: function() {
+			    const today = new Date();
+			    const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+			    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+			    const dateTime = date +' '+ time;
+			    return dateTime;	
+			},
+
 		
+		},
 		methods: {
 			
 			fileinput(event) {
@@ -104,10 +115,7 @@ export default  {
 					this.filepreviewbutton_variant = "";
 					this.browserfile = null;
 					//console.log("current parsed:" + this.parsed );
-					
 				}
-				console.log("new choose file name[file]:" + this.file.name );
-				
 			},
 			
 			parseFile(){
@@ -131,7 +139,7 @@ export default  {
 				this.parsed = false;
 				if (this.browserfile != null) {
 					this.file = this.browserfile;
-					this.file_success_upload = "Upload Pending";
+					this.file_success_upload = "Press [Upload Files(s)] to upload";
 					this.parseFile();
 				}
 			},	
@@ -146,31 +154,94 @@ export default  {
 				  cancelButtonColor: '#d33',
 				  confirmButtonText: 'Yes, please upload it!'
 				}).then((result) => {
-				  if (result.isConfirmed) {
-					  axios.post( '/', this.content.data
-					  ).then((response) => {
-					  	//console.log(this.browserfile.name + ' upload SUCCESS!!');
-					  	this.file_success_upload = "Upload Successful";
-					  	//alert_BulkExportFromExcel_Result(this.file.name)
-					  	this.$swal.fire({
-					  	  position: 'center',
-					  	  icon: 'success',
-					  	  title: this.file.name + " has been uploaded sucessfully!",
-					  	  showCloseButton: true
-					  	  
-					  	})
+					if (result.isConfirmed) {
+						console.log('content data:' + this.content.data + "total length:" + this.content.data.length);
+						this.importerrorlist = [];
+						var resultmessage = '';
+						var input_survey_id  = '';
+						
+						var input_location_longitude = '';
+						var input_location_latitude = '';
+						var input_survey_created_time = '';
+						var input_survey_state = '';
+						var input_observation = '';
+						var input_measurement= '';
+						var input_condition = '';
+						var input_client_reference= '';
+						var input_species_name= '';
+						
+						for(var j = 0; j < this.content.data.length; j++ ) {
+						    console.log('content data - survey id:' + this.content.data[j].SurveyID);
+							console.log('content data - longitude:' + this.content.data[j].Longitude);
+							console.log('content data - latitude:' + this.content.data[j]['Latitude']);
+							console.log('content data - observation:' + this.content.data[j].Observation);
+							console.log('content data - measurement:' + this.content.data[j].Measurement);
+							console.log('content data - condition:' + this.content.data[j].Condition);
+							console.log('content data - client reference:' + this.content.data[j].Client_Reference);
+							console.log('content data - name:' + this.content.data[j].Species_Name);
+							input_survey_id = this.content.data[j].SurveyID
+							input_location_longitude = this.content.data[j].Longitude
+							input_location_latitude =  this.content.data[j]['Latitude']
+							input_survey_created_time =  this.getNow
+							input_survey_state ='Draft'
+							input_observation =  this.content.data[j].Observation
+							input_measurement =  this.content.data[j].Measurement
+							input_condition =  this.content.data[j].Condition
+							input_client_reference =  this.content.data[j].Client_Reference
+							input_species_name = this.content.data[j].Species_Name
+						
+							axios.post('ajaxfile_post_individualsurveyrecord.php', {
+								survey_id: '',
+								
+								location_longitude: input_location_longitude,
+								location_latitude: input_location_latitude,
+								survey_created_time: this.getNow,
+								survey_state: 'Draft',
+								observation: this.content.data[j].Observation,
+								measurement: this.content.data[j].Measurement,
+								condition: this.content.data[j].Condition,
+								client_reference: input_client_reference,
+								species_name : this.content.data[j].Species_Name
+						
+							}).then((response) => {
+					  	     
 					  	
-					  }).catch((error) => {
-					  	//console.log(this.browserfile.name + ' load FAILURE!!');
-					  	this.file_success_upload = "Upload Failure! Please try again later";
-					  	this.$swal.fire({
-					  	  icon: 'error',
-					  	  title: 'Upload Failure',
-					  	  text: this.file.name + " has not been uploaded!",
-					  	  footer: 'Please ensure the Internet is on or contact web administrator for further assistance.'
-					  	})
-					  });
-				  }
+					  	//alert_BulkExportFromExcel_Result(this.file.name)
+					  	//this.$swal.fire({
+					  	 // position: 'center',
+					  	 // icon: 'success',
+					  	//  title: this.file.name + " has been uploaded sucessfully!",
+					  	 // showCloseButton: true
+					  	  
+					  //	})  
+								this.importerrorlist.push({'Row No' : j + 1, 'Input_client_reference' : input_client_reference , 'Upload Result' : 'Updated Success'  }) 
+								
+								//console.log('Survey ID: ' + this.content.data[j].SurveyID + ' is loaded Successful!!');
+								//console.log('Response:' + response.data);
+							}).catch((error) => {
+								//console.log('Survey ID: ' + this.content.data[j].SurveyID + ' is loaded FAILED!!');
+								console.log('Error: ' + error);
+								this.importerrorlist.push({'Row No' : j + 1, 'Input_client_reference' : input_client_reference , 'Upload Result' : error  }) 
+					  	//this.file_success_upload = "Upload Failure! Please try again later";
+					  	//this.$swal.fire({
+					  	//  icon: 'error',
+					  	//  title: 'Upload Failure',
+					  	//  text: this.file.name + " has not been uploaded!",
+					  	//  footer: 'Please ensure the Internet is on or contact web administrator for further assistance.'
+							})
+						}
+						this.file_success_upload = "File:"  + this.file.name  + " is Uploaded";
+						console.log('result message length :' + this.importerrorlist.length);
+						for(var r = 0; r < this.importerrorlist.length; r++ ) {
+							resultmessage = resultmessage +  this.importerrorlist[r] +  ",  "
+						}
+						this.$swal.fire({
+							title: "File: " + this.file.name + " is uploaded." + resultmessage,
+							position: 'center',
+							icon: 'information',
+							showCloseButton: true,
+						})	  
+					}
 				})
 			},	
 		

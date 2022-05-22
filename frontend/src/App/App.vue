@@ -2,17 +2,27 @@
 
   <div id="app" style="background-color:rgb(241, 255, 221)">
 	   <div class = "div-title" :style="'margin-left:'+this.appmargin">
-			<center><img alt="Tree Project logo" src="../assets/logo10.png"></center>
+			<b-container>
+		    	<b-row >
+					<b-col cols="12" align-self="center">
+						<center><img alt="Tree Project logo" src="../assets/logo10.png"></center>
+					</b-col>
+				</b-row>
+				<b-row>
+					<b-col cols="9" align-self="center">
+					</b-col>
+					<b-col cols="2" align-self="right">
+						<H4 v-if="!isLoggedIn" >Hello, User</H4><H4 v-else="isLoggedIn"> Hello, {{this.updateloginuser}}</H4>
+					</b-col>
+					<b-col cols="1" align-self="right">		
+						<H4><router-link v-if="!isLoggedIn" to="/login">Log In</router-link><router-link v-else to="/home"> <a :href="href" @click.prevent="logout">Logout</a></router-link></H4>
+					</b-col>
+					
+				</b-row>
+			</b-container>
 	  </div> 
-	  <!--
-	 <b-container >
-	  	<b-row  >
-	  		<b-col cols="12" align-self="left">
-	  			 <center><img alt="Tree Project logo" src="../assets/logo10.png"></center>
-	  		</b-col>
-	  	</b-row>
-		 </b-container >
-	 -->
+	  <div class="line-1"></div>
+
    
 	<div id="view" :class="[{'collapsed' : collapsed}]" :style="'margin-left:'+this.appmargin" >	
       <router-view/>
@@ -54,6 +64,7 @@ import axios from 'axios';
 import VueSimpleAlert from 'vue-simple-alert';
 import { Component } from 'vue-property-decorator';
 import { SweetAlertOptions, SweetAlertResult } from 'sweetalert2';
+import { mapMutations,mapGetters  } from "vuex";
 
 Vue.use(VueCryptojs)
 
@@ -65,6 +76,7 @@ export default {
   data() {
     return {
 	tree_data:'',
+	loginuser:"User",
      appmargin: this.appmargin,	
 	 width: '240px',
       menu: [
@@ -124,12 +136,7 @@ export default {
           title: "About",
           icon: "fa fa-tree"
         },
-        {
-          href: "/logout",
-          title: "Logout",
-          icon: "fa fa-right-from-bracket"
-        },
-
+       
       ],
       collapsed: true,
 	 
@@ -143,9 +150,24 @@ export default {
 			return "Hello! User"
 		}	
   	},
-  
+	updateloginuser: function() {
+		if(typeof(Vue.prototype.$Login_Name) === 'undefined' || Vue.prototype.$Login_Name === null || Vue.prototype.$Login_Name === '') {
+			console.log('updateloginuer no defined')
+			return  'User'
+		} else {
+			console.log('current user:' + Vue.prototype.$Login_Name)
+			return  Vue.prototype.$Login_Name;
+		}
+	},
+	 ...mapGetters(["isLoggedIn"])
+ 
   },
   methods: {
+	computed: {
+	      ...mapGetters(["isLoggedIn"])   
+	  },
+	  ...mapMutations(["setUser", "setToken"]),
+	  
     onItemClick(e, i) {
       console.log("onItemClick");
 	  if (this.collapsed) {
@@ -155,8 +177,31 @@ export default {
 	  }
 	  
     },
+	logout:function(){
+		this.$swal.fire({
+			title: 'Could you please confirm to logout?',
+			text: "Unsaved data will be lost!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, I want to logout.'
+		}).then((result) => {
+		
+			if (result.isConfirmed) {
+				Vue.prototype.$Login_Name  =  "User";
+				this.menu[1].title = "Hello! User";
+				console.log('Login Name:' + Vue.prototype.$Login_Name);
+				this.setUser('User');
+				this.setToken('');
+				
+			}
+		})	
+	},
+		
+		
     onCollapse(c) {
-      console.log("onCollapse");
+      console.log("onCollapse:" + c);
       this.collapsed = c;
 	  console.log(this.appmargin);
 	  if (this.appmargin == '240px' ) {
@@ -187,8 +232,8 @@ export default {
 			});			
 		},
 	
-	
-  },
+
+	},
   
   created(){
   	if(typeof(Vue.prototype.$Tree_Data) === 'undefined' || Vue.prototype.$Tree_Data === null || Vue.prototype.$Tree_Data === '') {
@@ -220,5 +265,10 @@ export default {
 .div_title{
  text-align: center;
   border: 3px solid blue;
+  }
+  
+  .line-1 {
+    height: 1px;
+    background: black;
   }
 </style>

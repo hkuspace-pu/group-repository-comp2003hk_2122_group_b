@@ -161,6 +161,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import axios from 'axios';
 import crypto from '../views/util/crypto'
 import Vue from 'vue';
+import { mapMutations,mapGetters  } from "vuex";
 
 export default {
 	data: () => {
@@ -176,7 +177,11 @@ export default {
 	},
 
 	methods: {
-	    login() {
+		computed: {
+		    ...mapGetters(["isLoggedIn"])   
+		},
+		...mapMutations(["setUser", "setToken"]),
+	    async login(e) {
 			let validatePassword = this.checkLoginEmpty();
 	
 			if (!validatePassword){
@@ -201,6 +206,8 @@ export default {
 					this.login_password = "";
 					Vue.prototype.$Login_Name  =  res.data.userName;
 					Vue.prototype.$Login_Email =  res.data.email;
+					this.setUser(res.data.userName);
+					this.setToken(123456789);
 				}).catch((error) => {
 					this.$swal.fire({
 						position: 'center',

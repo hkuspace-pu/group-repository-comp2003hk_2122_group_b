@@ -148,7 +148,7 @@
 					<br>
 					<b-row  > 
 						<b-col v-if ="mode_as_selected ==='Edit' || mode_state ==='New'" cols="4" align-self="left">
-							<b-button   type="submit" variant="primary">Sumbit</b-button>
+							<b-button   type="submit" variant="primary">Submit</b-button>
 						</b-col>
 						<b-col v-if ="mode_as_selected ==='Edit' || mode_state ==='New'" cols="4" align-self="left">
 							<b-button  type="reset" variant="danger">Clear All</b-button>
@@ -398,9 +398,9 @@ export default {
 				if (this.updatestatus = "Update Successfully!") {
 					
 					if (this.mode_state = "New") {
-	                    feedback_message = "The " + this.submit_as_selected + " version of Survey ID:" + this.survey_id + " has been created Successfullly!\nThanks you","success","Success !";
+	                    feedback_message = "The " + this.submit_as_selected + " version of Survey ID:" + this.survey_id + " has been created Successfullly!\nThank you","success","Success !";
 					} else {
-						feedback_message = "The " + this.submit_as_selected + " version of Survey ID:" + this.survey_id + " has been submitted Successfullly!\nThanks you","success","Success !";	
+						feedback_message = "The " + this.submit_as_selected + " version of Survey ID:" + this.survey_id + " has been submitted Successfullly!\nThank you","success","Success !";	
 					}
 					this.$swal.fire({
 						position: 'center',
@@ -473,7 +473,7 @@ export default {
 		
 		confirm_clearall() {
 			console.log("confirm to clear all?");
-		    this.$confirm("All Input will be removed!", 'Confirm?', 'warning'
+		    this.$confirm("All Existing Input will be removed!", 'Clear form', 'Confirm?', 'warning'
 			).then((r) => {
 				console.log("User Confirm to clear all");
 				this.clearall();

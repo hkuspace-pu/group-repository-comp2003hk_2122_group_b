@@ -135,54 +135,27 @@
 						</b-form-group>
 						<br>
 						<b-button :pressed="false" variant="primary" @click='submit_answer()'>Submit</b-button>
-			      </b-card-text>
-				  </h5>
-			    </b-card>
-			<b-container>
-			<div class="line-1"></div>
-			
-			
-		<!--
-		<b-container fluid="sm">
-		<div class = "slidepart">
-			<b-carousel
-				class ="slidetree"
-				id="carousel"
-				v-model="slide"
-				:interval="4000"
-				controls
-				indicators
-				background="#ababab"
-				img-width="256"
-				img-height="120"
-				style="text-shadow: 1px 1px 2px #333;"
-				@sliding-start="onSlideStart"
-				@sliding-end="onSlideEnd">
-				 <b-carousel-slide  class="slideshow" v-for="(item,key,index) in sliderows" img-width="256" img-height="120" v-bind:key="index" :img-src="item.treeImage" :caption = "item.treeName"></b-carousel-slide>
-			</b-carousel>
+						<br>		
+					</b-card-text>
+				</b-card>
 			</div>
-			</b-container>
-		<b-container class="bv-example-row">
-			<b-row v-for="row in rows">
-				<b-col v-for="objitem in row" >
-					<div v-for="(item, key, index) in objitem" v-bind:key="objitem.treeId">
-						<div v-if="key === 'treeName'">
-							<b-card :img-src="objitem.treeImage" img-alt="Image" img-top tag="article" style="max-width: 120rem;" class="mb-3">
-								<b-card-title>{{objitem.treeName}}</b-card-title> 
-								<b-card-sub-title class="mb-3">{{objitem.scientificName}}</b-card-sub-title>
-								<b-card-text>Alias : {{objitem.alias}}</b-card-text>
-								<b-button @click="ShowTreeDetails(objitem.treeId)">Details</b-button> 
-								<b-button :pressed="false" pill variant="primary" @click="ShowTreeDetails(objitem.treeId,objitem.treeName,objitem.alias,objitem.scientificName,objitem.ecologic,objitem.flowering,objitem.fruit,objitem.cnRare,objitem.hkRare,objitem.cap96,objitem.cap586,objitem.treeImage,objitem.treeDesc)">Details</b-button> 		
-								<b-card-footer>Reference ID : {{objitem.treeId}}</b-card-footer> 
-							</b-card>
-						</div>
-					</div>
-				</b-col>
-				<br> 
-			</b-row>
 		</b-container>
-		-->
-
+		<div class="line-1"></div>
+			<div class="mt-4">
+				<h3><center>Number of published surveys vs their distribution on the Hong Kong map</center></h3>
+				<br>
+				<b-container>
+					<img alt="No of published surveys vs their distribution on the map" src="../assets/map.png" >
+					
+				</b-container>
+				<br>
+				<center>
+				<h5>
+					The distribution is based on the GPS location specified on a survey as at 2022 May 20	
+				</h5>
+				</center>
+				
+			</div>	
 	</div>
 </template>
 

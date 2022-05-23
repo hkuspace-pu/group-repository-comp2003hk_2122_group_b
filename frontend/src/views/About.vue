@@ -216,12 +216,12 @@
 <style>
 .card-img-right {
     width: 45%;
-    height: 25vw;
+    height: 100%;
     object-fit: cover;
 }
 .card-img-left {
     width: 45%;
-    height: 25vw;
+    height: 100%;
     object-fit: cover;
 }
 </style>

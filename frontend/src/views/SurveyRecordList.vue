@@ -36,7 +36,7 @@
 						      <label for="tree_name_string_input">Any sort of tree name contains a subset of string (blank to ignore):</label>
 						    </b-col>
 						    <b-col sm="6">
-						      <b-form-input v-model="tree_name_string_input" size="lg" placeholder="input 'amb' when tree name(s) contains 'amb' (i.e. Carambola)"></b-form-input>
+						      <b-form-input bordered = "true" v-model="tree_name_string_input" size="lg" placeholder="input 'amb' when tree name(s) contains 'amb' (i.e. Carambola)"></b-form-input>
 						    </b-col>
 						</b-row>
 						</b-form-group>
@@ -155,31 +155,33 @@
 			</b-collapse>
 		</div>
 		<br><br>
-	
+
+	    <div class="line-1" ></div> 
+	    <br>
 		<div>
 			<b-container >
 				<b-row  >
 					<b-col cols="12" align-self="center">
 					<H6>
-					<div>
+					<div><p class="text-white">
 						Sorting By: <b>{{ sortBy }}</b>, Sort Direction:
 						<b>{{ sortDesc ? 'Descending' : 'Ascending' }}</b>
-						<b>,         You selected {{  this.bulkselectsurveycase.length }} of {{  this.values.length }} record(s)</b>
+						<b>,         You selected {{  this.bulkselectsurveycase.length }} of {{  this.values.length }} record(s)</b></p>
 				    </div>
 					
-					<b-table selectable :fields="fields"   @row-clicked="myRowClickHandler" :select-mode="multi"  responsive="sm"   hover sticky-header="550px"  head-variant="light" :items="new_sorted_table"  :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @sort-changed="sortChanged">
+					<b-table   selectable :fields="fields"   @row-clicked="myRowClickHandler" :select-mode="multi"  responsive="sm"   hover sticky-header="550px"  head-variant="light"  :items="items"  :tbody-tr-class="rowClass"  :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" @sort-changed="sortChanged">
 
-						<template #head(id)="scope" > <div class="text-nowrap">Survey ID</div> </template>
+						<template #head(id)="scope" > <div class="text-white">Survey ID</div> </template>
 						<template #head()="scope">
-							<div class="text-nowrap"> {{ scope.label }} </div>
+							<div class="text-nowrap text-black"> {{ scope.label }} </div>
 							<template #cell(selected)="{ rowSelected }" >
-								<template v-if="rowSelected">
-									<span aria-hidden="true">&check;</span>
-									<span class="sr-only">Yes</span>
+								<template v-if="rowSelected" >
+									<span class="text-danger" aria-hidden="true" >&check;</span>
+									<span class="sr-only" >Yes</span>
 								</template>
 								<template v-else>
-									<span aria-hidden="true">&nbsp;</span>
-									<span class="sr-only">No</span>
+									<span aria-hidden="true" >&nbsp;</span>
+									<span class="sr-only" >No</span>
 								</template>
                          
 							</template>
@@ -267,21 +269,21 @@ export default  {
 			Condition:'',
             fields:[
 				    {key:'SurveyID',stickyColumn: true,isRowHeader: true ,variant: 'primary', sortable: true, label: "Survey ID",field: "SurveyID", output_excel: true}, 
-			        {key:'selected', sortable: true, output_excel: false},
-					{key:'Last_Amended_Time', sortable: true,label: "Last Amended Time",field: "Last_Amended_Time", output_excel: true},
-					{key:'Species_Name', sortable: true,label: "Tree Name",field: "Tree Name", output_excel: true},
-					{key:'Moderator_Comment', sortable: true,label: "Moderator Comment",field: "Moderator_Comment", output_excel: true},
-					{key:'Latitude', sortable: true,label: "Latitude",field: "Latitude", output_excel: true},
-					{key:'Longitude', sortable: true,label: "Longitude",field: "Longitude", output_excel: true},
-					{key:'Measurement', sortable: true,label: "Measurment",field: "Measurment", output_excel: true},
-					{key:'Observation', sortable: true,label: "Observation",field: "Observation", output_excel: true},
-					{key:'Condition', sortable: true,label: "Condition",field: "Condition", output_excel: true},
-					{key:'Video', sortable: true,label: "Video",field: "Video", output_excel: true},
-					{key:'Score', sortable: true,label: "Score",field: "Score", output_excel: true},
-					{key:'Client_Reference', sortable: true,label: "Client_Reference",field: "Client_Reference", output_excel: true},
-					{key:'SurveyState', sortable: true,label: "Survey State",field: "Survey State", output_excel: true},
-					{key:'actions',label: "Actions", field: "actions", sortable: true, output_excel: false},
-					{key:'actions2',label: "Action 2", field: "actions2", sortable: true, output_excel: false}
+			        {key:'selected', sortable: true, output_excel: false,  tdClass: (value) => value ? 'text-success' : 'text-white'},
+					{key:'Last_Amended_Time', sortable: true,label: "Last Amended Time",field: "Last_Amended_Time", output_excel: true ,class: 'text-white'},
+					{key:'Species_Name', sortable: true,label: "Tree Name",field: "Tree Name", output_excel: true,class: 'text-white'},
+					{key:'Moderator_Comment', sortable: true,label: "Moderator Comment",field: "Moderator_Comment", output_excel: true,class: 'text-white'},
+					{key:'Latitude', sortable: true,label: "Latitude",field: "Latitude", output_excel: true,class: 'text-white'},
+					{key:'Longitude', sortable: true,label: "Longitude",field: "Longitude", output_excel: true,class: 'text-white'},
+					{key:'Measurement', sortable: true,label: "Measurment",field: "Measurment", output_excel: true,class: 'text-white'},
+					{key:'Observation', sortable: true,label: "Observation",field: "Observation", output_excel: true,class: 'text-white'},
+					{key:'Condition', sortable: true,label: "Condition",field: "Condition", output_excel: true,class: 'text-white'},
+					{key:'Video', sortable: true,label: "Video",field: "Video", output_excel: true,class: 'text-white'},
+					{key:'Score', sortable: true,label: "Score",field: "Score", output_excel: true,class: 'text-white'},
+					{key:'Client_Reference', sortable: true,label: "Client_Reference",field: "Client_Reference", output_excel: true,class: 'text-white'},
+					{key:'SurveyState', sortable: true,label: "Survey State",field: "Survey State", output_excel: true,class: 'text-white'},
+					{key:'actions',label: "Actions", field: "actions", sortable: true, output_excel: false,class: 'text-white'},
+					{key:'actions2',label: "Action 2", field: "actions2", sortable: true, output_excel: false,class: 'text-white'}
 					
 			],
             
@@ -298,7 +300,7 @@ export default  {
 		}                                            
 	},
     computed: {
-    	new_sorted_table: function() {
+    	items: function() {
     	   
     	    return this.values;	
     	},
@@ -548,10 +550,16 @@ export default  {
 								showCloseButton: true
 							})
 							console.error("There was an error in tree name download!", error);
-				       });			
+				       });
+  
 			},
+ 
+			rowClass(item, type) {
+			        if (!item || type !== 'row') return
+			        if (item.selected) return 'table-secondary' 
+			      }
+						
 			
-								
         },
 
 		created: function(){
@@ -569,17 +577,38 @@ export default  {
 	width: 100%;
     }
 	.form-control-borderless {
-	    border: none;
+	    border: 1px;
 	}
 	
 	.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
-	    border: none;
+	    border: 1px;
 	    outline: none;
 	    box-shadow: none;
+		 color: greenyellow;
 	}
 	.input-lg {
 		 font-size: 25px;
 	}
+	.text-white {
+	    color: white;
+	}
+	.text-black {
+	    color: black;
+	}	
+	.text-green {
+	    color: green;
+	}	
+ .line-1{
+width: 100%;
+height: 2px;
+border-bottom: 2px solid white;
+position: absolute;
+}
+
+  tr:hover {
+      background-color:#f5f5f5;
+  }
+  
 </style>
 
 export default 

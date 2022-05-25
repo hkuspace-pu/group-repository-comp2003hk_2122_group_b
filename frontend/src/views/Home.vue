@@ -2,7 +2,7 @@
 	<div class="home">
         <table border='0' width='100%' style='border-collapse: collapse;'>
 			<tr>
-				<td style= "vertical-align: bottom;"><H3>Tree Of The Month</H3></td>
+				<td style= "vertical-align: bottom;"><H3><p class="text-white" >Tree Of The Month</p></H3></td>
 				<td>
 					<H5>
 					<form class="card card-sm" style="text-align:right" >
@@ -12,7 +12,7 @@
 							</div>
 							<div class="col">
 										<!-- <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search Tree Name">-->
-								<v-select  multiple v-model="SearchTreeNameModel" :options="ListOfTreeName"  @change="select_treename" placeholder="Search Tree Name" />
+								<p class="text-white" > <v-select   border="2px"  background-color="#ffffff" multiple v-model="SearchTreeNameModel" :options="ListOfTreeName"  @change="select_treename" placeholder="Search Tree Name" /></p>
 							</div>
 							<div class="col-auto">
 								<button type="button" class="btn btn-lg btn-success"  @click="select_individual_tree_name(SearchTreeNameModel)"><H5>Search</H5></button>	
@@ -23,7 +23,7 @@
 				</td>
 			</tr>
 	   </table>	
-		<H5><v-select multiple  :value="selected" :options="searchmonthoptions" @input="setSelected"  placeholder="Choose a Month ..."/></H5>
+		<H5><v-select class="style-chooser" multiple  :value="selected" :options="searchmonthoptions" @input="setSelected"  placeholder="Choose a Month ..."/></H5>
 		<b-container>
 			<div id="example">
 			  <carousel-3d :controls-visible="true" :clickable="false" :width="620" :height="500" :count="sliderows.length" :autoplay= "true" :loop="true"
@@ -53,55 +53,62 @@
 			  </carousel-3d>
 			</div>
 		</b-container>
-		 <div class="line-1"></div>
+		<br>
+		 <div class="line-1" ></div> 
+		<br>
 		<div>
 			<b-container>
 				 <div class="mt-4">
-				    <h3>Recent News</h3>
-				    <b-card class="img-responsive img-thumbnail"  img-src="https://firebasestorage.googleapis.com/v0/b/tree-app-c9daf.appspot.com/o/default%2FWhite%20Azalea.jpeg?alt=media&token=9f84a4d0-7382-4d27-9eae-1b315d810022" img-alt="Card image" img-right class="mb-3">
+					
+				    <h3><p class="text-white" >Recent News</p></h3>
+				    <b-card bg-variant="dark" text-variant="white"  class="img-responsive img-thumbnail"  img-src="https://firebasestorage.googleapis.com/v0/b/tree-app-c9daf.appspot.com/o/default%2FWhite%20Azalea.jpeg?alt=media&token=9f84a4d0-7382-4d27-9eae-1b315d810022" img-alt="Card image" img-right class="mb-3">
 				      
 						<b-card-text class = "justify-content-center" >
-							<h4>2022 May 01</h4>
+							<h4><p class="text-white" >2022 May 01</p></h4></p>
 							<H6> 
 							<ul>
-								Zentangle in Nature ‧ Online Workshop (Group Application)
+								<p class="text-white" >Zentangle in Nature ‧ Online Workshop (Group Application)</p>
 								<li><a href="https://www.kfbg.org/en/events/zentangle-in-nature-online-workshop-group-application">Click Here</a></li>
 							</ul>
 							</H6>
-							<h4>2022 Apr 22</h4>
+							<h4><p class="text-white" >2022 Apr 22</p></h4>
 							<H6> 
 							<ul>
-								Certificate in Green Finance Essentials: Registration Open Now! (Click here to learn HOW to REGISTER)
+								<p class="text-white" >Certificate in Green Finance Essentials: Registration Open Now!</p>
 								<li><a href="https://foe.org.hk/FileUpload/Editor/ECE%20Course/Certificate%20Flyer_Apr%202022.pdf">Click Here</a></li>
 							</ul>
 							</H6>
-							<h4>2022 April 15</h4>
+							<h4><p class="text-white" >2022 April 15</p></h4>
 							<H6> 
 							<ul>
-								Green Earth Companion Scheme
+								<p class="text-white" >Green Earth Companion Scheme</p>
 								<li><a href="https://greenearth.org.hk/en/greenearthcompanion/">Click Here</a></li>
 							</ul>
 							</H6> 
-							<h4>2022 February 20</h4>
+							<h4><p class="text-white" >2022 February 20</p></h4>
 							<H6> 
 							<ul>
-								Webinars on Tree Care before Wet Season 
+								<p class="text-white" >Webinars on Tree Care before Wet Season </p>
 								<li><a href="https://www.greening.gov.hk/filemanager/greening/en/content_48/Webinars-on-Tree-Care-before-Wet-Season2022.pdf">Click Here</a></li>
 							</ul>
 							</H6> 
 				      </b-card-text>
 				    </b-card>
+				</p>
 				</div>				
 			<b-container>
 		</div>
-		<div class="line-1"></div>
+		<br>
+		 <div class="line-1" ></div> 
+		<br>
 		<b-container>
 			 <div class="mt-4">
-			    <h3>Prized Q & A</h3>
-			    <b-card class="img-responsive img-thumbnail"  img-src="https://firebasestorage.googleapis.com/v0/b/tree-app-c9daf.appspot.com/o/default%2FChinese%20Albizia.jpeg?alt=media&token=4db961fa-0770-4ff4-8e0a-825345816b1c" img-alt="Card image" img-right class="mb-3">
+			    <h3><p class="text-white" >Prized Q & A</p></h3>
+			    <b-card bg-variant="dark" text-variant="white" class="img-responsive img-thumbnail"  img-src="https://firebasestorage.googleapis.com/v0/b/tree-app-c9daf.appspot.com/o/default%2FChinese%20Albizia.jpeg?alt=media&token=4db961fa-0770-4ff4-8e0a-825345816b1c" img-alt="Card image" img-right class="mb-3">
 			       <h5>
 					<b-card-text class = "justify-content-center" >
 						<b-form-group label="What is the family of Albizia chinensis?" v-slot="{ ariaDescribedby }">
+							<p class="text-white" >
 							<b-form-radio-group 
 								v-model="Q1_Radio_Button_selected" 
 								:options="Q1_Radio_Button_options" 
@@ -109,7 +116,7 @@
 								 name="Q1_Radio"
 								plain>
 							</b-form-radio-group>
-						
+						    </p>
 						</b-form-group>
 						<br>
 						<b-form-group label="Which of the below seasons that a fruit of Brisbane Box normally grows" v-slot="{ ariaDescribedby }">
@@ -140,9 +147,11 @@
 				</b-card>
 			</div>
 		</b-container>
-		<div class="line-1"></div>
+		<br>
+		 <div class="line-1" ></div> 
+		<br>
 			<div class="mt-4">
-				<h3><center>Number of published surveys vs their distribution on the Hong Kong map</center></h3>
+				<h3><center><p class="text-white" >Number of published surveys vs their distribution on the Hong Kong map</p></center></h3>
 				<br>
 				<b-container>
 					<img alt="No of published surveys vs their distribution on the map" src="../assets/map.png" >
@@ -151,7 +160,7 @@
 				<br>
 				<center>
 				<h5>
-					The distribution is based on the GPS location specified on a survey as at 2022 May 20	
+					<p class="text-white" >The distribution is based on the GPS location specified on a survey as at 2022 May 20</p>	
 				</h5>
 				</center>
 				
@@ -493,8 +502,31 @@ export default {
 }
 .card-img-right {
     width: 40%;
-    height: 20vw;
+    height: 100%;
     object-fit: cover;
 }
+
+ .line-1{
+width: 100%;
+height: 2px;
+border-bottom: 2px solid white;
+position: absolute;
+}
+
+.style-chooser .vs__search::placeholder,
+.style-chooser .vs__dropdown-toggle,
+.style-chooser .vs__dropdown-menu {
+  background: #dfe5fb;
+  border: none;
+  color: #394066;
+  text-transform: lowercase;
+  font-variant: small-caps;
+}
+
+.style-chooser .vs__clear,
+.style-chooser .vs__open-indicator {
+  fill: #394066;
+}
+
 </style>
 

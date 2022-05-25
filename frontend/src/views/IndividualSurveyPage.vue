@@ -1,32 +1,32 @@
 <template>
-	<div class="individualsurveypage">
+	<div class="individualsurveypage " >
 	<b-container>		
 		<b-container>
 			<b-row>
 				<b-row >
 					<b-col cols="12" align-self="left">
-						 <h2>Survey Form</h2>
+						 <h2><p class="text-white">Survey Form</p></h2>
 						 <br>
-						 <h4>Note: You are in a {{ this.mode_state }} mode. (or Please press 'Create New' button to enter a new survey record.)</h4>
+						 <h4><p class="text-white">Note: You are in a <span :style="this.highlight_mode_color">{{ this.mode_state }}</span> mode. (or Please press 'Create New' button to enter a new survey record.)</p></h4>
 						 <br>
 					</b-col>
 				</b-row>
 				<h4>
 				<b-row >
 					<b-col cols="2" align-self="left">
-						<label>Survey ID: {{ this.survey_id }}</label>
+						<label><p class="text-white">Survey ID: {{ this.survey_id }}</label>
 					</b-col>
 					<b-col cols="3" align-self="left">
-						<label>Survey State: {{ this.survey_state }}</label>
+						<label><p class="text-white">Survey State: {{ this.survey_state }}</label>
 					</b-col>
 					<b-col cols="3" align-self="left">
-						<label>Created Time: {{ this.last_created_time }}</label>
+						<label><p class="text-white">Created Time: {{ this.last_created_time }}</label>
 					</b-col>
 					<b-col cols="2" align-self="left">
 						<b-button :disabled="this.disablecreatebutton" :pressed="false" variant="primary" @click='alert_create_new()'>Create New</b-button>
 					</b-col cols="2" align-self="left">
 					<b-col>
-						<b-form>
+						<b-form class="text-white">
 							<b-form-radio-group :disabled="this.survey_state !=='Draft'"
 								v-model="mode_as_selected" 
 								:options="mode_as_options" 
@@ -41,17 +41,17 @@
 				</h4>
 		</b-container>
 		<h4>
-		<b-row class="text-center" class="border border-primary">
+		<b-row class="text-center" class="border border-primary text-white">
 			<b-col cols="10" align-self="center">					
 					<b-form   @submit.prevent="confirm_alert_box()"  @reset.prevent="confirm_clearall"> 			
-					<b-form-group id="input_client_reference_group" label="Your reference code (Max 50 Characters):" label-for="input_client_reference">
-						<b-form-input size="lg" id="input_client_reference" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" v-model="client_reference" type="text" placeholder="For your internal reference only (optional)" type="text"></b-form-input>
+					<b-form-group  id="input_client_reference_group" label="Your reference code (Max 50 Characters):" label-for="input_client_reference">
+						<b-form-input :disabled = "this.form_input_disabled" size="lg" id="input_client_reference" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" v-model="client_reference" type="text" placeholder="For your internal reference only (optional)" type="text"></b-form-input>
 					</b-form-group>
 					<br>
 					<b-row>
 						<b-col cols="8" align-self="left">
 							<b-form-group id="input_GPS_location_group" label="GPS Location (Max 100 Characters, Required Field):" label-for="input_GPS_location">
-								<b-form-input size="lg" type="text" size="lg"  v-autowidth="{maxWidth: '800px', minWidth: '600px', comfortZone: 20}" id="input_GPS_location" v-model="location" placeholder="Latitude, Longitude i.e. 23,2141254142557 , 114.18230964011866" required> </b-form-input>
+								<b-form-input :disabled = "this.form_input_disabled" size="lg" type="text" size="lg"  v-autowidth="{maxWidth: '800px', minWidth: '600px', comfortZone: 20}" id="input_GPS_location" v-model="location" placeholder="Latitude, Longitude i.e. 23,2141254142557 , 114.18230964011866" required> </b-form-input>
 							</b-form-group>
 						</b-col>
 					<!--	<b-col cols="4" align-self="left">
@@ -64,31 +64,31 @@
 						</b-col>
 					</b-row>	
 					<br>
-					<b-form-group id="tree_name_group" label="Tree Name:" label-for="tree_name_option_input">
-						<select id="tree_name_option_input" v-model="tree_name_option_selected" >
+					<b-form-group id="tree_name_group" label="Tree Name: (optional or specify it in a tree observation section if it is unselectable)" label-for="tree_name_option_input">
+						<select :disabled = "this.form_input_disabled" id="tree_name_option_input" v-model="tree_name_option_selected" >
 					    	<option v-for="option in selectable_tree_name_options" :value="option.value"> {{option.text }}</option>
 					    </select>
 					</b-form-group>
 					<br>
-					<b-form-group id="input_tree_observation_group" label="State your observation about this tree:" label-for="input_tree_observation" description="Body, Colour, Surrounding Environment, Pest, etc.">
-						<b-form-input  size="lg" type="text" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" id="input_tree_observation" v-model="observation"></b-form-input>
+					<b-form-group id="input_tree_observation_group" label="State your observation about this tree: (i.e. Body, Colour, Surrounding Environment, Pest Name, etc.)" label-for="input_tree_observation">
+						<b-form-input :disabled = "this.form_input_disabled" size="lg" type="text" v-autowidth="{maxWidth: '960px', minWidth: '960px', comfortZone: 20}" id="input_tree_observation" v-model="observation"></b-form-input>
 					</b-form-group>
 					<br>
-					<b-form-group id="input_tree_measurement_group" label="Measurement about the tree (Max 100 Characters):" label-for="input_tree_measurement" description="Height, Width or Radius">
-						<b-form-input  size="lg" type="text" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" id="input_tree_measurement" v-model="measurement" placeholder="Height:8m, Radius:9m" ></b-form-input>
+					<b-form-group id="input_tree_measurement_group" label="Measurement about the tree (Max 100 Characters): (i.e. Height, Width or Radius)" label-for="input_tree_measurement" >
+						<b-form-input :disabled = "this.form_input_disabled" size="lg" type="text" v-autowidth="{maxWidth: '960px', minWidth: '960px', comfortZone: 20}" id="input_tree_measurement" v-model="measurement" placeholder="Height:8m, Radius:9m" ></b-form-input>
 					</b-form-group>
 					<br>
 					<b-form-group id="tree_condition_option_id_group" label="Tree Condition:" label-for="tree_condition_option_id">
-						<select v-model="tree_condition_option_selected" id = "tree_condition_option_id">
+						<select :disabled = "this.form_input_disabled" v-model="tree_condition_option_selected" id = "tree_condition_option_id">
 							<option v-for="option in selectable_tree_condition_options" :value="option.value"> {{option.text }}</option>
 						</select>
 					</b-form-group>
 					<br>
 					<b-form-group id="input_Score_group" label="Score:" label-for="input_score">
-						<label id="input_score" v-model="score" ></label>
+						<label :disabled = "this.form_input_disabled" id="input_score" v-model="score" ></label>
 					</b-form-group>
 					<b-form-group id="moderator_comment_group" label="Moderator Comment:" label-for="input_moderator_comment_id">
-						<b-form-input size="lg" type="text" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" id="input_moderator_comment_id" v-model="moderatorcomment"></b-form-input>
+						<b-form-input disabled="true" size="lg" type="text" v-autowidth="{maxWidth: '960px', minWidth: '900px', comfortZone: 20}" id="input_moderator_comment_id" v-model="moderatorcomment"></b-form-input>
 					</b-form-group>
 					<br>
 					
@@ -211,7 +211,9 @@ export default {
 			image4_path : '',
 			image5_path : '',
 			video_path: ',',
-		    
+			form_input_disabled : '',
+			highlight_mode_color : '',
+
 		        /** selectable_tree_family_options: [
 		  		{ text: 'All', value: 'All' },
 				{ text: 'Aceraceae', value: 'Aceraceae' },
@@ -322,6 +324,13 @@ export default {
 		},
 		mode_change(){
 			this.mode_state = this.mode_as_selected;
+			if (this.mode_state === "View") {
+			   this.form_input_disabled = true
+			   this.highlight_mode_color = "color:#FFFF00"
+			} else {
+				 this.form_input_disabled = false
+				 this.highlight_mode_color = "color:#00FF00"
+			}
 		}
 
 	},
@@ -337,7 +346,7 @@ export default {
 					this.measurement="",
 					this.condition="",
 					this.moderatorcomment="",
-					this.tree_family_option_selected = "ALL",
+					
 					this.tree_species_option_selected = "ALL",
 					this.tree_condition_option_selected = "-",
 					this.tree_name_option_selected = "-",
@@ -494,7 +503,7 @@ export default {
 			).then((r) => {
 				console.log("User Confirm to create new one");
 				this.clearall();	
-                this.mode_state = "New";
+                this.mode_state = "Edit";
                 this.survey_id = "";
 				this.survey_state = "Draft";
 				this.mode_as_selected = "Edit";

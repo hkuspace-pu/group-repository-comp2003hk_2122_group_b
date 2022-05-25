@@ -1,26 +1,44 @@
 
 <template >
    
-   <div id="surveycsvimportpage" >
+   <div id="surveycsvimportpage" class="text-center  text-white">
 		<div>  
 		<br>
+		<b-row>
+			<b-col cols="2"></b-col>
+			<b-col cols="8">
 			<b-form-group label="CSV/Tab File(s)" label-cols-sm="2" label-size="lg">
 				<b-form-file  v-model="browserfile" :state="Boolean(file)" size="lg" @change="fileinput"></b-form-file>
 	        </b-form-group>
+			</b-col>
+			<b-col cols="2"></b-col>
+			
+			
+		<b-row>
 	   	<br>
 	    </div>
 		<div>
 			<b-row>
-				<b-col lg="4" class="pb-2"><b-button :disabled="this.disablepreviewfile" :pressed="false" :variant="this.filepreviewbutton_variant" @click="allRecords()">Preview File(s)</b-button></b-col>
-				<b-col lg="4" class="pb-2"><b-button :disabled="this.disableuploadfile"  :pressed="false" :variant="this.fileuploadbutton_variant"  @click="submitUpdates()">Upload File(s)</b-button></b-col>
-				<b-col lg="4" class="pb-2"><b-button :disabled="this.disableclearpreviewtable"  :pressed="false" :variant="this.clearpreviewtableebutton_variant"  @click="clearpreviewtable()">Clear All(s)</b-button></b-col>
+				<b-col cols="2"></b-col>
+				<b-col cols="2"  ><b-button :disabled="this.disablepreviewfile" :pressed="false" :variant="this.filepreviewbutton_variant" @click="allRecords()">Preview File(s)</b-button></b-col>
+				<b-col cols="2"  ><b-button :disabled="this.disableuploadfile"  :pressed="false" :variant="this.fileuploadbutton_variant"  @click="submitUpdates()">Upload File(s)</b-button></b-col>
+				<b-col cols="2"  ><b-button :disabled="this.disableclearpreviewtable"  :pressed="false" :variant="this.clearpreviewtableebutton_variant"  @click="clearpreviewtable()">Clear All(s)</b-button></b-col>
+				<b-col cols="2"></b-col>
 			</b-row>
 		</div>	
 		<br>
+		 <div class="line-1" ></div> 
+		 <br>
 				<b-row>
-					<b-col lg="4" class="pb-2"><H4 class="mb-3">File Name:</h4><h4 v-if="this.parsed">{{this.file.name}}</h4></b-col>
-					<b-col lg="4" class="pb-2"><H4><Label class="fw-bold-mb-3" >{{ file_success_upload }}</Label></H4></b-col>
+					<b-col cols="2"></b-col>
+					<b-col cols="5"><H4 class="mb-3">File Name:</h4><h4 v-if="this.parsed">{{this.file.name}}</h4></b-col>
+					<b-col cols="5"><H4><Label class="fw-bold-mb-3" >{{ file_success_upload }}</Label></H4></b-col>
+					<b-col cols="2"></b-col>
+					<b-col cols="2"></b-col>
+					<b-col cols="2"></b-col>
 				</b-row>
+				<br>
+				<br>
 				<table v-if="this.parsed" style="width: 100%;">
 					<thead>
 						<tr>
@@ -280,6 +298,13 @@ export default  {
                                            
 </script>
 
-
+<style>
+	.line-1{
+	width: 100%;
+	height: 2px;
+	border-bottom: 2px solid white;
+	position: absolute;
+	}
+</style>
 
 

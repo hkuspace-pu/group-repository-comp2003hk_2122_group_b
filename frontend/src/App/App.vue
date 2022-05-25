@@ -1,27 +1,29 @@
 <template>
 
-  <div id="app" style="background-color:rgb(241, 255, 221)">
+  <div id="app" style="background-color:rgb(34, 40, 39)"  >
+	   
 	   <div class = "div-title" :style="'margin-left:'+this.appmargin">
 			<b-container>
 		    	<b-row >
 					<b-col cols="12" align-self="center">
-						<center><img alt="Tree Project logo" src="../assets/logo10.png"></center>
+						<!-- <center><img alt="Tree Project logo" src="../assets/logo10.png"></center> -->
 					</b-col>
 				</b-row>
 				<b-row>
 					<b-col cols="9" align-self="center">
 					</b-col>
 					<b-col cols="2" align-self="right">
-						<H4 v-if="!isLoggedIn" >Hello, User</H4><H4 v-else="isLoggedIn"> Hello, {{this.updateloginuser}}</H4>
+						<p class="text-white" ><H4 v-if="!isLoggedIn" >Hello, User</H4><H4 v-else="isLoggedIn"> Hello, {{this.updateloginuser}}</H4></p>
 					</b-col>
 					<b-col cols="1" align-self="right">		
-						<H4><router-link v-if="!isLoggedIn" to="/login">Sign-In</router-link><router-link v-else to="/home"> <a :href="href" @click.prevent="logout">Sign-Off</a></router-link></H4>
+						<H4><router-link v-if="!isLoggedIn" to="/login"><p class="text-white" >Sign-In</p></router-link><router-link v-else to="/home"> <a :href="href" @click.prevent="logout">Sign-Off</a></router-link></H4>
 					</b-col>
 					
 				</b-row>
 			</b-container>
 	  </div> 
 	  <div class="line-1"></div>
+	  <br>
 
    
 	<div id="view" :class="[{'collapsed' : collapsed}]" :style="'margin-left:'+this.appmargin" >	
@@ -32,12 +34,14 @@
     <sidebar-menu
       class="sidebar"
       :menu="menu"
-	  width='240px'
+	  width='200px'
       :collapsed="expanded"
 	  @toggle-collapse="onCollapse"
       @item-click="onItemClick"
       
+	  
     />
+	</p>
   </div>
   <!--<div class="logout"  v-if ="this.$Login_Name != 'User'">
       <b-form @submit.prevent="logout" >
@@ -72,13 +76,13 @@ Vue.component('v-select', VueSelect.VueSelect)
 	
 export default {
   name: "App",
-  appmargin: '0px',
+ 
   data() {
     return {
 	tree_data:'',
 	loginuser:"User",
      appmargin: this.appmargin,	
-	 width: '240px',
+	 width: '200px',
       menu: [
         {
           header: true,
@@ -171,9 +175,9 @@ export default {
     onItemClick(e, i) {
       console.log("onItemClick");
 	  if (this.collapsed) {
-		  this.appmargin = '240px';
+		  this.appmargin = '0px';
 	  } else {
-		   this.appmargin = '0px';
+		   this.appmargin = '200px';
 	  }
 	  
     },
@@ -204,12 +208,10 @@ export default {
       console.log("onCollapse:" + c);
       this.collapsed = c;
 	  console.log(this.appmargin);
-	  if (this.appmargin == '240px' ) {
-	     this.appmargin = '240px';
-		  console.log('new margin' + this.appmargin);
-	  }  else {
-		   this.appmargin = '0px';
-		    console.log('new margin' + this.appmargin);
+	  if (this.collapsed) {
+	  		  this.appmargin = '0px';
+	  } else {
+	  		   this.appmargin = '200px';
 	  }
 	   this.menu[1].title = "Hello!  " + Vue.prototype.$Login_Name;
     },
@@ -239,6 +241,12 @@ export default {
   	if(typeof(Vue.prototype.$Tree_Data) === 'undefined' || Vue.prototype.$Tree_Data === null || Vue.prototype.$Tree_Data === '') {
   		this.tree_name_download();
   	}
+	//if (this.collapsed) {
+	//		  this.appmargin = '0px';
+	//} else {
+			   this.appmargin = '200px';
+	//};
+	this.$router.push('/home')
   }
 };
 
@@ -267,8 +275,10 @@ export default {
   border: 3px solid blue;
   }
   
-  .line-1 {
-    height: 1px;
-    background: black;
-  }
+ .line-1{
+width: 100%;
+height: 2px;
+border-bottom: 2px solid white;
+position: absolute;
+}
 </style>

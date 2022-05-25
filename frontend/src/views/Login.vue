@@ -1,46 +1,20 @@
 <template>
-	<!--<div>
-		<h1>LOGIN</h1>
-			<input v-model="login_email" placeholder="email (case sensitive)" />
-			<br />
-			<br />
-			<input v-model="login_password" placeholder="password (case sensitive)" type="password" />
-			<br />
-			<br />
-			<button @click='login()'>Login</button>
-			<br />
-			<br />
-			<input v-model="login_new_password" placeholder="new password" type="password"/>
-			<br />
-			<br />
-			<input v-model="login_new_password_confirmed" placeholder="new password reconfirm" type="password" />
-			<br />
-			<br />
-			<button @click='reset_password()'>Reset Password</button>
-			<br />
-			<br />
-			<button @click='forget_password()'>Forget Password</button>
-			<br />
-			<br />	 
-			<button @click='clear()'>Clear All</button>
-			<br />
-			<br />
-  </div>
-  -->
-  <div>
+
+  <div style="background-color:rgb(34, 40, 39)" >
 <br>
-<br>
+
 <b-container class="bv-example-row">
    <b-row class="text-center" class="border border-primary">
-	<b-col align-self="center" cols="2"><h2>Sign-In</h2></b-col>
+	<b-col align-self="center" cols="2"><h3><p class="text-white">Sign-In</p></h3></b-col>
 	<br>
 	<b-col cols="10" align-self="center" >
-	 <h4>
+	 <h5>
     <b-form @submit.prevent="login" @reset.prevent="clear('login')">
       <b-form-group
         id="input-group-1"
         label="Email address:"
         label-for="input-1"
+		class="text-white" 
       >
         <b-form-input
           id="input-1"
@@ -48,9 +22,10 @@
           type="email"
           placeholder="Please Enter Your Email Address"
           required
+		   
         ></b-form-input>
       </b-form-group>
-      <b-form-group id="input-group-2" label="Password:" label-for="input-2">
+      <b-form-group class="text-white"  id="input-group-2" label="Password:" label-for="input-2">
         <b-form-input
           id="input-2"
           v-model="login_password"
@@ -74,7 +49,7 @@
 			</b-row>
 	    </b-container>
 	 
-	  </h4>
+	  </h5>
 	  </b-row>
 	  
   </b-form>
@@ -82,11 +57,12 @@
    </b-row>
     <br>
    <b-row  class="border border-primary">
-	   <b-col align-self="center" cols="2"><h2>Reset Password</h2></b-col>
+	   <b-col align-self="center" cols="2"><h3><p class="text-white"> Reset Password</p> </h3></b-col>
 	<b-col cols="10" align-self="center">
   <h4>
   <b-form @submit.prevent="reset_password()"  @reset.prevent="clear('reset')">
       <b-form-group
+	    class="text-white"
         id="input-group-3"
         label="Please enter a new password"
         label-for="input-3"
@@ -99,7 +75,7 @@
           required
         ></b-form-input>
       </b-form-group>
-      <b-form-group id="input-group-4" label="Please re-enter a new password" label-for="input-4">
+      <b-form-group class="text-white" id="input-group-4" label="Please re-enter a new password" label-for="input-4">
         <b-form-input
           id="input-4"
           v-model="login_new_password_confirmed"
@@ -113,11 +89,11 @@
 	  		<b-col cols="3" align-self="left">
 	  			<b-button type="submit" variant="primary">Submit</b-button>
 	  		</b-col>
-	  		<b-col cols="3" align-self="left">
+	  		<b-col cols="2" align-self="left">
 	  			<b-button type="reset" variant="danger">Reset</b-button>
 	  		</b-col>
-			<b-col cols="6" align-self="left">
-				<h6>*Please also enter your email and current password in above "Sign-In" Section</h6>
+			<b-col cols="7" align-self="left">
+				<h6><p class="text-white">*Please also enter your email and current password in above "Sign-In" Section</p></h6>
 			</b-col>
 	  	</b-row>
 	  </b-container>
@@ -127,20 +103,20 @@
   </b-row>
    <br>
   <b-row class="border border-primary">
-	  <b-col align-self="center" cols="2"><h2>Forget Password</h2></b-col>
+	  <b-col align-self="center" cols="2"><h3><p class="text-white"> Forget Password</p></h3></b-col>
   <br>
   <b-col cols="10" align-self="center">
   <b-form @submit.prevent="forget_password()" >
 	  <b-container>
 	  	<b-row>
 	  		<b-col cols="3" align-self="left">
-	  			<b-button type="submit" variant="primary">Submit</b-button>
+	  			<b-button type="submit" variant="primary"><p class="text-white">Submit</p></b-button>
 	  		</b-col>
-	  		<b-col cols="3" align-self="left">
+	  		<b-col cols="2" align-self="left">
 	  			
 	  		</b-col>
-	  		<b-col cols="6" align-self="left">
-	  			<h6>*Please enter your email address in above "Sign-In" Section</h6>
+	  		<b-col cols="7" align-self="left">
+	  			<h6><p class="text-white">*Please enter your email address in above "Sign-In" Section</p></h6>
 	  		</b-col>
 	  	</b-row>
 	  </b-container>

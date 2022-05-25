@@ -1,39 +1,10 @@
 <template>
-	<!--
-    <div>
-    <h1>Registration</h1>
-	<form @submit="onCreateClick">
-		<label>Login Name:</label><input v-model="register_username" placeholder="Login (case sensitive)" />
-		<br />
-		<br />
-		<label>Login Password:</label><input v-model="register_password" placeholder="Password (case sensitive, more than 8 characters)" type="password" />
-		<br />
-		<br />
-		<label>Confirmed Password:</label><input v-model="register_password_confirmed" placeholder="Re-enter your password" type="password" />
-		<br />
-		<br />
-		<label>Your Name:</label><input v-model="register_username" placeholder="Your Name" type="String" />
-		<br />
-		<br />
-		<label>Email:</label><input v-model="register_email" placeholder="email" type="email" />
-		<br />
-		<br />
-		<button type="submit">Register</button>
-		<br />
-		<br />
-		<button @click='clear()'>Clear All</button>
-		<br />
-		<br />
-		<p>{{register_status}}</p>
-		</form>
-    </div>
-	-->
-	
-    <div>
+
+   <div style="background-color:rgb(34, 40, 39)" >
 		<b-container >
 			<b-row  >
 				<b-col cols="10" align-self="left">
-					 <h2>Register new member</h2>
+					 <h2><p class="text-white" >Register new member</p></h2>
 				</b-col>	
 			</b-row>
 	<br>
@@ -41,47 +12,54 @@
 		<b-row class="text-center" class="border border-primary">
 			<b-col cols="10" align-self="center">
       <b-form @submit.prevent="onCreateClick" @reset.prevent="clear">
+		 
         <b-form-group
           id="input-group-1"
           label="Email address:"
           label-for="input-1"
-          description="You will use this email address to login"
+		  class="text-white" 
         >
+		
           <b-form-input
             id="input-1"
             v-model="register_email"
             type="email"
             placeholder="Enter Email Address"
             required
+			class="text-white"
           ></b-form-input>
+		  <h6><p class="text-white"> You will use this email address to login </p></h6>
         </b-form-group>
         <br>
-        <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
+        <b-form-group class="text-white" id="input-group-2" label="Your Name:" label-for="input-2">
           <b-form-input
             id="input-2"
             v-model="register_username"
             placeholder="Please Enter Your Full Name"
             required
+				class="text-white"
           ></b-form-input>
         </b-form-group>
         <br>
-        <b-form-group id="input-group-3" label="Password" label-for="input-3">
+        <b-form-group class="text-white" id="input-group-3" label="Password" label-for="input-3">
           <b-form-input
             id="input-3"
             v-model="register_password"
             placeholder="Please Enter Your Password (which containts more than 8 characters)"
             required
-			type="password" 
+			type="password"
+			class="text-white"
           ></b-form-input>
         </b-form-group>
 		<br>
-        <b-form-group id="input-group-4" label="Confirm Password" label-for="input-4">
+        <b-form-group  class="text-white" id="input-group-4" label="Confirm Password" label-for="input-4">
           <b-form-input
             id="input-4"
             v-model="register_password_confirmed"
             placeholder="Please Confirm Your Password"
             required
 			type="password" 
+			class="text-white"
           ></b-form-input>
         </b-form-group>
         <br>
@@ -99,7 +77,7 @@
 				<br>
 			</b-row>
 		</b-container>
-		
+		<br>
  
     </b-form>
 

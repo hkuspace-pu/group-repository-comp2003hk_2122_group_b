@@ -1,10 +1,12 @@
 <template>
-  <div class="yourprofile">
-    <h3>Your Contribution</h3>  
+  <div class="yourprofile text-white" style="background-color:rgb(34, 40, 39)" >
+	<br>
+    <h3>Your Contribution</h3>
+	  <br>
 	<div class="mt-4">
 	<b-container>
 		 
-		    <table class="table table-striped">
+		    <table class="table text-white">
 		      <thead>
 		        <tr>
 		          <th scope="col">Period</th>
@@ -44,7 +46,7 @@
 			<center><img alt="Tree Project logo" src="../assets/contribution.png"></center>
 			<br>
 			<br>
-			<H3>Score of your submitted survey is affected by:</H3>
+			<H3>Scoring Schema:</H3>
 			<br>
 			    <H5>
 					<ul>
@@ -68,3 +70,11 @@
 <script>
 
 </script>
+<style>
+	.line-1{
+	width: 100%;
+	height: 2px;
+	border-bottom: 2px solid white;
+	position: absolute;
+	}
+</style>

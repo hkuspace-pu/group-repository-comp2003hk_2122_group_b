@@ -1,7 +1,7 @@
 
 
 <template>
-	<div class="searchtreepage">
+	<div class="searchtreepage" style="background-color:rgb(34, 40, 39)" >
 		<br>
         <table border='0' width='95%' style='border-collapse: collapse;'>
 			<tr>
@@ -31,25 +31,25 @@
 				</td>
 			</tr>
 		</table>	
-		<div>
+		<div style="background-color:rgb(34, 40, 39)">
 			<b-collapse width='95%' id="advancesearch_page" v-model="visible" class="mt-2">
-				<b-card>
+				<b-card bg-variant="dark" text-variant="white">
 					<p class="card-text"><h2>Advanced Search Filter</h2></p>
 					<h5>
-					<b-list-group flush>
-				    <b-list-group-item>
-					<div>
-						<b-row class="my-1">
-						    <b-col sm="4">
+					<b-list-group flush  bg-variant="dark" text-variant="white">
+				    <b-list-group-item >
+					<div >
+						<b-row  >
+						    <b-col sm="5">
 						      <label for="input-large">A tree name contains a string (blank to ignore):</label>
 						    </b-col>
-						    <b-col sm="3">
-						      <b-form-input id="input-large" size="lg" v-model = "tree_string" placeholder="input 'amb' when tree name(s) contains 'amb' (i.e. Carambola)"></b-form-input>
+						    <b-col sm="6">
+						      <b-form-input id="input-large" size="lg" v-model = "tree_string" placeholder="input 'tree' when tree name(s) contains 'tree' (i.e. African Tulip Tree)"></b-form-input>
 						    </b-col>
 						</b-row>
 					</div>	
 					<div>
-						<b-form-group label="Species:" v-slot="{ ariaDescribedby }">
+						<b-form-group  label="Species:" v-slot="{ ariaDescribedby }">
 							<b-form-radio-group 
 								v-model="Exotic_Radio_Button_selected" 
 								:options="Exotic_Radio_Button_options" 
@@ -137,9 +137,12 @@
 					</div>
 					<br>
 					</b-list-group-item>
+					
 					<b-list-group-item>
-					</h5>
-					<h2>Filter Summary</h2>
+					<br>
+					<div class="line-1" ></div> 
+					<br>
+					<h2>Advanced Filter Summary</h2>
 					<h5>
 					<br>
 					<div class="tree_string mt-3">Tree Name Contains: <strong>*{{ tree_string }}*</strong></div>
@@ -160,8 +163,10 @@
 			</b-collapse>
 	    </div>
 	   
-	   <br>
-		<H2>Search Result</H2>
+		<br>
+		<div class="line-1" ></div> 
+		<br>
+		<H2><p class="text-white" >Search Result</p></H2>
 		<br>
 		<H5>
 		<b-container class="bv-example-row">
@@ -399,8 +404,12 @@ export default {
 						var treeNameEN = ""
 						var treescientificName = ""
 						var treeNameEN = ""
-						
-						if (this.tree_string.length > 0) {
+						console.log("Tree Name Survey Name-->:+" + this.tree_string + "")
+						if(typeof(this.tree_string) === 'undefined' || this.tree_string === null || this.tree_string === '') {
+							
+							Select_Individual_Tree_Info = ListofTreeInfo
+							console.log("Tree Name Survey Name-->:" + Select_Individual_Tree_Info[0].treeNameEn)
+						} else if (this.tree_string.length > 0) {
 							for(var j = 0; j < ListofTreeInfo.length; j++ ) {
 							//console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
 								if (ListofTreeInfo[j].treeNameEn.toLowerCase().includes(this.tree_string.toLowerCase()) || ListofTreeInfo[j].scientificName.toLowerCase().includes(this.tree_string.toLowerCase()) || ListofTreeInfo[j].alias.toLowerCase().includes(this.tree_string.toLowerCase())) {
@@ -409,6 +418,7 @@ export default {
 							}
 					    } else {
 								Select_Individual_Tree_Info = ListofTreeInfo
+								console.log("Tree Name Survey Name-->:" + Select_Individual_Tree_Info[0].treeNameEn)
 						}
 						
 						var Select_Individual_Tree_Info0 = [];
@@ -590,6 +600,11 @@ export default {
     outline: none;
     box-shadow: none;
 }
-
+ .line-1{
+width: 100%;
+height: 2px;
+border-bottom: 2px solid white;
+position: absolute;
+}
 </style>
 

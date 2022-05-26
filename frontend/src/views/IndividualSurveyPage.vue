@@ -482,7 +482,7 @@ export default {
 		
 		confirm_clearall() {
 			console.log("confirm to clear all?");
-		    this.$confirm("All Existing Input will be removed!", 'Clear form', 'Confirm?', 'warning'
+		    this.$confirm("All Existing Input will be removed!", 'Confirm?' , 'warning'
 			).then((r) => {
 				console.log("User Confirm to clear all");
 				this.clearall();
@@ -499,7 +499,18 @@ export default {
 			
 		},
 		alert_create_new() {
-			 this.$confirm("Confirm to create new one? All unsaved data will be cleared on this form.","Create New Survey Record", 'Confirm?', 'warning'
+			if ( !this.$store.getters.isLoggedIn) {
+				this.$swal.fire({
+					position: 'center',
+					icon: 'error',
+					title:"Please Sign-in first.",
+					showCloseButton: true
+				})
+				 
+				 return;
+			} 
+			
+			 this.$confirm("Confirm to create new one? All unsaved data will be cleared on this form.", 'Confirm?', 'warning'
 			).then((r) => {
 				console.log("User Confirm to create new one");
 				this.clearall();	

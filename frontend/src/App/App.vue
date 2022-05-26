@@ -10,12 +10,12 @@
 					</b-col>
 				</b-row>
 				<b-row>
-					<b-col cols="9" align-self="center">
+					<b-col cols="8" align-self="center">
 					</b-col>
 					<b-col cols="2" align-self="right">
 						<p class="text-white" ><H4 v-if="!isLoggedIn" >Hello, User</H4><H4 v-else="isLoggedIn"> Hello, {{this.updateloginuser}}</H4></p>
 					</b-col>
-					<b-col cols="1" align-self="right">		
+					<b-col cols="2" align-self="right">		
 						<H4><router-link v-if="!isLoggedIn" to="/login"><p class="text-white" >Sign-In</p></router-link><router-link v-else to="/home"> <a :href="href" @click.prevent="logout">Sign-Off</a></router-link></H4>
 					</b-col>
 					
@@ -198,6 +198,7 @@ export default {
 				console.log('Login Name:' + Vue.prototype.$Login_Name);
 				this.setUser('User');
 				this.setToken('');
+				 this.$router.push('/home')
 				
 			}
 		})	

@@ -9,7 +9,7 @@
 				<b-button :pressed="false" variant="success" pill @click='allRecords();'>
 					<h5>Download All Survey</h5>
 				</b-button>
-			</b-col>
+			</b-col> 
 			<b-col lg="4" sm="1">			
 				<b-button :class="advance_filter_visible ? null : 'collapsed'" :aria-expanded="advance_filter_visible ? 'true' : 'false'" aria-controls="advancefilter_page" @click="advance_filter_visible = !advance_filter_visible" img src="../assets/icons8-search-64.png" pill variant="info" :pressed="false" >
 					<h5>Advance Survey Record Filter</h5>
@@ -228,6 +228,8 @@ import { version, description } from 'vue-simple-alert';
 import SortedTablePlugin from "vue-sorted-table";
 import { SortedTable, SortLink } from "vue-sorted-table";
 import VueExcelXlsx from "vue-excel-xlsx";
+import { mapMutations,mapGetters  } from "vuex";
+ import Vuex from 'vue'
 
 Vue.use(VueExcelXlsx);
 
@@ -314,6 +316,7 @@ export default  {
 			}
 			  return survey_columns;
     	},
+		...mapGetters(["isLoggedIn"])
     
     },
 	methods: {
@@ -321,8 +324,23 @@ export default  {
 			return '$ ' + value;
 		},
 
-		
+		computed: {
+		      ...mapGetters(["isLoggedIn"])   
+		},
+		...mapMutations(["setUser", "setToken"]),  
 		allRecords: function(){
+			
+			if ( !this.$store.getters.isLoggedIn) {
+				this.$swal.fire({
+					position: 'center',
+					icon: 'error',
+					title:"Please Sign-In first",
+					showCloseButton: true
+				})
+				
+				 return;
+				
+			} 
 			axios.get('ajaxfile_get_surveyrecords.php').then((response) => {
 					//this.surveycases = response.data
 					console.log("response data: "+ response.data.toString());

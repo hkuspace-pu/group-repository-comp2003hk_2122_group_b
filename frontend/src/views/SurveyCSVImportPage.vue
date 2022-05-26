@@ -116,7 +116,7 @@ export default  {
 			    return dateTime;	
 			},
 
-		
+			
 		},
 		methods: {
 			
@@ -163,6 +163,16 @@ export default  {
 			},	
 			
 			submitUpdates(){  
+				if ( !this.$store.getters.isLoggedIn) {
+					this.$swal.fire({
+						position: 'center',
+						icon: 'error',
+						title:"Please Sign-in first.",
+						showCloseButton: true
+					})
+					 
+					 return;
+				} 
 				this.$swal.fire({
 				  title: 'Please confirm!',
 				  text: "All records on the file, as new entries, will be uploaded to the system!",

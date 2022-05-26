@@ -187,8 +187,8 @@ export default {
 				}).catch((error) => {
 					this.$swal.fire({
 						position: 'center',
-						icon: 'success',
-						title:error,
+						icon: 'error',
+						title: error + '. Your User or Password is not correct. Please try again.',
 						showCloseButton: true
 					})
 					console.log('Login Error:' + error);

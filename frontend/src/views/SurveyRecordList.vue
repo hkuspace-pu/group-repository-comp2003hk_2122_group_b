@@ -6,7 +6,7 @@
 		<center>
 		<b-row>
 			<b-col lg="4" sm="1">
-				<b-button :pressed="false" variant="success" pill @click='allRecords();'>
+				<b-button :pressed="false" variant="success" pill @click='allRecords(0);'>
 					<h5>Download All Survey</h5>
 				</b-button>
 			</b-col> 
@@ -46,7 +46,7 @@
 						<b-form-group class="survey_id my-1" v-slot="{ ariaDescribedby }">
 						<b-row>
 						    <b-col sm="3">
-						        <label for="survey_id_start_input">Survey ID From:</label>
+						        <label for="survey_id_start_input">Survey ID From (fill both "0" to capture all records):</label>
 						    </b-col>
 						    <b-col sm="2">
 						        <b-form-input v-model="survey_id_start_input" type="number"></b-form-input>
@@ -63,35 +63,15 @@
 						</b-form-group>
 					</div>
 					<br>
-					<div>
-						<b-form-group class="Last_Amended_Time my-1" v-slot="{ ariaDescribedby }">
-						<b-row>
-							<b-col sm="3">
-								<label for="created_date_from_input">Survey Record Created Date from: </label>
-						    </b-col>
-						    <b-col sm="3">
-						        <b-form-input v-model="created_date_from_input" type="date"></b-form-input>
-						    </b-col>
-							<b-col sm="1">
-								<center>
-									<label for="created_date_to_input"> to </label>
-								</center>
-							</b-col>
-							<b-col sm="3">
-							    <b-form-input v-model="created_date_to_input" type="date"></b-form-input>
-							</b-col>
-						</b-row>
-						</b-form-group>
-					</div>
-					<br>
+
 					<div>
 						<b-form-group class="last_amended_date my-1" v-slot="{ ariaDescribedby }">
 						<b-row>
 						    <b-col sm="3">
-						        <label for="last_amended_date_from_input">Survey Record Last Amendment Date from: </label>
+						        <label for="last_amended_date_from_input">Survey Record Last Amendment Date from (both of boxes must be filled or other ignoring them): </label>
 						    </b-col>
 						    <b-col sm="3">
-						        <b-form-input v-model="last_amended_date_from_input" type="date"></b-form-input>
+						        <b-form-input v-model="last_amended_date_from_input" type="date" :date-format-options="{ year: 'numeric', month: 'short', day: '2-digit', weekday: 'short' }"></b-form-input>
 						    </b-col>
 							<b-col sm="1">
 								<center>
@@ -99,20 +79,21 @@
 								</center>
 							</b-col>
 							<b-col sm="3">
-							    <b-form-input v-model="last_amended_date_to_input" type="date"></b-form-input>
+							    <b-form-input v-model="last_amended_date_to_input" type="date" :date-format-options="{ year: 'numeric', month: 'short', day: '2-digit', weekday: 'short' }"></b-form-input>
 							</b-col>
 						</b-row>
 						</b-form-group>
 					</div>
 					<br>
 					<div>
-						<b-form-group label="Tree Condition ( Uncheck all boxes to ignore )" v-slot="{ ariaDescribedby }">
+						<b-form-group   label="Tree Condition ( Uncheck all boxes to ignore )" v-slot="{ ariaDescribedby }">
 							<b-form-checkbox-group
-								:options="Tree_Condition_Checked_Box_Group_Options"
-								v-model="Tree_Condition_Checked_Box_Selected"
+								id="Tree_Condition_Checked_Box_Group"
+								:options="selectable_tree_condition_options"
+								v-model="selectable_tree_condition_selected"
 								:aria-describedby="ariaDescribedby"
-								value-field="tree_condition_text"
-								text-field="tree_condition_value"
+								value-field="tree_condition_value"
+								text-field="tree_condition_text"
 								name="Tree_Condition_Checked_Box_Group"
 								plain>
 							</b-form-checkbox-group>
@@ -122,11 +103,12 @@
 					<div>
 						<b-form-group label="Survey Status ( Uncheck all boxes to ignore )" v-slot="{ ariaDescribedby }">
 							<b-form-checkbox-group
-								:options="SurveyState_Checked_Box_Group_Options"
-								v-model="SurveyState_Checked_Box_Selected"
+								id="SurveyState_Checked_Box_Group"
+								:options="SurveyState_Checked_Box_options"
+								v-model="surveystate_checked_box_selected"
 								:aria-describedby="ariaDescribedby"
-								value-field="SurveyState_text"
-								text-field="SurveyState_value"
+								value-field="survey_state_value"
+								text-field="survey_state_text"
 								name="SurveyState_Checked_Box_Group"
 								plain>
 							</b-form-checkbox-group>
@@ -141,21 +123,19 @@
 					<h5>
 					<div class="treenamekeyword mt-3">A general/scientific/alias tree name contains:* <strong>{{ tree_name_string_input }} </strong>*</div>
 					<div class="surveyidrange mt-3">Survey ID From: <strong>{{ survey_id_start_input }} to {{ survey_id_end_input }}</strong></div>
-					<div class="survey_record_created_date_from mt-3">Survey Record Created Date from:   <strong>{{ created_date_from_input }}  to  {{ created_date_to_input }}</strong> </div>
 					<div class="last_amended_date_from_input mt-3">Survey Record Last Amended Date from:   <strong>{{ last_amended_date_from_input }}  to  {{ last_amended_date_to_input }}</strong></div>
-					<div class="tree_condition mt-3">Tree Condition: <strong>{{ Tree_Condition_Checked_Box_Selected }}</strong></div>
-					<div class="SurveyState mt-3">Survey Status: <strong>{{ SurveyState_Checked_Box_Selected }}</strong></div>
+					<div class="tree_condition mt-3">Tree Condition: <strong>{{ selectable_tree_condition_selected }}</strong></div>
+					<div class="SurveyState mt-3">Survey Status: <strong>{{ surveystate_checked_box_selected }}</strong></div>
 					</h5>
 					<br>
 					</b-list-group-item>
 					</b-list-group>
 					<br>
-					<b-button pill variant="info"><h5>Confirm</h5></b-button>
+					<b-button pill variant="info" @click='allRecords(1)' ><h5>Confirm</h5></b-button>
 				</b-card>
 			</b-collapse>
 		</div>
 		<br><br>
-
 	    <div class="line-1" ></div> 
 	    <br>
 		<div>
@@ -254,13 +234,13 @@ export default  {
 			values: [],
 			selectedsurveydata:[],
 			advance_filter_visible: false,
-			tree_name_string_input:"",
+			tree_name_string_input:'',
+		
 			survey_id_start_input:"",
 			survey_id_end_input:"",
 			last_amended_date_from_input:"",
 			last_amended_date_to_input:"",
-			created_date_to_input:"",
-			created_date_from_input:"",
+
 			vueexcelxlsx: true,
 			 sortBy: 'SurveyID',
 			 Client_Reference:"",
@@ -288,17 +268,22 @@ export default  {
 					{key:'actions2',label: "Action 2", field: "actions2", sortable: true, output_excel: false,class: 'text-white'}
 					
 			],
-            
+            selectable_tree_condition_selected: [],
 			selectable_tree_condition_options: [
-				{ text: '-', value: '-' },  
-				{ text: 'Excellent', value: 1 },
-				{ text: 'Normal', value: 2 },
-				{ text: 'Deteriorate', value: 3},
-				{ text: 'Poor',value: 4 },
-				{ text: 'Danger', value: 5 },
+				{ tree_condition_text: 'Excellent', tree_condition_value: 'Excellent' },
+				{ tree_condition_text: 'Normal', tree_condition_value: 'Normal' },
+				{ tree_condition_text: 'Deteriorate', tree_condition_value: 'Deteriorate'},
+				{ tree_condition_text: 'Poor',tree_condition_value: 'Poor' },
+				{ tree_condition_text: 'Danger', tree_condition_value: 'Danger' },
 			],
-			
-
+			surveystate_checked_box_selected: [],
+			SurveyState_Checked_Box_options: [
+				{ survey_state_text: 'Draft', survey_state_value: 'Draft' },
+				{ survey_state_text: 'Final', survey_state_value: 'Final' },
+				{ survey_state_text: 'Rejected', survey_state_value: 'Rejected'},
+				{ survey_state_text: 'Approved',survey_state_value: 'Approved' },
+				{ survey_state_text: 'Published', survey_state_value: 'Published'},
+			],
 		}                                            
 	},
     computed: {
@@ -323,12 +308,136 @@ export default  {
 		priceFormat(value){
 			return '$ ' + value;
 		},
+        filter_individual_survey(){
+			
 
+			var ListofTreeInfo = this.values;
+			var Select_Individual_Tree_Info = [];
+			var treeNameEN = ""
+			var treescientificName = ""
+			var treeNameEN = ""
+			//console.log("Tree Name Survey Name-->:+" + this.tree_string + "")
+			if (this.tree_name_string_input.length > 0) {
+				//console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
+				 console.log('starting Survey Individual details Filtered-> ' + ListofTreeInfo)
+				for(var k = 0; k < ListofTreeInfo.length; k++ ) {
+					if (ListofTreeInfo[k].Species_Name.toLowerCase().includes(this.tree_name_string_input.toLowerCase()) ) {
+						Select_Individual_Tree_Info.push(ListofTreeInfo[k])
+							console.log('Survey Individual details Filtered: Included Tree Name-> ' +ListofTreeInfo[k].Species_Name)
+					} else {
+						console.log('Survey Individual details Filtered: Not Included Tree Name-> ' +ListofTreeInfo[k].Species_Name)
+					}
+				}
+			} else {
+				Select_Individual_Tree_Info = ListofTreeInfo
+				console.log('Tree Name ignored' )
+			}
+			console.log('tree name filtered: ' + Select_Individual_Tree_Info)
+			var Select_Individual_Tree_Info0 = [];
+			if (this.surveystate_checked_box_selected.length > 0) {
+				for(var j = 0; j < this.surveystate_checked_box_selected.length; j++ ) {
+				//console.log('Tree Individual deatails:' +ListofTreeInfo[j].treeId)
+					for(var k = 0; k < Select_Individual_Tree_Info.length; k++ ) {
+						if (Select_Individual_Tree_Info[k].SurveyState === this.surveystate_checked_box_selected[j] ) {
+								Select_Individual_Tree_Info0.push(Select_Individual_Tree_Info[k])
+								console.log('Survey Individual details Filtered: Survey State-> ' + Select_Individual_Tree_Info[k].SurveyState)
+						}
+					}
+				}
+			} else {
+				Select_Individual_Tree_Info0 = Select_Individual_Tree_Info
+				console.log('Tree Survey State Ignore' )
+			}
+			console.log('tree survey state filtered: ' + Select_Individual_Tree_Info0)
+			var Select_Individual_Tree_Info1 = []
+			if (this.selectable_tree_condition_selected.length > 0) {
+				for(var j = 0; j < this.selectable_tree_condition_selected.length; j++ ) {
+					for(var k = 0; k < Select_Individual_Tree_Info0.length; k++ ) {
+						if (Select_Individual_Tree_Info0[k].Condition === this.selectable_tree_condition_selected[j] ) {
+								Select_Individual_Tree_Info1.push(Select_Individual_Tree_Info0[k])
+								console.log('Survey Individual details Filtered: condition-> ' +Select_Individual_Tree_Info0[k].Condition)
+						}
+					}
+			    }
+			} else {
+				Select_Individual_Tree_Info1 = Select_Individual_Tree_Info0
+				console.log('Tree Survey Condition Ignore' )
+			}
+			console.log('tree condition filtered: ' + Select_Individual_Tree_Info1)	
+			var Select_Individual_Tree_Info2 = []
+			if (this.survey_id_start_input != 0 || this.survey_id_end_input != 0 ) {
+				for(var k = 0; k < Select_Individual_Tree_Info1.length; k++ ) {
+					console.log('Survey Individual details Filtered: -> Checking Survey ID:' + Select_Individual_Tree_Info1[k].SurveryID)
+					if ((parseInt(Select_Individual_Tree_Info1[k].SurveyID)  >= this.survey_id_start_input) && (parseInt(Select_Individual_Tree_Info1[k].SurveyID)  <= this.survey_id_end_input )) {
+						Select_Individual_Tree_Info2.push(Select_Individual_Tree_Info1[k])
+						console.log('Survey Individual details Filtered: -> Survey ID:' +Select_Individual_Tree_Info1[k].SurveryID)
+					} else {
+						console.log('Survey Individual details Filtered: -> Survey ID Ignored:' + Select_Individual_Tree_Info1[k].SurveryID)
+					}
+				}
+			    
+			} else {
+				Select_Individual_Tree_Info2 = Select_Individual_Tree_Info1
+				console.log('Tree Survey ID Ignore' )
+			}
+			console.log('tree survey ID filtered: ' + Select_Individual_Tree_Info2)	
+			
+			var Select_Individual_Tree_Info3 = []
+			var survey_date = ''
+			var date_parts 
+			var parts
+			var date_from = this.last_amended_date_from_input;
+			var date_to = this.last_amended_date_to_input;
+			date_from = new Date(date_from.split('-'));
+			date_to = new Date(date_to.split('-'));
+			//console.log('last_amended_date_from_input:' + this.last_amended_date_from_input)
+			//console.log('last_amended_date_from_output:' + this.last_amended_date_to_input)
+			//console.log('last_amended_date_from_input_split:' + date_from)
+			///console.log('last_amended_date_to_input_split:' + date_to)
+			
+			this.last_amended_date_from_input
+			if (this.last_amended_date_from_input != '' && this.last_amended_date_to_input != '' ) {
+				for(var k = 0; k < Select_Individual_Tree_Info2.length; k++ ) {
+					//console.log('Survey Individual details Filtered: -> Checking Survey Amended Time:' + Select_Individual_Tree_Info2[k].Last_Amended_Time)
+					survey_date = Select_Individual_Tree_Info2[k].Last_Amended_Time.substr(0, 10);
+					console.log('survey date captured: ' + survey_date);
+					
+					parts = survey_date.split('-');
+					// Please pay attention to the month (parts[1]); JavaScript counts months from 0:
+					// January - 0, February - 1, etc.
+					console.log('Date Part - Year: ' + parts[0]);
+					console.log('Date Part - Month: ' + parts[1]-1);
+					console.log('Date Part - Date: ' + parts[2]-1);
+					date_parts = new Date(parts[0], parts[1] - 1, parts[2]); 
+					
+					//date_parts = new Date(survey_date); 
+					console.log('formulated date: ' + date_parts);
+					
+					if (date_parts  >= date_from  && date_parts  <= date_to  ) {
+						Select_Individual_Tree_Info3.push(Select_Individual_Tree_Info2[k])
+						console.log('Survey Individual details Filtered: -> Last_Amended_Time Included: ' +Select_Individual_Tree_Info2[k].Last_Amended_Time)
+					} else {
+						console.log('Survey Individual details Filtered: -> Last_Amended_Time Ignored: ' + Select_Individual_Tree_Info2[k].Last_Amended_Time)
+					}
+				}
+			    
+			} else {
+				Select_Individual_Tree_Info3 = Select_Individual_Tree_Info2
+				//console.log('Tree Last_Amended_Time Ignore' )
+			}
+			
+			this.values = Select_Individual_Tree_Info3;
+			
+			console.log('final survery filtered: ' + this.values)	
+		},
+		
 		computed: {
 		      ...mapGetters(["isLoggedIn"])   
 		},
+		
 		...mapMutations(["setUser", "setToken"]),  
-		allRecords: function(){
+		
+		allRecords: function(advanced_filter){
 			
 			if ( !this.$store.getters.isLoggedIn) {
 				this.$swal.fire({
@@ -355,38 +464,15 @@ export default  {
 					}
 					this.bulkselectsurveycase =[];
 					this.values=    response.data;
+					if (advanced_filter == 1) {
+						this.filter_individual_survey();
+					}
 ;		 
 				}).catch((error) => {
 					console.log('error on all Records:' + error);
 				});	
 			},
 				
-				
-			Filter_By_SurveyID: function(){
-						
-                console.log('SurveyID_To:' + this.SurveyID_To); 
-                console.log('SurveyID_From:' + this.SurveyID_From); 
-						
-				if(this.SurveyID_From >= 0 && this.SurveyID_To >= this.SurveyID_From) {
-					axios.get('ajaxfile_get_surveyrecords.php', {
-						params: {
-							SurveyID_From: this.SurveyID_From ,
-                            SurveyID_To: this.SurveyID_To
-						}
-					}).then((response) => {
-						//this.surveycases = response.data;
-						this.values = [];
-						this.bulkselectsurveycase = [];
-						for (const eachsurvey of response.data) {
-						  eachsurvey["Selected"] = false;
-						  eachsurvey["SurveyID"] = Number(eachsurvey["SurveyID"]) ;
-						}
-						this.values=    response.data;
-					}).catch((error) => {
-						console.log(error);
-					});
-				}
-			},
 			
 			deleteRecord: function(Survey_Case, index){
 				var survey_info = 'Survey Case No: ' +  Survey_Case.SurveyID + ',\n'

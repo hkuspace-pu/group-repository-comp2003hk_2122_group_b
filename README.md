@@ -4,12 +4,14 @@
 
 ## Tutor
 | Title | Name |
+| --- | --- |
 | Module Leader | Dr Shirley Atkinson |
 | Co-Teacher | Dr Alaa Alkhafaji |
 | HKUSPACE Tutor | Dr Ivy Wong |
 
 ## Group Member
 | Name | Leadership Role |
+| --- | --- |
 | Calson | Product Owner |
 | Tim | Scrum Master |
 | Star Cheuk | Techincal |

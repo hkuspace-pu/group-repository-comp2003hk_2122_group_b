@@ -3,7 +3,7 @@
     <div id="tabelView" v-show="viewMode === 'table'">
       <div class="header">
         <h1>Users</h1>
-        <button class="btn text-white" @click="onAddClick">
+        <!-- <button class="btn text-white" @click="onAddClick">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -19,7 +19,7 @@
               d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
             />
           </svg>
-        </button>
+        </button> -->
       </div>
       <table
         class="
@@ -34,7 +34,7 @@
             <th scope="col" class="title userName">Name</th>
             <th scope="col" class="title email">Email</th>
             <th scope="col" class="title membership">Membership</th>
-            <th scope="col" class="title password">Password</th>
+            <!-- <th scope="col" class="title password">Password</th> -->
           </tr>
         </thead>
         <tbody>
@@ -59,11 +59,11 @@
             >
               {{ item.membershipTxt }}
             </th>
-            <th scope="row" class="item password">
+            <!-- <th scope="row" class="item password">
               <button class="btn btn-primary" @click="onPasswordClick(index)">
                 Change
               </button>
-            </th>
+            </th> -->
           </tr>
         </tbody>
       </table>

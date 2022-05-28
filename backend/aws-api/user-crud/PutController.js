@@ -20,7 +20,7 @@ function updateDetail(pool, data, callback) {
         userName = data["userName"],
         email = data["email"],
         membership = data["membership"],
-        sql = `UPDATE users SET user_name='${userName}', email='${email}', membership=${membership} WHERE user_id=${userId}`;
+        sql = `UPDATE users SET user_name='${userName}', email='${email}', membership=${membership} WHERE email=${email}`;
         
     pool.getConnection(function(err, connection) {
         if(err) throw err;
@@ -34,7 +34,7 @@ function updateDetail(pool, data, callback) {
                         'Content-Type': 'application/json',
                         'Access-Control-Allow-Headers': 'Content-Type',
                         'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Methods': 'OPTIONS,POST'
+                        'Access-Control-Allow-Methods': 'OPTIONS,PUT'
                     },
                     'body': "Update details success"
                 };
@@ -45,7 +45,7 @@ function updateDetail(pool, data, callback) {
 }
 
 function changePassword(pool, data, callback) {
-    let userId = data["userId"],
+    let email = data["email"],
         key = process.env.PASSWORD_KEY;
         
     let oldPassword = data["oldPassword"],
@@ -58,8 +58,8 @@ function changePassword(pool, data, callback) {
         decryptedNewPassword = decrypt(newPassword, key, newPasswordIV),
         hashedNewPassword = hash(decryptedNewPassword);
         
-    let checkingSql = `SELECT * FROM users WHERE user_id=${userId}`,
-        updateSql = `UPDATE users SET password='${hashedNewPassword}' WHERE user_id=${userId}`;
+    let checkingSql = `SELECT * FROM users WHERE email=${email}`,
+        updateSql = `UPDATE users SET password='${hashedNewPassword}' WHERE email=${email}`;
     
     pool.getConnection(function(err, connection) {
         if(err) throw err;
@@ -80,10 +80,11 @@ function changePassword(pool, data, callback) {
                                     'Content-Type': 'application/json',
                                     'Access-Control-Allow-Headers': 'Content-Type',
                                     'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': 'OPTIONS,POST'
+                                    'Access-Control-Allow-Methods': 'OPTIONS,PUT'
                                 },
                                 'body': "Password changed success"
                             };
+  
                             callback(null, result);
                         }
                     });
@@ -94,7 +95,7 @@ function changePassword(pool, data, callback) {
                             'Content-Type': 'application/json',
                             'Access-Control-Allow-Headers': 'Content-Type',
                             'Access-Control-Allow-Origin': '*',
-                            'Access-Control-Allow-Methods': 'OPTIONS,POST'
+                            'Access-Control-Allow-Methods': 'OPTIONS,PUT'
                         },
                         'body': "Old password Unauthorized"
                     };
@@ -121,33 +122,39 @@ function login(pool, data, callback) {
             if(error) {
                 callback(error);
             } else {
+                console.log("results ", results);
+                let userName = results[0]["user_name"],
+                    membership = results[0]["membership"];
+                    
                 let recordPassword = results[0]["password"];
                 if(recordPassword === hashed) {
                     let timestamp = Date.now(),
-                        setTimeSQL = `UPDATE user SET login='${timestamp}' WHERE email='${email}'`;
+                        setTimeSQL = `UPDATE users SET login='${timestamp}' WHERE email='${email}'`;
                     
-                    connection.getConnection(setTimeSQL, function(error2, results) {
+                    connection.query(setTimeSQL, function(error2, results2) {
+                        console.log("error", error2);
                         if(error2) {
                             callback(error2);
                         } else {
+                            const body = JSON.stringify({
+                                message: "Login success",
+                                userName: userName,
+                                email: email,
+                                membership: membership,
+                                timestamp: timestamp
+                            });
                             const result = {
                                 'statusCode': 200,
                                 'headers': {
                                     'Content-Type': 'application/json',
                                     'Access-Control-Allow-Headers': 'Content-Type',
                                     'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': 'OPTIONS,POST'
+                                    'Access-Control-Allow-Methods': 'OPTIONS,PUT'
                                 },
-                                'body': {
-                                    message: "Login success",
-                                    userId: results[0]["user_id"],
-                                    userName: results[0]["user_name"],
-                                    email: email,
-                                    membership: results[0]["membership"],
-                                    timestamp: timestamp
-                                }
+                                'body': body
                             };
-                            callback(null, timestamp);
+                            console.log("xxxxxx result", result);
+                            callback(null, result);
                         }
                     });
                 } else {
@@ -157,7 +164,7 @@ function login(pool, data, callback) {
                             'Content-Type': 'application/json',
                             'Access-Control-Allow-Headers': 'Content-Type',
                             'Access-Control-Allow-Origin': '*',
-                            'Access-Control-Allow-Methods': 'OPTIONS,POST'
+                            'Access-Control-Allow-Methods': 'OPTIONS,PUT'
                         },
                         'body': "User Unauthorized"
                     };

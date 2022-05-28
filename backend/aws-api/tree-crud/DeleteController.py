@@ -2,7 +2,7 @@ import json
 
 def delete(connection, data):
     cursor = connection.cursor()
-    body = json.loads(data['body'])
+    body = json.loads(data)
     
     sql = "DELETE FROM trees WHERE tree_id = %s" % body['treeID']
     

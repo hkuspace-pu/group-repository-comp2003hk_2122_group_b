@@ -10,11 +10,15 @@ export default new Vuex.Store({
   state: {
     user: null,
     token: null,
+	
   },
+ 
+
   mutations: {
     setUser(state, user) {
       state.user = user;
     },
+
     setToken(state, token) {
       state.token = token;
     },
@@ -27,6 +31,7 @@ export default new Vuex.Store({
     CurrentUser(state) {
       return state.user['name'];
     } ,
+   
 
   },
 });

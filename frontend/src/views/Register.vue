@@ -26,7 +26,7 @@
             type="email"
             placeholder="Enter Email Address"
             required
-			class="text-white"
+	
           ></b-form-input>
 		  <h6><p class="text-white"> You will use this email address to login </p></h6>
         </b-form-group>
@@ -37,7 +37,7 @@
             v-model="register_username"
             placeholder="Please Enter Your Full Name"
             required
-				class="text-white"
+
           ></b-form-input>
         </b-form-group>
         <br>
@@ -48,7 +48,7 @@
             placeholder="Please Enter Your Password (which containts more than 8 characters)"
             required
 			type="password"
-			class="text-white"
+
           ></b-form-input>
         </b-form-group>
 		<br>
@@ -59,7 +59,7 @@
             placeholder="Please Confirm Your Password"
             required
 			type="password" 
-			class="text-white"
+
           ></b-form-input>
         </b-form-group>
         <br>

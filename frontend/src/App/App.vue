@@ -170,7 +170,7 @@ export default {
 	computed: {
 	      ...mapGetters(["isLoggedIn"])   
 	  },
-	  ...mapMutations(["setUser", "setToken"]),
+	  ...mapMutations(["setUser", "setToken","set_Menu_Bar_Margin"]),
 	  
     onItemClick(e, i) {
       console.log("onItemClick");
@@ -215,6 +215,7 @@ export default {
 	  		   this.appmargin = '200px';
 	  }
 	   this.menu[1].title = "Hello!  " + Vue.prototype.$Login_Name;
+	   this.set_Menu_Bar_Margin(this.appmargin);
     },
 	tree_name_download(){
 			
@@ -248,6 +249,7 @@ export default {
 			   this.appmargin = '200px';
 	//};
 	this.$router.push('/home')
+
   }
 };
 

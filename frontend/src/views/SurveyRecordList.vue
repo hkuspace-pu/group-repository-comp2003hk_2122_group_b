@@ -216,6 +216,7 @@ Vue.use(VueExcelXlsx);
 export default  { 
 	name: "App",
 	props:['data'],
+	
     data () {
         return {
 	
@@ -249,6 +250,7 @@ export default  {
 			selectable_tree_name_id:{},
 			tree_data:'',
 			Condition:'',
+			
             fields:[
 				    {key:'SurveyID',stickyColumn: true,isRowHeader: true ,variant: 'primary', sortable: true, label: "Survey ID",field: "SurveyID", output_excel: true}, 
 			        {key:'selected', sortable: true, output_excel: false,  tdClass: (value) => value ? 'text-success' : 'text-white'},
@@ -301,8 +303,8 @@ export default  {
 			}
 			  return survey_columns;
     	},
-		...mapGetters(["isLoggedIn"])
-    
+		...mapGetters(["isLoggedIn"]),
+
     },
 	methods: {
 		priceFormat(value){
@@ -671,6 +673,8 @@ export default  {
 			if(typeof(Vue.prototype.$Tree_Data) === 'undefined' || Vue.prototype.$Tree_Data === null || Vue.prototype.$Tree_Data === '') {
 					this.tree_name_download();
 			}
+
+			
         },
 
 }

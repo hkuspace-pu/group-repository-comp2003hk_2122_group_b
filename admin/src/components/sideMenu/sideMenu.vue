@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-secondary bg-gradient" style="width: 280px;" id="sideMenu">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-            <span class="fs-4">Admin Mangaement</span>
+            <span class="fs-4">Admin Management </span>
         </a>
         <hr>
         <ul class="nav nav-pills flex-column mb-auto">
@@ -13,7 +13,7 @@
                     Trees
                 </div>
             </li>
-            <li class="nav-item" @click="onButtonClick('survey')">
+            <!-- <li class="nav-item" @click="onButtonClick('survey')">
                 <div :class="`nav-link text-white ${btns.survey}`">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi me-2 bi-check-circle" viewBox="0 0 16 16">
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -21,7 +21,7 @@
                     </svg>
                     Surveys 
                 </div>
-            </li>
+            </li> -->
             <li class="nav-item" @click="onButtonClick('user')">
                 <div :class="`nav-link text-white ${btns.user}`">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi me-2 bi-person-circle" viewBox="0 0 16 16">

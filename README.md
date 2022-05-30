@@ -1,5 +1,4 @@
-# COMP2003HK
-# Computing Group Project
+# COMP2003HK - Computing Group Project
 # Tree Survey Application
 
 ## Tutor

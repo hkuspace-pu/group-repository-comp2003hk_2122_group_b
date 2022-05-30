@@ -52,11 +52,12 @@ For a tree lover, expert, or any end-user who wants to share their observations 
 
 ## Application Information
 Application is divided to several parts:
-|- Admin
-|- Backend
-   |- AWS-API
-   |- Database
-|- Frontend
+
+- Admin
+- Backend
+   - AWS-API
+   - Database
+- Frontend
 
 ## Software environment
 | Software | Version Number |
@@ -82,7 +83,7 @@ Application is divided to several parts:
 | vue | 2.6.14 |
 | vue-axios | 3.4.0 |
 | vue-carousel-3d | 1.0.1 |
-| vue-class-component | 7.2.6 ｜
+| vue-class-component | 7.2.6 |
 | vue-cryptojs | 2.2.1 |
 | vue-excel-xlsx | 1.2.2 |
 | vue-input-autowidth | 1.0.11 |
